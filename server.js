@@ -3,18 +3,12 @@ const multer = require("multer");
 const OpenAI = require("openai");
 const { toFile } = require("openai/uploads");
 const mammoth = require("mammoth");
-const fs = require("fs");
 const path = require("path");
 
 const app = express();
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: "/tmp",
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    }
-  }),
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 12 * 1024 * 1024
   }
@@ -30,9 +24,6 @@ app.get("/api/health", (req, res) => {
 });
 
 app.post("/api/analyze", upload.single("contract"), async (req, res) => {
-  let filePath = null;
-  let openaiFileId = null;
-
   try {
     if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({
@@ -40,20 +31,18 @@ app.post("/api/analyze", upload.single("contract"), async (req, res) => {
       });
     }
 
-    if (!req.file) {
+    if (!req.file || !req.file.buffer || req.file.buffer.length === 0) {
       return res.status(400).json({
-        error: "ارفع ملف PDF أو DOCX."
+        error: "الملف فارغ أو لم يتم رفعه بشكل صحيح."
       });
     }
-
-    filePath = req.file.path;
-
-    const originalName = req.file.originalname;
-    const lowerName = originalName.toLowerCase();
 
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY
     });
+
+    const originalName = req.file.originalname;
+    const lowerName = originalName.toLowerCase();
 
     const instructions = `
 أنت ContractCheck، أداة فحص أولي للعقود في السعودية.
@@ -99,21 +88,19 @@ app.post("/api/analyze", upload.single("contract"), async (req, res) => {
 
 اجعل score من 0 إلى 100، حيث 100 أعلى خطورة.
 
-إذا كانت معلومة غير موجودة في العقد، ضعها في:
-missing_or_unclear
+إذا كانت معلومة غير موجودة في العقد، ضعها في missing_or_unclear.
 
 لا تخترع أي نص نظامي.
 `;
 
     let response;
 
-    // PDF
     if (
       req.file.mimetype === "application/pdf" ||
       lowerName.endsWith(".pdf")
     ) {
       const fileForOpenAI = await toFile(
-        fs.createReadStream(filePath),
+        req.file.buffer,
         originalName,
         {
           type: "application/pdf"
@@ -125,36 +112,39 @@ missing_or_unclear
         purpose: "user_data"
       });
 
-      openaiFileId = uploaded.id;
-
-      response = await client.responses.create({
-        model: "gpt-5",
-        input: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "input_file",
-                file_id: uploaded.id
-              },
-              {
-                type: "input_text",
-                text: instructions
-              }
-            ]
-          }
-        ]
-      });
+      try {
+        response = await client.responses.create({
+          model: "gpt-5",
+          input: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "input_file",
+                  file_id: uploaded.id
+                },
+                {
+                  type: "input_text",
+                  text: instructions
+                }
+              ]
+            }
+          ]
+        });
+      } finally {
+        try {
+          await client.files.delete(uploaded.id);
+        } catch {}
+      }
     }
 
-    // DOCX
     else if (
       req.file.mimetype ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       lowerName.endsWith(".docx")
     ) {
       const result = await mammoth.extractRawText({
-        path: filePath
+        buffer: req.file.buffer
       });
 
       const text = result.value.trim();
@@ -210,23 +200,6 @@ ${text.slice(0, 60000)}`
     return res.status(500).json({
       error: "صار خطأ أثناء تحليل العقد. حاول مرة أخرى."
     });
-
-  } finally {
-    if (openaiFileId && process.env.OPENAI_API_KEY) {
-      try {
-        const cleanupClient = new OpenAI({
-          apiKey: process.env.OPENAI_API_KEY
-        });
-
-        await cleanupClient.files.delete(openaiFileId);
-      } catch {}
-    }
-
-    if (filePath) {
-      try {
-        fs.unlinkSync(filePath);
-      } catch {}
-    }
   }
 });
 
