@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ContractCheck</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f4f1;color:#171717;font-family:system-ui,-apple-system,Tahoma,sans-serif}
+.wrap{max-width:960px;margin:auto;padding:22px 16px}
+header{text-align:center;padding:45px 0 25px}
+.logo{font-size:42px}
+h1{font-size:clamp(42px,7vw,68px);margin:8px 0}
+.sub{color:#666;font-size:18px;line-height:1.8}
+.card{background:#fff;border:1px solid #ddd;border-radius:20px;padding:22px;margin:18px 0}
+.upload{border:2px dashed #bbb;border-radius:16px;padding:34px;text-align:center}
+input[type=file]{width:100%;margin:18px 0}
+button{background:#111;color:#fff;border:0;border-radius:11px;padding:14px 22px;font:inherit;font-weight:800}
+button:disabled{opacity:.5}
+.status{color:#666;margin-top:14px}
+.hidden{display:none}
+.score{font-size:48px;font-weight:900}
+.summary{background:#fff0d0;border-radius:14px;padding:16px;margin:15px 0;line-height:1.8}
+.risk{border:1px solid #ddd;border-radius:14px;padding:16px;margin:12px 0}
+.high{border-right:6px solid #d33}
+.medium{border-right:6px solid #e0a000}
+.low{border-right:6px solid #3b8d5a}
+small{color:#777}
+</style>
+</head>
+
+<body>
+<main class="wrap">
+
+<header>
+<div class="logo">🔎</div>
+<h1>ContractCheck</h1>
+<div class="sub">
+فحص أولي للعقود بالذكاء الاصطناعي<br>
+اعرف البنود التي تستحق الانتباه قبل التوقيع.
+</div>
+</header>
+
+<section class="card">
+<h2>ارفع العقد</h2>
+
+<div class="upload">
+<p>PDF أو Word (DOCX)</p>
+
+<input id="file" type="file"
+accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+<br>
+
+<button id="go">حلّل العقد</button>
+
+<div id="status" class="status"></div>
+</div>
+</section>
+
+<section id="result" class="card hidden"></section>
+
+<section class="card">
+<small>
+تنبيه: ContractCheck أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
+</small>
+</section>
+
+</main>
+
+<script>
+const fileEl=document.getElementById("file");
+const go=document.getElementById("go");
+const status=document.getElementById("status");
+const result=document.getElementById("result");
+
+function esc(v){
+return String(v??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#039;"
+}[c]));
+}
+
+go.onclick=async()=>{
+if(!fileEl.files[0]){
+status.textContent="اختر العقد أولًا.";
+return;
+}
+
+go.disabled=true;
+status.textContent="جاري قراءة العقد وتحليله... قد يستغرق قليلًا.";
+result.classList.add("hidden");
+
+const fd=new FormData();
+fd.append("contract",fileEl.files[0]);
+
+try{
+const r=await fetch("/api/analyze",{
+method:"POST",
+body:fd
+});
+
+const d=await r.json();
+
+if(!r.ok)throw new Error(d.error||"حدث خطأ");
+
+const icon={
+high:"🔴",
+medium:"🟠",
+low:"🟢"
+};
+
+const risks=(d.risks||[]).map(x=>`
+<div class="risk ${esc(x.level)}">
+<h3>${icon[x.level]||"⚪"} ${esc(x.title)}</h3>
+<p><b>البند:</b> ${esc(x.clause)}</p>
+<p><b>ليش مهم؟</b> ${esc(x.why)}</p>
+<p><b>سؤال للمختص:</b> ${esc(x.question)}</p>
+</div>
+`).join("");
+
+result.innerHTML=`
+<h2>نتيجة الفحص</h2>
+
+<div class="score">
+${esc(d.score)}<small>/100</small>
+</div>
+
+<div class="summary">
+${esc(d.summary)}
+</div>
+
+<h2>البنود التي تستحق الانتباه</h2>
+
+${risks||"<p>لم تظهر مخاطر واضحة في التحليل.</p>"}
+
+<h2>نقاط جيدة</h2>
+
+<ul>
+${(d.good_points||[]).map(x=>`<li>${esc(x)}</li>`).join("")}
+</ul>
+
+<h2>غير واضح أو ناقص</h2>
+
+<ul>
+${(d.missing_or_unclear||[]).map(x=>`<li>${esc(x)}</li>`).join("")}
+</ul>
+`;
+
+result.classList.remove("hidden");
+result.scrollIntoView({behavior:"smooth"});
+status.textContent="تم التحليل.";
+
+}catch(e){
+status.textContent=e.message;
+}
+
+finally{
+go.disabled=false;
+}
+};
+</script>
+
+</body>
+</html>
