@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const OpenAI = require("openai");
+const { toFile } = require("openai/uploads");
 const mammoth = require("mammoth");
 const fs = require("fs");
 const path = require("path");
@@ -11,12 +12,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: "/tmp",
     filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase();
-
-      const safeName =
-        `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-
-      cb(null, safeName);
+      cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}`);
     }
   }),
   limits: {
@@ -33,36 +29,33 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.post(
-  "/api/analyze",
-  upload.single("contract"),
-  async (req, res) => {
-    let filePath = null;
-    let uploadedFileId = null;
+app.post("/api/analyze", upload.single("contract"), async (req, res) => {
+  let filePath = null;
+  let openaiFileId = null;
 
-    try {
-      if (!process.env.OPENAI_API_KEY) {
-        return res.status(500).json({
-          error: "لم يتم إعداد مفتاح OpenAI بعد."
-        });
-      }
-
-      if (!req.file) {
-        return res.status(400).json({
-          error: "ارفع ملف PDF أو DOCX."
-        });
-      }
-
-      filePath = req.file.path;
-
-      const originalName =
-        req.file.originalname.toLowerCase();
-
-      const client = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY
+  try {
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "لم يتم إعداد مفتاح OpenAI بعد."
       });
+    }
 
-      const instructions = `
+    if (!req.file) {
+      return res.status(400).json({
+        error: "ارفع ملف PDF أو DOCX."
+      });
+    }
+
+    filePath = req.file.path;
+
+    const originalName = req.file.originalname;
+    const lowerName = originalName.toLowerCase();
+
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+
+    const instructions = `
 أنت ContractCheck، أداة فحص أولي للعقود في السعودية.
 
 حلل العقد باللغة العربية.
@@ -92,7 +85,6 @@ app.post(
 }
 
 ركز على:
-
 - الشرط الجزائي
 - المسؤولية وحدودها
 - الإنهاء
@@ -105,145 +97,141 @@ app.post(
 - الالتزامات غير المتوازنة
 - أي بند قد يسبب مخاطرة مالية أو تشغيلية
 
-اجعل score من 0 إلى 100،
-حيث 100 أعلى خطورة.
+اجعل score من 0 إلى 100، حيث 100 أعلى خطورة.
 
-إذا لم تكن معلومة معينة موجودة في العقد،
-ضعها ضمن missing_or_unclear.
+إذا كانت معلومة غير موجودة في العقد، ضعها في:
+missing_or_unclear
 
 لا تخترع أي نص نظامي.
 `;
 
-      let response;
+    let response;
 
-      // PDF
-      if (
-        req.file.mimetype === "application/pdf" ||
-        originalName.endsWith(".pdf")
-      ) {
-        const uploadedFile = await client.files.create({
-          file: fs.createReadStream(filePath),
-          purpose: "user_data"
-        });
+    // PDF
+    if (
+      req.file.mimetype === "application/pdf" ||
+      lowerName.endsWith(".pdf")
+    ) {
+      const fileForOpenAI = await toFile(
+        fs.createReadStream(filePath),
+        originalName,
+        {
+          type: "application/pdf"
+        }
+      );
 
-        uploadedFileId = uploadedFile.id;
+      const uploaded = await client.files.create({
+        file: fileForOpenAI,
+        purpose: "user_data"
+      });
 
-        response = await client.responses.create({
-          model: "gpt-5",
-          input: [
-            {
-              role: "user",
-              content: [
-                {
-                  type: "input_file",
-                  file_id: uploadedFile.id
-                },
-                {
-                  type: "input_text",
-                  text: instructions
-                }
-              ]
-            }
-          ]
+      openaiFileId = uploaded.id;
+
+      response = await client.responses.create({
+        model: "gpt-5",
+        input: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "input_file",
+                file_id: uploaded.id
+              },
+              {
+                type: "input_text",
+                text: instructions
+              }
+            ]
+          }
+        ]
+      });
+    }
+
+    // DOCX
+    else if (
+      req.file.mimetype ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      lowerName.endsWith(".docx")
+    ) {
+      const result = await mammoth.extractRawText({
+        path: filePath
+      });
+
+      const text = result.value.trim();
+
+      if (!text) {
+        return res.status(400).json({
+          error: "لم أستطع استخراج النص من ملف Word."
         });
       }
 
-      // DOCX
-      else if (
-        req.file.mimetype ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        originalName.endsWith(".docx")
-      ) {
-        const result = await mammoth.extractRawText({
-          path: filePath
-        });
-
-        const text = result.value.trim();
-
-        if (!text) {
-          return res.status(400).json({
-            error: "لم أستطع استخراج النص من ملف Word."
-          });
-        }
-
-        response = await client.responses.create({
-          model: "gpt-5",
-          input: `${instructions}
+      response = await client.responses.create({
+        model: "gpt-5",
+        input: `${instructions}
 
 نص العقد:
 
 ${text.slice(0, 60000)}`
-        });
-      }
-
-      // Unsupported
-      else {
-        return res.status(400).json({
-          error: "الصيغة المدعومة PDF أو DOCX فقط."
-        });
-      }
-
-      let raw = response.output_text.trim();
-
-      raw = raw
-        .replace(/^```json\s*/i, "")
-        .replace(/```$/i, "")
-        .trim();
-
-      let data;
-
-      try {
-        data = JSON.parse(raw);
-      } catch (parseError) {
-        data = {
-          score: null,
-          summary: raw,
-          risks: [],
-          good_points: [],
-          missing_or_unclear: []
-        };
-      }
-
-      return res.json(data);
-
-    } catch (err) {
-      console.error("ContractCheck error:", err);
-
-      return res.status(500).json({
-        error:
-          "صار خطأ أثناء تحليل العقد. حاول مرة أخرى."
       });
+    }
 
-    } finally {
+    else {
+      return res.status(400).json({
+        error: "الصيغة المدعومة PDF أو DOCX فقط."
+      });
+    }
 
-      if (uploadedFileId) {
-        try {
-          const client = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY
-          });
+    let raw = response.output_text.trim();
 
-          await client.files.delete(uploadedFileId);
-        } catch (deleteError) {
-          console.error(
-            "Could not delete uploaded OpenAI file:",
-            deleteError.message
-          );
-        }
-      }
+    raw = raw
+      .replace(/^```json\s*/i, "")
+      .replace(/```$/i, "")
+      .trim();
 
-      if (filePath) {
-        try {
-          fs.unlinkSync(filePath);
-        } catch {}
-      }
+    let data;
+
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      data = {
+        score: null,
+        summary: raw,
+        risks: [],
+        good_points: [],
+        missing_or_unclear: []
+      };
+    }
+
+    return res.json(data);
+
+  } catch (err) {
+    console.error("ContractCheck error:", err);
+
+    return res.status(500).json({
+      error: "صار خطأ أثناء تحليل العقد. حاول مرة أخرى."
+    });
+
+  } finally {
+    if (openaiFileId && process.env.OPENAI_API_KEY) {
+      try {
+        const cleanupClient = new OpenAI({
+          apiKey: process.env.OPENAI_API_KEY
+        });
+
+        await cleanupClient.files.delete(openaiFileId);
+      } catch {}
+    }
+
+    if (filePath) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch {}
     }
   }
-);
+});
 
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(
-    `ContractCheck running on ${port}`
-  );
+  console.log(`ContractCheck running on ${port}`);
 });
