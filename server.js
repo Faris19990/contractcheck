@@ -7,16 +7,25 @@ const path = require("path");
 
 const app = express();
 
+/* =========================
+   إعدادات رفع الملفات
+========================= */
+
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
 const upload = multer({
   storage: multer.memoryStorage(),
+
   limits: {
     fileSize: MAX_FILE_SIZE
   }
 });
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  express.static(
+    path.join(__dirname, "public")
+  )
+);
 
 /* =========================
    Rate Limit
@@ -28,10 +37,8 @@ const RATE_WINDOW = 10 * 60 * 1000;
 const RATE_MAX = 8;
 
 function getIP(req) {
-  const forwarded = req.headers["x-forwarded-for"];
-
   return String(
-    forwarded ||
+    req.headers["x-forwarded-for"] ||
     req.ip ||
     "unknown"
   )
@@ -43,11 +50,15 @@ function rateLimit(req, res, next) {
   const ip = getIP(req);
   const now = Date.now();
 
-  const previous = requestLog.get(ip) || [];
+  const previous =
+    requestLog.get(ip) || [];
 
-  const recent = previous.filter(
-    time => now - time < RATE_WINDOW
-  );
+  const recent =
+    previous.filter(
+      time =>
+        now - time <
+        RATE_WINDOW
+    );
 
   if (recent.length >= RATE_MAX) {
     return res.status(429).json({
@@ -57,21 +68,28 @@ function rateLimit(req, res, next) {
   }
 
   recent.push(now);
-  requestLog.set(ip, recent);
+
+  requestLog.set(
+    ip,
+    recent
+  );
 
   next();
 }
 
 /* =========================
-   Health
+   Health Check
 ========================= */
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    ok: true,
-    service: "Ihata"
-  });
-});
+app.get(
+  "/api/health",
+  (req, res) => {
+    res.json({
+      ok: true,
+      service: "Ihata"
+    });
+  }
+);
 
 /* =========================
    OpenAI
@@ -85,7 +103,8 @@ function getClient() {
   }
 
   return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey:
+      process.env.OPENAI_API_KEY
   });
 }
 
@@ -95,18 +114,30 @@ function getClient() {
 
 function cleanJSON(raw) {
   return String(raw || "")
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/```$/i, "")
+    .replace(
+      /^```json\s*/i,
+      ""
+    )
+    .replace(
+      /^```\s*/i,
+      ""
+    )
+    .replace(
+      /```\s*$/i,
+      ""
+    )
     .trim();
 }
 
 function getFileType(file) {
   const name =
-    String(file.originalname || "").toLowerCase();
+    String(
+      file.originalname || ""
+    ).toLowerCase();
 
   if (
-    file.mimetype === "application/pdf" ||
+    file.mimetype ===
+      "application/pdf" ||
     name.endsWith(".pdf")
   ) {
     return "pdf";
@@ -157,119 +188,23 @@ async function extractDOCX(file) {
    PDF
 ========================= */
 
-async function analyzePDF(
+async function uploadPDF(
   client,
-  file,
-  instructions
+  file
 ) {
-  const originalName =
-    file.originalname || "document.pdf";
-
   const fileForOpenAI =
     await toFile(
       file.buffer,
-      originalName,
+      file.originalname ||
+        "document.pdf",
       {
         type: "application/pdf"
       }
     );
 
-  const uploaded =
-    await client.files.create({
-      file: fileForOpenAI,
-      purpose: "user_data"
-    });
-
-  try {
-    return await client.responses.create({
-      model: "gpt-5-mini",
-
-      input: [
-        {
-          role: "user",
-
-          content: [
-            {
-              type: "input_file",
-              file_id: uploaded.id
-            },
-
-            {
-              type: "input_text",
-              text: instructions
-            }
-          ]
-        }
-      ]
-    });
-  }
-
-  finally {
-    /*
-      لا نؤخر إرسال النتيجة
-      بانتظار حذف الملف.
-    */
-    client.files
-      .delete(uploaded.id)
-      .catch(() => {});
-  }
-}
-
-/* =========================
-   Document Analyzer
-========================= */
-
-async function analyzeDocument(
-  client,
-  file,
-  instructions
-) {
-  if (
-    !file ||
-    !file.buffer ||
-    file.buffer.length === 0
-  ) {
-    throw new Error(
-      "الملف فارغ أو لم يتم رفعه بشكل صحيح."
-    );
-  }
-
-  const type =
-    getFileType(file);
-
-  if (!type) {
-    throw new Error(
-      "الصيغة المدعومة PDF أو DOCX فقط."
-    );
-  }
-
-  if (type === "pdf") {
-    return analyzePDF(
-      client,
-      file,
-      instructions
-    );
-  }
-
-  const text =
-    await extractDOCX(file);
-
-  if (!text) {
-    throw new Error(
-      "لم أستطع استخراج النص من ملف Word."
-    );
-  }
-
-  return client.responses.create({
-    model: "gpt-5-mini",
-
-    input: `
-${instructions}
-
-نص الوثيقة:
-
-${text.slice(0, 65000)}
-`
+  return client.files.create({
+    file: fileForOpenAI,
+    purpose: "user_data"
   });
 }
 
@@ -283,7 +218,8 @@ function parseResponse(
 ) {
   const raw =
     cleanJSON(
-      response?.output_text || ""
+      response?.output_text ||
+        ""
     );
 
   if (!raw) {
@@ -292,9 +228,7 @@ function parseResponse(
 
   try {
     return JSON.parse(raw);
-  }
-
-  catch {
+  } catch {
     return {
       ...fallback,
       summary: raw
@@ -303,13 +237,13 @@ function parseResponse(
 }
 
 /* =========================
-   CONTRACT PROMPT
+   Contract Prompt
 ========================= */
 
 function contractInstructions(
   category
 ) {
-return `
+  return `
 أنت "إحاطة"، أداة فحص أولي للمستندات القانونية في السعودية.
 
 حلل المستند باللغة العربية.
@@ -317,7 +251,9 @@ return `
 أنت أداة مساعدة وليست بديلًا عن المحامي.
 
 لا تقدم حكمًا قانونيًا قطعيًا.
+
 لا تخترع مواد أو أنظمة أو أحكامًا قضائية.
+
 لا تخترع معلومات غير موجودة في المستند.
 
 إذا احتاجت نقطة إلى تحقق أو تفسير قانوني سعودي، اكتب:
@@ -335,29 +271,14 @@ ${category}
 
 حدد نوع المستند الحقيقي.
 
-أمثلة:
-
-عقد مقاولات
-عقد تجاري
-عقد إيجار
-عقد عمل
-عقد توريد
-عقد شراكة
-عقد استثمار
-عقد تقنية
-عقد خدمات
-عقد بيع
-عقد وكالة
-عقد استشارات
-عقد صيانة
-غير محدد
-
 راجع خصوصًا:
 
 - الشرط الجزائي
 - المسؤولية
 - التعويض
+- حدود المسؤولية
 - الإنهاء
+- الفسخ
 - التجديد
 - الدفع
 - تعديل الأسعار
@@ -417,7 +338,7 @@ ${category}
 - التواريخ
 - المدد
 - الإشعارات
-- أي أرقام مهمة
+- الأرقام المهمة
 
 لا تعتبر غياب بند مخالفة قانونية تلقائيًا.
 
@@ -429,7 +350,7 @@ score:
 
 0 = مخاطرة منخفضة جدًا
 
-100 = أعلى مخاطرة ظاهرة في المستند.
+100 = مخاطرة عالية جدًا
 
 أخرج JSON صالح فقط:
 
@@ -448,7 +369,7 @@ score:
 
   "risks": [
     {
-      "level": "high|medium|low",
+      "level": "high",
       "title": "",
       "clause": "",
       "why": "",
@@ -469,7 +390,7 @@ score:
 }
 
 /* =========================
-   JUDGMENT PROMPT
+   Judgment Prompt
 ========================= */
 
 const judgmentInstructions = `
@@ -571,7 +492,7 @@ const judgmentInstructions = `
 `;
 
 /* =========================
-   DOCUMENT COMPARISON PROMPT
+   Comparison Prompt
 ========================= */
 
 const comparisonInstructions = `
@@ -587,23 +508,29 @@ const comparisonInstructions = `
 
 حدد نوع كل مستند.
 
-قارن بينهما بوضوح، وركز على:
+ثم قارن بينهما من حيث:
 
 - البنود المضافة
 - البنود المحذوفة
-- البنود التي تغيرت صياغتها أو معناها الظاهر
-- المبالغ والأسعار
-- التواريخ والمدد
+- البنود التي تغيرت
+- المبالغ
+- الأسعار
+- النسب
+- التواريخ
+- المدد
 - الشرط الجزائي
-- الإنهاء والتجديد
-- المسؤوليات والتعويض
+- الإنهاء
+- التجديد
+- المسؤولية
+- التعويض
 - الدفع
-- الملكية الفكرية والسرية
-- الاختصاص وتسوية النزاع
+- السرية
+- الملكية الفكرية
+- الاختصاص
+- تسوية النزاعات
 - الالتزامات غير المتوازنة
-- أي تغيير قد يسبب أثرًا ماليًا أو تشغيليًا ظاهرًا
-
-لا تقل إن التغيير غير نظامي بشكل قطعي.
+- المخاطر المالية
+- المخاطر التشغيلية
 
 إذا احتاجت نقطة إلى تحقق قانوني سعودي، اكتب:
 
@@ -614,11 +541,12 @@ const comparisonInstructions = `
 {
   "document_1_type": "",
   "document_2_type": "",
+
   "summary": "",
 
   "important_changes": [
     {
-      "level": "high|medium|low",
+      "level": "high",
       "title": "",
       "document_1": "",
       "document_2": "",
@@ -640,7 +568,97 @@ const comparisonInstructions = `
 }
 `;
 
-async function extractDocumentForComparison(
+/* =========================
+   Analyze Single Document
+========================= */
+
+async function analyzeSingle(
+  client,
+  file,
+  instructions
+) {
+  const type =
+    getFileType(file);
+
+  if (!type) {
+    throw new Error(
+      "الصيغة المدعومة PDF أو DOCX فقط."
+    );
+  }
+
+  /* DOCX */
+
+  if (type === "docx") {
+    const text =
+      await extractDOCX(file);
+
+    if (!text) {
+      throw new Error(
+        "لم أستطع استخراج النص من ملف Word."
+      );
+    }
+
+    return client.responses.create({
+      model: "gpt-5",
+
+      input: `
+${instructions}
+
+نص الوثيقة:
+
+${text.slice(
+  0,
+  65000
+)}
+`
+    });
+  }
+
+  /* PDF */
+
+  const uploaded =
+    await uploadPDF(
+      client,
+      file
+    );
+
+  try {
+    return await client.responses.create({
+      model: "gpt-5",
+
+      input: [
+        {
+          role: "user",
+
+          content: [
+            {
+              type: "input_file",
+              file_id:
+                uploaded.id
+            },
+
+            {
+              type: "input_text",
+              text: instructions
+            }
+          ]
+        }
+      ]
+    });
+  } finally {
+    try {
+      await client.files.delete(
+        uploaded.id
+      );
+    } catch {}
+  }
+}
+
+/* =========================
+   Prepare Comparison
+========================= */
+
+async function prepareComparisonFile(
   client,
   file
 ) {
@@ -654,7 +672,6 @@ async function extractDocumentForComparison(
   }
 
   if (type === "docx") {
-
     const text =
       await extractDOCX(file);
 
@@ -665,60 +682,54 @@ async function extractDocumentForComparison(
     }
 
     return {
-      kind: "text",
+      type: "text",
       name:
-        file.originalname ||
-        "document.docx",
+        file.originalname,
       text:
-        text.slice(0, 65000)
+        text.slice(
+          0,
+          65000
+        )
     };
   }
 
-  const originalName =
-    file.originalname ||
-    "document.pdf";
-
-  const fileForOpenAI =
-    await toFile(
-      file.buffer,
-      originalName,
-      {
-        type: "application/pdf"
-      }
+  const uploaded =
+    await uploadPDF(
+      client,
+      file
     );
 
-  const uploaded =
-    await client.files.create({
-      file: fileForOpenAI,
-      purpose: "user_data"
-    });
-
   return {
-    kind: "file",
-    name: originalName,
-    fileId: uploaded.id
+    type: "file",
+    name:
+      file.originalname,
+    fileId:
+      uploaded.id
   };
 }
+
+/* =========================
+   Compare Documents
+========================= */
 
 async function compareDocuments(
   client,
   file1,
   file2
 ) {
-  const doc1 =
-    await extractDocumentForComparison(
+  const first =
+    await prepareComparisonFile(
       client,
       file1
     );
 
-  const doc2 =
-    await extractDocumentForComparison(
+  const second =
+    await prepareComparisonFile(
       client,
       file2
     );
 
   const content = [
-
     {
       type: "input_text",
       text:
@@ -728,55 +739,53 @@ async function compareDocuments(
     {
       type: "input_text",
       text:
-        `المستند الأول: ${doc1.name}`
+        `اسم المستند الأول: ${first.name}`
     },
 
     {
       type: "input_text",
       text:
-        `المستند الثاني: ${doc2.name}`
+        `اسم المستند الثاني: ${second.name}`
     }
-
   ];
 
-  if (doc1.kind === "file") {
-
+  if (
+    first.type ===
+    "file"
+  ) {
     content.push({
       type: "input_file",
-      file_id: doc1.fileId
+      file_id:
+        first.fileId
     });
-
   } else {
-
     content.push({
       type: "input_text",
       text:
-        `نص المستند الأول:\n${doc1.text}`
+        `نص المستند الأول:\n${first.text}`
     });
-
   }
 
-  if (doc2.kind === "file") {
-
+  if (
+    second.type ===
+    "file"
+  ) {
     content.push({
       type: "input_file",
-      file_id: doc2.fileId
+      file_id:
+        second.fileId
     });
-
   } else {
-
     content.push({
       type: "input_text",
       text:
-        `نص المستند الثاني:\n${doc2.text}`
+        `نص المستند الثاني:\n${second.text}`
     });
-
   }
 
   try {
-
     return await client.responses.create({
-      model: "gpt-5-mini",
+      model: "gpt-5",
 
       input: [
         {
@@ -785,48 +794,54 @@ async function compareDocuments(
         }
       ]
     });
-
-  }
-
-  finally {
-
-    if (doc1.kind === "file") {
-      client.files
-        .delete(doc1.fileId)
-        .catch(() => {});
+  } finally {
+    if (
+      first.type ===
+      "file"
+    ) {
+      try {
+        await client.files.delete(
+          first.fileId
+        );
+      } catch {}
     }
 
-    if (doc2.kind === "file") {
-      client.files
-        .delete(doc2.fileId)
-        .catch(() => {});
+    if (
+      second.type ===
+      "file"
+    ) {
+      try {
+        await client.files.delete(
+          second.fileId
+        );
+      } catch {}
     }
-
   }
 }
 
 /* =========================
-   Contract API
+   Contracts API
 ========================= */
 
 app.post(
   "/api/analyze",
   rateLimit,
-  upload.single("document"),
+  upload.single(
+    "document"
+  ),
+
   async (req, res) => {
-
     try {
-
       const client =
         getClient();
 
       if (!req.file) {
-
-        return res.status(400).json({
-          error:
-            "ارفع ملف PDF أو DOCX."
-        });
-
+        return res
+          .status(400)
+          .json({
+            error:
+              "ارفع ملف PDF أو DOCX."
+          });
       }
 
       const category =
@@ -835,7 +850,7 @@ app.post(
         );
 
       const response =
-        await analyzeDocument(
+        await analyzeSingle(
           client,
           req.file,
           contractInstructions(
@@ -876,24 +891,26 @@ app.post(
           }
         )
       );
-
-    }
-
-    catch (err) {
-
+    } catch (err) {
       console.error(
         "Contract error:",
         err
       );
 
-      return res.status(500).json({
-        error:
-          err.message ||
-          "صار خطأ أثناء تحليل العقد."
-      });
-
+      return res
+        .status(
+          err.message?.includes(
+            "25MB"
+          )
+            ? 413
+            : 500
+        )
+        .json({
+          error:
+            err.message ||
+            "صار خطأ أثناء تحليل العقد."
+        });
     }
-
   }
 );
 
@@ -904,25 +921,26 @@ app.post(
 app.post(
   "/api/analyze-judgment",
   rateLimit,
-  upload.single("document"),
+  upload.single(
+    "document"
+  ),
+
   async (req, res) => {
-
     try {
-
       const client =
         getClient();
 
       if (!req.file) {
-
-        return res.status(400).json({
-          error:
-            "ارفع صك الحكم بصيغة PDF أو DOCX."
-        });
-
+        return res
+          .status(400)
+          .json({
+            error:
+              "ارفع صك الحكم بصيغة PDF أو DOCX."
+          });
       }
 
       const response =
-        await analyzeDocument(
+        await analyzeSingle(
           client,
           req.file,
           judgmentInstructions
@@ -959,37 +977,39 @@ app.post(
 
             judgment: "",
 
-            financial_obligations: [],
+            financial_obligations:
+              [],
+
             deadlines: [],
 
-            appeal_information: "",
+            appeal_information:
+              "",
 
-            important_points: [],
+            important_points:
+              [],
 
-            missing_or_unclear: [],
+            missing_or_unclear:
+              [],
 
-            legal_review_needed: []
+            legal_review_needed:
+              []
           }
         )
       );
-
-    }
-
-    catch (err) {
-
+    } catch (err) {
       console.error(
         "Judgment error:",
         err
       );
 
-      return res.status(500).json({
-        error:
-          err.message ||
-          "صار خطأ أثناء تحليل الحكم."
-      });
-
+      return res
+        .status(500)
+        .json({
+          error:
+            err.message ||
+            "صار خطأ أثناء تحليل الحكم."
+        });
     }
-
   }
 );
 
@@ -1000,20 +1020,21 @@ app.post(
 app.post(
   "/api/compare",
   rateLimit,
+
   upload.fields([
     {
       name: "document1",
       maxCount: 1
     },
+
     {
       name: "document2",
       maxCount: 1
     }
   ]),
+
   async (req, res) => {
-
     try {
-
       const client =
         getClient();
 
@@ -1023,13 +1044,16 @@ app.post(
       const file2 =
         req.files?.document2?.[0];
 
-      if (!file1 || !file2) {
-
-        return res.status(400).json({
-          error:
-            "ارفع المستندين أولًا."
-        });
-
+      if (
+        !file1 ||
+        !file2
+      ) {
+        return res
+          .status(400)
+          .json({
+            error:
+              "ارفع المستندين أولًا."
+          });
       }
 
       const response =
@@ -1051,70 +1075,79 @@ app.post(
 
             summary: "",
 
-            important_changes: [],
+            important_changes:
+              [],
 
-            added_clauses: [],
+            added_clauses:
+              [],
 
-            removed_clauses: [],
+            removed_clauses:
+              [],
 
-            changed_amounts: [],
+            changed_amounts:
+              [],
 
-            changed_dates_or_durations: [],
+            changed_dates_or_durations:
+              [],
 
-            changed_obligations: [],
+            changed_obligations:
+              [],
 
-            legal_review_needed: []
+            legal_review_needed:
+              []
           }
         )
       );
-
-    }
-
-    catch (err) {
-
+    } catch (err) {
       console.error(
         "Comparison error:",
         err
       );
 
-      return res.status(500).json({
-        error:
-          err.message ||
-          "صار خطأ أثناء مقارنة المستندين."
-      });
-
+      return res
+        .status(500)
+        .json({
+          error:
+            err.message ||
+            "صار خطأ أثناء مقارنة المستندين."
+        });
     }
-
   }
 );
 
 /* =========================
-   Multer Error Handler
+   Multer Errors
 ========================= */
 
 app.use(
-  (err, req, res, next) => {
-
+  (
+    err,
+    req,
+    res,
+    next
+  ) => {
     if (
-      err instanceof multer.MulterError
+      err instanceof
+      multer.MulterError
     ) {
-
       if (
-        err.code === "LIMIT_FILE_SIZE"
+        err.code ===
+        "LIMIT_FILE_SIZE"
       ) {
-
-        return res.status(413).json({
-          error:
-            "حجم الملف كبير. الحد الأقصى المسموح حاليًا هو 25MB."
-        });
-
+        return res
+          .status(413)
+          .json({
+            error:
+              "حجم الملف كبير. الحد الأقصى 25MB."
+          });
       }
 
-      return res.status(400).json({
-        error:
-          "حدث خطأ أثناء رفع الملف."
-      });
-
+      return res
+        .status(400)
+        .json({
+          error:
+            "حدث خطأ أثناء رفع الملف."
+        });
     }
 
     next(err);
@@ -1126,7 +1159,8 @@ app.use(
 ========================= */
 
 const port =
-  process.env.PORT || 3000;
+  process.env.PORT ||
+  3000;
 
 app.listen(
   port,
