@@ -7,23 +7,19 @@ const path = require("path");
 
 const app = express();
 
-/* =========================
-   File Upload
-   الحد الأقصى: 25MB
-========================= */
+const MAX_FILE_SIZE = 25 * 1024 * 1024;
 
 const upload = multer({
   storage: multer.memoryStorage(),
-
   limits: {
-    fileSize: 25 * 1024 * 1024
+    fileSize: MAX_FILE_SIZE
   }
 });
 
 app.use(express.static(path.join(__dirname, "public")));
 
 /* =========================
-   Rate Limit مبدئي
+   Rate Limit
 ========================= */
 
 const requestLog = new Map();
@@ -61,7 +57,6 @@ function rateLimit(req, res, next) {
   }
 
   recent.push(now);
-
   requestLog.set(ip, recent);
 
   next();
@@ -187,7 +182,7 @@ async function analyzePDF(
 
   try {
     return await client.responses.create({
-      model: "gpt-5",
+      model: "gpt-5-mini",
 
       input: [
         {
@@ -210,11 +205,13 @@ async function analyzePDF(
   }
 
   finally {
-    try {
-      await client.files.delete(
-        uploaded.id
-      );
-    } catch {}
+    /*
+      لا نؤخر إرسال النتيجة
+      بانتظار حذف الملف.
+    */
+    client.files
+      .delete(uploaded.id)
+      .catch(() => {});
   }
 }
 
@@ -264,7 +261,7 @@ async function analyzeDocument(
   }
 
   return client.responses.create({
-    model: "gpt-5",
+    model: "gpt-5-mini",
 
     input: `
 ${instructions}
@@ -432,7 +429,7 @@ score:
 
 0 = مخاطرة منخفضة جدًا
 
-100 = مخاطرة عالية جدًا
+100 = أعلى مخاطرة ظاهرة في المستند.
 
 أخرج JSON صالح فقط:
 
@@ -451,7 +448,7 @@ score:
 
   "risks": [
     {
-      "level": "high",
+      "level": "high|medium|low",
       "title": "",
       "clause": "",
       "why": "",
@@ -574,6 +571,241 @@ const judgmentInstructions = `
 `;
 
 /* =========================
+   DOCUMENT COMPARISON PROMPT
+========================= */
+
+const comparisonInstructions = `
+أنت "إحاطة"، أداة مقارنة أولية بين مستندين قانونيين في السعودية.
+
+حلل المستندين باللغة العربية.
+
+لا تقدم حكمًا قانونيًا قطعيًا.
+
+لا تخترع مواد أو أنظمة أو أحكامًا قضائية.
+
+لا تخترع معلومات غير موجودة في المستندين.
+
+حدد نوع كل مستند.
+
+قارن بينهما بوضوح، وركز على:
+
+- البنود المضافة
+- البنود المحذوفة
+- البنود التي تغيرت صياغتها أو معناها الظاهر
+- المبالغ والأسعار
+- التواريخ والمدد
+- الشرط الجزائي
+- الإنهاء والتجديد
+- المسؤوليات والتعويض
+- الدفع
+- الملكية الفكرية والسرية
+- الاختصاص وتسوية النزاع
+- الالتزامات غير المتوازنة
+- أي تغيير قد يسبب أثرًا ماليًا أو تشغيليًا ظاهرًا
+
+لا تقل إن التغيير غير نظامي بشكل قطعي.
+
+إذا احتاجت نقطة إلى تحقق قانوني سعودي، اكتب:
+
+"تحتاج مراجعة قانونية سعودية"
+
+أخرج JSON صالح فقط:
+
+{
+  "document_1_type": "",
+  "document_2_type": "",
+  "summary": "",
+
+  "important_changes": [
+    {
+      "level": "high|medium|low",
+      "title": "",
+      "document_1": "",
+      "document_2": "",
+      "impact": ""
+    }
+  ],
+
+  "added_clauses": [],
+
+  "removed_clauses": [],
+
+  "changed_amounts": [],
+
+  "changed_dates_or_durations": [],
+
+  "changed_obligations": [],
+
+  "legal_review_needed": []
+}
+`;
+
+async function extractDocumentForComparison(
+  client,
+  file
+) {
+  const type =
+    getFileType(file);
+
+  if (!type) {
+    throw new Error(
+      "الصيغة المدعومة PDF أو DOCX فقط."
+    );
+  }
+
+  if (type === "docx") {
+
+    const text =
+      await extractDOCX(file);
+
+    if (!text) {
+      throw new Error(
+        "لم أستطع استخراج النص من ملف Word."
+      );
+    }
+
+    return {
+      kind: "text",
+      name:
+        file.originalname ||
+        "document.docx",
+      text:
+        text.slice(0, 65000)
+    };
+  }
+
+  const originalName =
+    file.originalname ||
+    "document.pdf";
+
+  const fileForOpenAI =
+    await toFile(
+      file.buffer,
+      originalName,
+      {
+        type: "application/pdf"
+      }
+    );
+
+  const uploaded =
+    await client.files.create({
+      file: fileForOpenAI,
+      purpose: "user_data"
+    });
+
+  return {
+    kind: "file",
+    name: originalName,
+    fileId: uploaded.id
+  };
+}
+
+async function compareDocuments(
+  client,
+  file1,
+  file2
+) {
+  const doc1 =
+    await extractDocumentForComparison(
+      client,
+      file1
+    );
+
+  const doc2 =
+    await extractDocumentForComparison(
+      client,
+      file2
+    );
+
+  const content = [
+
+    {
+      type: "input_text",
+      text:
+        comparisonInstructions
+    },
+
+    {
+      type: "input_text",
+      text:
+        `المستند الأول: ${doc1.name}`
+    },
+
+    {
+      type: "input_text",
+      text:
+        `المستند الثاني: ${doc2.name}`
+    }
+
+  ];
+
+  if (doc1.kind === "file") {
+
+    content.push({
+      type: "input_file",
+      file_id: doc1.fileId
+    });
+
+  } else {
+
+    content.push({
+      type: "input_text",
+      text:
+        `نص المستند الأول:\n${doc1.text}`
+    });
+
+  }
+
+  if (doc2.kind === "file") {
+
+    content.push({
+      type: "input_file",
+      file_id: doc2.fileId
+    });
+
+  } else {
+
+    content.push({
+      type: "input_text",
+      text:
+        `نص المستند الثاني:\n${doc2.text}`
+    });
+
+  }
+
+  try {
+
+    return await client.responses.create({
+      model: "gpt-5-mini",
+
+      input: [
+        {
+          role: "user",
+          content
+        }
+      ]
+    });
+
+  }
+
+  finally {
+
+    if (doc1.kind === "file") {
+      client.files
+        .delete(doc1.fileId)
+        .catch(() => {});
+    }
+
+    if (doc2.kind === "file") {
+      client.files
+        .delete(doc2.fileId)
+        .catch(() => {});
+    }
+
+  }
+}
+
+/* =========================
    Contract API
 ========================= */
 
@@ -589,10 +821,12 @@ app.post(
         getClient();
 
       if (!req.file) {
+
         return res.status(400).json({
           error:
             "ارفع ملف PDF أو DOCX."
         });
+
       }
 
       const category =
@@ -657,7 +891,9 @@ app.post(
           err.message ||
           "صار خطأ أثناء تحليل العقد."
       });
+
     }
+
   }
 );
 
@@ -677,10 +913,12 @@ app.post(
         getClient();
 
       if (!req.file) {
+
         return res.status(400).json({
           error:
             "ارفع صك الحكم بصيغة PDF أو DOCX."
         });
+
       }
 
       const response =
@@ -749,13 +987,109 @@ app.post(
           err.message ||
           "صار خطأ أثناء تحليل الحكم."
       });
+
     }
+
+  }
+);
+
+/* =========================
+   Comparison API
+========================= */
+
+app.post(
+  "/api/compare",
+  rateLimit,
+  upload.fields([
+    {
+      name: "document1",
+      maxCount: 1
+    },
+    {
+      name: "document2",
+      maxCount: 1
+    }
+  ]),
+  async (req, res) => {
+
+    try {
+
+      const client =
+        getClient();
+
+      const file1 =
+        req.files?.document1?.[0];
+
+      const file2 =
+        req.files?.document2?.[0];
+
+      if (!file1 || !file2) {
+
+        return res.status(400).json({
+          error:
+            "ارفع المستندين أولًا."
+        });
+
+      }
+
+      const response =
+        await compareDocuments(
+          client,
+          file1,
+          file2
+        );
+
+      return res.json(
+        parseResponse(
+          response,
+          {
+            document_1_type:
+              "غير محدد",
+
+            document_2_type:
+              "غير محدد",
+
+            summary: "",
+
+            important_changes: [],
+
+            added_clauses: [],
+
+            removed_clauses: [],
+
+            changed_amounts: [],
+
+            changed_dates_or_durations: [],
+
+            changed_obligations: [],
+
+            legal_review_needed: []
+          }
+        )
+      );
+
+    }
+
+    catch (err) {
+
+      console.error(
+        "Comparison error:",
+        err
+      );
+
+      return res.status(500).json({
+        error:
+          err.message ||
+          "صار خطأ أثناء مقارنة المستندين."
+      });
+
+    }
+
   }
 );
 
 /* =========================
    Multer Error Handler
-   خصوصًا ملفات أكبر من 25MB
 ========================= */
 
 app.use(
@@ -780,6 +1114,7 @@ app.use(
         error:
           "حدث خطأ أثناء رفع الملف."
       });
+
     }
 
     next(err);
