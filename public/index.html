@@ -9,126 +9,124 @@
 <style>
 :root{
   --bg:#f4f1e9;
-  --bg-soft:#eee9de;
   --ink:#151b26;
   --muted:#69707c;
   --card:#fff;
   --navy:#101827;
-  --navy-2:#182335;
   --gold:#c7a45b;
-  --gold-soft:#f7f1e2;
   --line:#e5e0d6;
   --red:#c93d45;
   --orange:#d99625;
   --green:#3e8b62;
-  --shadow:0 14px 40px rgba(20,25,35,.055);
-}
-
-body.dark{
-  --bg:#0d141d;
-  --bg-soft:#121c27;
-  --ink:#f3f0e8;
-  --muted:#aeb5bf;
-  --card:#141e2a;
-  --navy:#e8dfc9;
-  --navy-2:#d8ccb0;
-  --gold:#d5b56c;
-  --gold-soft:#1c211f;
-  --line:#263241;
-  --shadow:0 18px 50px rgba(0,0,0,.25);
 }
 
 *{
-  box-sizing:border-box
+  box-sizing:border-box;
 }
 
 html{
-  scroll-behavior:smooth
+  scroll-behavior:smooth;
 }
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
-  transition:.25s ease
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Tahoma,
+    Arial,
+    sans-serif;
 }
 
-button,input{
-  font:inherit
+button,
+input{
+  font:inherit;
 }
 
 button{
-  cursor:pointer
+  cursor:pointer;
 }
 
 .hidden{
-  display:none!important
-}
-
-.wrap{
-  max-width:1120px;
-  margin:auto;
-  padding:20px 18px 60px
+  display:none!important;
 }
 
 /* =========================
-   TOP BAR
+   شاشة البداية
 ========================= */
+
+.splash{
+  position:fixed;
+  inset:0;
+  background:#101827;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  animation:splashOut .7s ease 2.4s forwards;
+}
+
+.splash img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+@keyframes splashOut{
+  0%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+}
+
+/* =========================
+   Layout
+========================= */
+
+.wrap{
+  max-width:1060px;
+  margin:auto;
+  padding:20px 18px 50px;
+}
 
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px;
-  position:relative;
-  z-index:10
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
-  font-weight:900
+  font-weight:900;
 }
 
 .brand-mark{
-  width:44px;
-  height:44px;
-  border-radius:15px;
+  width:42px;
+  height:42px;
+  border-radius:14px;
   background:var(--navy);
   color:var(--gold);
   display:grid;
   place-items:center;
-  font-size:22px;
-  box-shadow:var(--shadow)
+  font-size:23px;
 }
 
 .brand-name{
   font-family:Georgia,serif;
-  font-size:27px
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:9px
-}
-
-.icon-btn{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--ink);
-  display:grid;
-  place-items:center;
-  transition:.2s
-}
-
-.icon-btn:hover{
-  transform:translateY(-2px)
+  font-size:26px;
 }
 
 .badge,
@@ -137,239 +135,56 @@ button{
   color:#766b58;
   background:#ece6d9;
   padding:7px 10px;
-  border-radius:999px
+  border-radius:999px;
 }
-
-body.dark .badge,
-body.dark .soon{
-  color:#d7c99e;
-  background:#242a28
-}
-
-/* =========================
-   HERO
-========================= */
 
 .hero{
   text-align:center;
-  padding:52px 10px 30px;
-  position:relative
-}
-
-.hero::before{
-  content:"";
-  position:absolute;
-  width:330px;
-  height:330px;
-  border-radius:50%;
-  background:radial-gradient(circle,var(--gold-soft),transparent 68%);
-  top:5px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:-1
+  padding:48px 10px 34px;
 }
 
 .hero-mark{
-  font-size:44px
+  font-size:46px;
 }
 
-.hero h1,
-.splash h1{
+.hero h1{
   font-family:Georgia,serif;
-  font-size:clamp(50px,8vw,78px);
-  margin:7px 0
+  font-size:clamp(48px,8vw,76px);
+  margin:7px 0;
 }
 
 .hero p{
-  max-width:700px;
+  max-width:650px;
   margin:auto;
   color:var(--muted);
   font-size:18px;
-  line-height:1.9
-}
-
-.hero-search{
-  max-width:700px;
-  margin:28px auto 0;
-  display:flex;
-  align-items:center;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:7px;
-  box-shadow:var(--shadow)
-}
-
-.hero-search input{
-  flex:1;
-  min-width:0;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--ink);
-  padding:13px 15px
-}
-
-.hero-search button{
-  border:0;
-  background:var(--navy);
-  color:var(--bg);
-  border-radius:13px;
-  padding:12px 18px;
-  font-weight:800
-}
-
-/* =========================
-   PRAYER
-========================= */
-
-.prayer-card{
-  margin-top:20px;
-  background:linear-gradient(135deg,var(--navy),#1d2939);
-  color:#fff;
-  border-radius:26px;
-  padding:24px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow)
-}
-
-.prayer-card::after{
-  content:"";
-  position:absolute;
-  width:210px;
-  height:210px;
-  border:1px solid rgba(199,164,91,.25);
-  border-radius:50%;
-  left:-60px;
-  top:-80px
-}
-
-.prayer-grid{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:20px;
-  align-items:center
-}
-
-.prayer-label{
-  color:#d7c99e;
-  font-size:13px;
-  font-weight:800
-}
-
-.prayer-name{
-  font-size:31px;
-  font-weight:900;
-  margin:5px 0
-}
-
-.prayer-count{
-  font-size:36px;
-  font-weight:900;
-  letter-spacing:1px
-}
-
-.prayer-desc{
-  color:#d8dce1;
-  line-height:1.8;
-  margin:5px 0 0
-}
-
-.prayer-times{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:7px
-}
-
-.prayer-time{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:15px;
-  padding:11px 7px;
-  text-align:center
-}
-
-.prayer-time.active{
-  border-color:var(--gold);
-  background:rgba(199,164,91,.13)
-}
-
-.prayer-time small{
-  display:block;
-  color:#aeb5bf;
-  margin-bottom:4px
-}
-
-.prayer-time strong{
-  font-size:14px
-}
-
-/* =========================
-   DAILY
-========================= */
-
-.daily-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  margin-top:18px
-}
-
-.daily-card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:20px;
-  box-shadow:var(--shadow)
-}
-
-.daily-card .small-title{
-  color:var(--gold);
-  font-weight:900;
-  font-size:13px
-}
-
-.daily-card h3{
-  margin:7px 0 9px
-}
-
-.daily-card p{
-  color:var(--muted);
   line-height:1.9;
-  margin:0
 }
-
-.daily-arabic{
-  font-family:Georgia,serif;
-  font-size:20px!important;
-  color:var(--ink)!important
-}
-
-/* =========================
-   SECTIONS
-========================= */
 
 .section-title{
   text-align:center;
-  margin:35px 0 20px
+  margin:10px 0 20px;
 }
 
 .section-title h2{
   margin:0;
-  font-size:27px
+  font-size:26px;
 }
 
 .section-title p{
   color:var(--muted);
-  margin:7px 0
+  margin:7px 0;
 }
+
+/* =========================
+   Cards
+========================= */
 
 .mode-grid,
 .category-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:16px
+  gap:16px;
 }
 
 .mode,
@@ -380,240 +195,53 @@ body.dark .soon{
   padding:25px;
   text-align:right;
   transition:.2s;
-  box-shadow:var(--shadow)
+  box-shadow:0 12px 35px rgba(20,25,35,.04);
 }
 
 .mode:hover:not(.locked),
 .category:hover{
-  transform:translateY(-3px)
+  transform:translateY(-2px);
 }
 
 .mode-icon{
-  font-size:42px
+  font-size:42px;
 }
 
 .mode h3{
   font-size:23px;
-  margin:12px 0 7px
+  margin:12px 0 7px;
 }
 
 .mode p{
   color:var(--muted);
   line-height:1.8;
-  margin:0 0 17px
+  margin:0 0 17px;
 }
 
 .primary{
   background:var(--navy);
-  color:var(--bg);
+  color:#fff;
   border:0;
   border-radius:12px;
   padding:12px 18px;
   font-weight:800;
-  display:inline-block
 }
 
 .locked{
   cursor:pointer;
   opacity:.78;
-  background:var(--bg-soft)
+  background:#f8f6f1;
 }
 
 .locked .primary{
   background:#e9e5dc;
-  color:#777
-}
-
-body.dark .locked .primary{
-  background:#252d35;
-  color:#999
+  color:#777;
 }
 
 .soon{
   display:inline-block;
-  font-weight:800
+  font-weight:800;
 }
-
-/* =========================
-   SERVICES
-========================= */
-
-.service-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px
-}
-
-.service{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:20px;
-  box-shadow:var(--shadow)
-}
-
-.service-icon{
-  font-size:31px
-}
-
-.service h3{
-  margin:10px 0 6px
-}
-
-.service p{
-  color:var(--muted);
-  line-height:1.8;
-  margin:0 0 14px
-}
-
-.available{
-  display:inline-block;
-  color:var(--green);
-  background:#eaf5ee;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:800
-}
-
-body.dark .available{
-  background:#172a20
-}
-
-/* =========================
-   ARTICLES
-========================= */
-
-.article-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px
-}
-
-.article{
-  overflow:hidden;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:21px;
-  box-shadow:var(--shadow)
-}
-
-.article img{
-  width:100%;
-  height:175px;
-  object-fit:cover;
-  display:block
-}
-
-.article-body{
-  padding:17px
-}
-
-.article-tag{
-  color:var(--gold);
-  font-size:12px;
-  font-weight:900
-}
-
-.article h3{
-  margin:7px 0;
-  font-size:18px
-}
-
-.article p{
-  color:var(--muted);
-  line-height:1.7;
-  font-size:14px;
-  margin:0
-}
-
-/* =========================
-   FAQ
-========================= */
-
-.faq{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:var(--shadow)
-}
-
-.faq-item{
-  border-bottom:1px solid var(--line)
-}
-
-.faq-item:last-child{
-  border-bottom:0
-}
-
-.faq-q{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:var(--ink);
-  padding:18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  text-align:right;
-  font-weight:800
-}
-
-.faq-a{
-  display:none;
-  padding:0 18px 18px;
-  color:var(--muted);
-  line-height:1.9
-}
-
-.faq-item.open .faq-a{
-  display:block
-}
-
-/* =========================
-   ABOUT / UPDATES
-========================= */
-
-.about-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px
-}
-
-.about-card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:23px;
-  box-shadow:var(--shadow)
-}
-
-.about-card p{
-  color:var(--muted);
-  line-height:1.9
-}
-
-.update{
-  padding:12px 0;
-  border-bottom:1px solid var(--line)
-}
-
-.update:last-child{
-  border-bottom:0
-}
-
-.update small{
-  color:var(--gold)
-}
-
-.update p{
-  margin:4px 0 0
-}
-
-/* =========================
-   PANEL / ANALYZER
-========================= */
 
 .panel{
   background:var(--card);
@@ -621,7 +249,6 @@ body.dark .available{
   border-radius:24px;
   padding:24px;
   margin-top:20px;
-  box-shadow:var(--shadow)
 }
 
 .back{
@@ -629,37 +256,45 @@ body.dark .available{
   border:0;
   color:var(--muted);
   padding:8px 0;
-  font-weight:700
+  font-weight:700;
 }
+
+/* =========================
+   Quote
+========================= */
 
 .quote,
 .summary{
-  background:var(--gold-soft);
+  background:#f7f1e2;
   border:1px solid #e8dcc0;
   border-radius:18px;
   padding:18px;
   margin:18px 0;
-  line-height:1.9
+  line-height:1.9;
 }
 
 .quote{
-  text-align:center
+  text-align:center;
 }
 
 .quote .arabic{
   font-family:Georgia,serif;
-  font-size:21px
+  font-size:21px;
 }
 
 .quote small{
-  color:#796d57
+  color:#796d57;
 }
+
+/* =========================
+   Categories
+========================= */
 
 .category{
   display:flex;
   align-items:center;
   gap:14px;
-  padding:17px
+  padding:17px;
 }
 
 .category .ico{
@@ -670,30 +305,34 @@ body.dark .available{
   display:grid;
   place-items:center;
   font-size:24px;
-  flex:0 0 auto
+  flex:0 0 auto;
 }
 
 .category strong{
-  display:block
+  display:block;
 }
 
 .category small{
   color:var(--muted);
   display:block;
-  margin-top:4px
+  margin-top:4px;
 }
+
+/* =========================
+   Upload
+========================= */
 
 .upload{
   border:2px dashed #cfc7b7;
   border-radius:20px;
   padding:28px;
   text-align:center;
-  background:var(--bg-soft)
+  background:#fcfbf8;
 }
 
 .file{
   width:100%;
-  margin:15px 0
+  margin:15px 0;
 }
 
 .selected{
@@ -706,24 +345,28 @@ body.dark .available{
   max-width:100%;
   overflow:hidden;
   white-space:nowrap;
-  text-overflow:ellipsis
+  text-overflow:ellipsis;
 }
 
 .status{
   color:var(--muted);
   margin-top:12px;
-  min-height:24px
+  min-height:24px;
 }
 
+/* =========================
+   Progress
+========================= */
+
 .progress-wrap{
-  margin-top:20px
+  margin-top:20px;
 }
 
 .progress-head{
   display:flex;
   justify-content:space-between;
   color:var(--muted);
-  font-size:14px
+  font-size:14px;
 }
 
 .progress{
@@ -731,40 +374,53 @@ body.dark .available{
   background:#ebe7df;
   border-radius:99px;
   overflow:hidden;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .bar{
   height:100%;
   width:0;
-  background:linear-gradient(90deg,var(--navy),var(--gold));
+  background:linear-gradient(
+    90deg,
+    var(--navy),
+    var(--gold)
+  );
   border-radius:99px;
-  transition:width .2s
+  transition:width .2s;
 }
 
 .bar.indeterminate{
   width:35%;
-  animation:moveBar 1.2s infinite ease-in-out
+  animation:moveBar 1.2s infinite ease-in-out;
 }
 
 @keyframes moveBar{
-  0%{transform:translateX(180%)}
-  100%{transform:translateX(-330%)}
+  0%{
+    transform:translateX(180%);
+  }
+
+  100%{
+    transform:translateX(-330%);
+  }
 }
 
 .elapsed{
   margin-top:7px;
   font-size:13px;
-  color:#8a8172
+  color:#8a8172;
 }
+
+/* =========================
+   Waiting
+========================= */
 
 .wait{
   margin-top:18px;
   padding:16px;
   border-radius:17px;
-  background:var(--gold-soft);
+  background:#f7f1e2;
   border:1px solid #e8dcc0;
-  overflow:hidden
+  overflow:hidden;
 }
 
 .wait-text{
@@ -772,103 +428,78 @@ body.dark .available{
   font-size:18px;
   line-height:1.9;
   white-space:nowrap;
-  overflow:hidden
+  overflow:hidden;
+  transition:opacity .15s;
 }
 
 .scrolling{
   display:inline-block;
   padding-left:100%;
-  animation:scroll 16s linear infinite
+  animation:scroll 16s linear infinite;
 }
 
 @keyframes scroll{
-  from{transform:translateX(-5%)}
-  to{transform:translateX(105%)}
+  from{
+    transform:translateX(-5%);
+  }
+
+  to{
+    transform:translateX(105%);
+  }
 }
 
 .wait small{
   display:block;
   margin-top:6px;
-  color:#796d57
+  color:#796d57;
 }
 
 /* =========================
-   SMART RESULT
+   Results
 ========================= */
 
 .result{
-  margin-top:28px
-}
-
-.result-intro{
-  background:linear-gradient(135deg,var(--navy),#1d2939);
-  color:#fff;
-  border-radius:23px;
-  padding:22px;
-  margin-bottom:18px
-}
-
-.result-intro small{
-  color:#d7c99e
-}
-
-.result-intro h2{
-  margin:7px 0
-}
-
-.result-intro p{
-  color:#d8dce1;
-  line-height:1.9;
-  margin:0
-}
-
-.result-section{
-  margin-top:23px
-}
-
-.result-section h3{
-  margin-bottom:10px
+  margin-top:24px;
 }
 
 .result-head{
   display:flex;
   justify-content:space-between;
   gap:18px;
-  align-items:center
+  align-items:center;
 }
 
 .score{
   font-size:48px;
-  font-weight:950
+  font-weight:950;
 }
 
 .score small{
   font-size:17px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .info-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px
+  gap:10px;
 }
 
 .info{
   border:1px solid var(--line);
   border-radius:15px;
-  padding:15px;
-  background:var(--bg-soft)
+  padding:13px;
+  background:#fcfbf8;
 }
 
 .info b{
   display:block;
-  margin-bottom:6px
+  margin-bottom:6px;
 }
 
 .info span{
   color:var(--muted);
   font-size:14px;
-  line-height:1.7
 }
 
 .risk{
@@ -877,39 +508,22 @@ body.dark .available{
   padding:17px;
   margin:12px 0;
   line-height:1.8;
-  background:var(--card)
 }
 
-.high{border-right:6px solid var(--red)}
-.medium{border-right:6px solid var(--orange)}
-.low{border-right:6px solid var(--green)}
-
-.source-box{
-  border:1px solid var(--line);
-  background:var(--bg-soft);
-  border-radius:18px;
-  padding:17px;
-  color:var(--muted);
-  line-height:1.8
+.high{
+  border-right:6px solid var(--red);
 }
 
-.followup{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px
+.medium{
+  border-right:6px solid var(--orange);
 }
 
-.followup button{
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--ink);
-  padding:9px 12px;
-  border-radius:999px
+.low{
+  border-right:6px solid var(--green);
 }
 
 ul{
-  line-height:2
+  line-height:2;
 }
 
 .note{
@@ -917,133 +531,71 @@ ul{
   color:var(--muted);
   font-size:13px;
   line-height:1.8;
-  margin-top:35px
+  margin-top:28px;
 }
 
 /* =========================
-   SPLASH
-========================= */
-
-.splash{
-  position:fixed;
-  inset:0;
-  background:var(--navy);
-  z-index:50;
-  display:grid;
-  place-items:center;
-  animation:out .7s ease 1.5s forwards
-}
-
-.splash-inner{
-  text-align:center;
-  color:#fff
-}
-
-.splash-mark{
-  font-size:86px
-}
-
-@keyframes out{
-  to{
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none
-  }
-}
-
-/* =========================
-   MODAL
+   Modal
 ========================= */
 
 .modal{
   position:fixed;
   inset:0;
   background:#0008;
-  z-index:60;
+  z-index:999;
   display:grid;
   place-items:center;
-  padding:20px
+  padding:20px;
 }
 
 .modal-card{
-  background:var(--card);
-  color:var(--ink);
+  background:#fff;
   border-radius:24px;
   padding:28px;
   max-width:420px;
   width:100%;
-  text-align:center
+  text-align:center;
 }
 
 .modal-icon{
-  font-size:44px
+  font-size:44px;
 }
 
 .close{
   background:var(--navy);
-  color:var(--bg);
+  color:#fff;
   border:0;
   border-radius:12px;
   padding:11px 18px;
-  font-weight:800
+  font-weight:800;
 }
 
 /* =========================
-   RESPONSIVE
+   Mobile
 ========================= */
-
-@media(max-width:850px){
-
-  .service-grid,
-  .article-grid{
-    grid-template-columns:repeat(2,1fr)
-  }
-
-  .prayer-grid{
-    grid-template-columns:1fr
-  }
-
-}
 
 @media(max-width:720px){
 
   .mode-grid,
   .category-grid,
-  .info-grid,
-  .daily-grid,
-  .about-grid,
-  .service-grid,
-  .article-grid{
-    grid-template-columns:1fr
+  .info-grid{
+    grid-template-columns:1fr;
   }
 
   .panel{
-    padding:18px
+    padding:18px;
   }
 
   .hero{
-    padding-top:30px
-  }
-
-  .prayer-times{
-    grid-template-columns:repeat(5,1fr);
-    overflow-x:auto
-  }
-
-  .prayer-time{
-    min-width:70px
+    padding-top:30px;
   }
 
   .result-head{
-    align-items:flex-start
+    align-items:flex-start;
   }
 
-  .hero-search button{
-    padding:12px
-  }
-
-  .hero-search input{
-    font-size:14px
+  .score{
+    font-size:40px;
   }
 }
 </style>
@@ -1051,778 +603,715 @@ ul{
 
 <body>
 
-<div class="splash">
-  <div class="splash-inner">
-    <div class="splash-mark">⚖️</div>
-    <h1>إحاطة</h1>
-    <p>للذكاء القانوني</p>
-  </div>
+<!-- شاشة البداية -->
+<div class="splash" id="splash">
+  <img
+    src="/splash.PNG"
+    alt="إحاطة"
+  >
 </div>
 
+<!-- نافذة الميزات القادمة -->
 <div id="modal" class="modal hidden">
+
   <div class="modal-card">
-    <div class="modal-icon">🔒</div>
-    <h3>الميزة غير متاحة حاليًا</h3>
+
+    <div class="modal-icon">
+      🔒
+    </div>
+
+    <h3>
+      الميزة غير متاحة حاليًا
+    </h3>
+
     <p id="modalText">
       ستتوفر هذه الخدمة في تحديث مستقبلي بإذن الله.
     </p>
-    <button class="close" id="closeModal">حسنًا</button>
+
+    <button
+      class="close"
+      id="closeModal"
+    >
+      حسنًا
+    </button>
+
   </div>
+
 </div>
 
 <main class="wrap">
 
+<!-- =========================
+     Topbar
+========================= -->
+
 <div class="topbar">
 
   <div class="brand">
-    <div class="brand-mark">⚖</div>
-    <div class="brand-name">إحاطة</div>
-  </div>
 
-  <div class="top-actions">
-
-    <div class="badge">
-      نسخة تجريبية
+    <div class="brand-mark">
+      ⚖
     </div>
 
-    <button
-      class="icon-btn"
-      id="themeBtn"
-      title="تغيير المظهر"
-      aria-label="تغيير المظهر"
-    >
-      🌙
-    </button>
+    <div class="brand-name">
+      إحاطة
+    </div>
 
+  </div>
+
+  <div class="badge">
+    نسخة تجريبية
   </div>
 
 </div>
 
+
+<!-- =========================
+     Home
+========================= -->
 
 <section id="home">
 
-<div class="hero">
+  <div class="hero">
 
-  <div class="hero-mark">⚖️</div>
+    <div class="hero-mark">
+      ⚖️
+    </div>
 
-  <h1>إحاطة</h1>
+    <h1>
+      إحاطة
+    </h1>
 
-  <p>
-    ذكاء قانوني يساعدك على فهم المستندات والمعلومات بشكل أوضح،
-    وبطريقة هادئة وطبيعية قبل اتخاذ القرار.
-  </p>
+    <p>
+      تحليل ذكي للمستندات القانونية يساعدك على فهم البنود والنقاط المهمة قبل اتخاذ القرار.
+    </p>
 
-  <div class="hero-search">
+  </div>
 
-    <input
-      id="globalSearch"
-      placeholder="ابحث عن موضوع، نظام، مقال أو خدمة..."
+
+  <div class="section-title">
+
+    <h2>
+      ماذا تريد أن تحلل؟
+    </h2>
+
+    <p>
+      اختر نوع المستند للبدء
+    </p>
+
+  </div>
+
+
+  <div class="mode-grid">
+
+    <button
+      class="mode"
+      id="contractsMode"
     >
 
-    <button id="searchBtn">
-      🔎 بحث
+      <div class="mode-icon">
+        📄
+      </div>
+
+      <h3>
+        العقود
+      </h3>
+
+      <p>
+        فحص البنود والمخاطر والالتزامات والمبالغ والتواريخ المهمة.
+      </p>
+
+      <span class="primary">
+        ابدأ تحليل عقد
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode"
+      id="judgmentsMode"
+    >
+
+      <div class="mode-icon">
+        ⚖️
+      </div>
+
+      <h3>
+        الأحكام والوثائق القضائية
+      </h3>
+
+      <p>
+        استخراج الوقائع والطلبات والأسباب والمنطوق والبيانات المهمة.
+      </p>
+
+      <span class="primary">
+        ابدأ تحليل حكم
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="مقارنة المستندين غير متاحة حاليًا، لكنها جاهزة من جهة البرمجة وسيتم فتحها في تحديث لاحق."
+    >
+
+      <div class="mode-icon">
+        🔍
+      </div>
+
+      <span class="soon">
+        🔒 قريبًا
+      </span>
+
+      <h3>
+        مقارنة مستندين
+      </h3>
+
+      <p>
+        اكتشف البنود المضافة والمحذوفة والتغييرات المهمة بين مستندين.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="الاستشارات القانونية غير متاحة حاليًا، وستتوفر في تحديث مستقبلي."
+    >
+
+      <div class="mode-icon">
+        💬
+      </div>
+
+      <span class="soon">
+        🔒 قريبًا
+      </span>
+
+      <h3>
+        الاستشارات القانونية
+      </h3>
+
+      <p>
+        خدمة مستقبلية للمساعدة القانونية الموجهة.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="قسم الأنظمة واللوائح غير متاح حاليًا، وسيتم إطلاقه في تحديث مستقبلي."
+    >
+
+      <div class="mode-icon">
+        📚
+      </div>
+
+      <span class="soon">
+        🔒 قريبًا
+      </span>
+
+      <h3>
+        الأنظمة واللوائح
+      </h3>
+
+      <p>
+        قراءة الأنظمة واللوائح وشرحها بشكل مبسط في مرحلة لاحقة.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
     </button>
 
   </div>
 
-</div>
+</section>
 
 
-<!-- الصلاة -->
+<!-- =========================
+     Contracts
+========================= -->
 
-<div class="prayer-card">
+<section
+  id="contractSection"
+  class="hidden"
+>
 
-  <div class="prayer-grid">
+  <button
+    class="back"
+    data-back
+  >
+    ← العودة للرئيسية
+  </button>
 
-    <div>
 
-      <div class="prayer-label">
-        الصلاة القادمة
-      </div>
+  <div class="panel">
 
-      <div
-        id="nextPrayer"
-        class="prayer-name"
-      >
-        جاري تحديد الصلاة...
-      </div>
+    <div class="section-title">
 
-      <div
-        id="countdown"
-        class="prayer-count"
-      >
-        --:--:--
-      </div>
+      <h2>
+        📄 العقود
+      </h2>
 
-      <p class="prayer-desc">
-        الصلاة صلة بين العبد وربه، وموعد يتجدد فيه القرب والسكينة.
+      <p>
+        اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
       </p>
 
     </div>
+
+
+    <div class="quote">
+
+      <div class="arabic">
+        ﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
+      </div>
+
+      <small>
+        سورة المائدة: 1
+      </small>
+
+    </div>
+
+
+    <div class="category-grid">
+
+      <button
+        class="category"
+        data-category="مقاولات وأعمال"
+      >
+
+        <span class="ico">
+          🏗️
+        </span>
+
+        <span>
+          <strong>
+            المقاولات والأعمال
+          </strong>
+
+          <small>
+            تنفيذ، إنشاء، تشييد وصيانة
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="عقود تجارية"
+      >
+
+        <span class="ico">
+          🏢
+        </span>
+
+        <span>
+          <strong>
+            العقود التجارية
+          </strong>
+
+          <small>
+            بيع، شراء، تشغيل وخدمات
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="إيجار"
+      >
+
+        <span class="ico">
+          🏠
+        </span>
+
+        <span>
+          <strong>
+            الإيجار
+          </strong>
+
+          <small>
+            عقود الإيجار والتأجير
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="عمل"
+      >
+
+        <span class="ico">
+          💼
+        </span>
+
+        <span>
+          <strong>
+            العمل
+          </strong>
+
+          <small>
+            عقود الموظفين والعمل
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="توريد"
+      >
+
+        <span class="ico">
+          📦
+        </span>
+
+        <span>
+          <strong>
+            التوريد
+          </strong>
+
+          <small>
+            التوريد والشراء
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="شراكات واستثمار"
+      >
+
+        <span class="ico">
+          🤝
+        </span>
+
+        <span>
+          <strong>
+            الشراكات والاستثمار
+          </strong>
+
+          <small>
+            شراكات واستثمار واتفاقيات
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="تقنية وخدمات"
+      >
+
+        <span class="ico">
+          💻
+        </span>
+
+        <span>
+          <strong>
+            التقنية والخدمات
+          </strong>
+
+          <small>
+            برمجيات واستشارات وخدمات
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-category="عقد آخر"
+      >
+
+        <span class="ico">
+          📄
+        </span>
+
+        <span>
+          <strong>
+            عقد آخر
+          </strong>
+
+          <small>
+            أي عقد غير مصنف
+          </small>
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     Judgments
+========================= -->
+
+<section
+  id="judgmentSection"
+  class="hidden"
+>
+
+  <button
+    class="back"
+    data-back
+  >
+    ← العودة للرئيسية
+  </button>
+
+
+  <div class="panel">
+
+    <div class="section-title">
+
+      <h2>
+        ⚖️ الأحكام والوثائق القضائية
+      </h2>
+
+      <p>
+        تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
+      </p>
+
+    </div>
+
+
+    <div class="quote">
+
+      <div class="arabic">
+        ﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
+      </div>
+
+      <small>
+        سورة النساء: 58
+      </small>
+
+    </div>
+
+
+    <div class="category-grid">
+
+      <button
+        class="category"
+        data-judgment-type="حكم قضائي"
+      >
+
+        <span class="ico">
+          🔨
+        </span>
+
+        <span>
+          <strong>
+            أحكام قضائية
+          </strong>
+
+          <small>
+            صكوك الأحكام وما يتصل بها
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-judgment-type="قرار"
+      >
+
+        <span class="ico">
+          📑
+        </span>
+
+        <span>
+          <strong>
+            قرارات
+          </strong>
+
+          <small>
+            قرارات ووثائق قضائية
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="category"
+        data-judgment-type="وثيقة قضائية أخرى"
+      >
+
+        <span class="ico">
+          📜
+        </span>
+
+        <span>
+          <strong>
+            وثائق قضائية أخرى
+          </strong>
+
+          <small>
+            أي وثيقة قضائية قابلة للتحليل
+          </small>
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     Analyzer
+========================= -->
+
+<section
+  id="analyzer"
+  class="hidden"
+>
+
+  <button
+    class="back"
+    id="analyzerBack"
+  >
+    ← العودة للاختيارات
+  </button>
+
+
+  <div class="panel">
+
+    <div class="section-title">
+
+      <h2 id="analyzerTitle">
+        رفع المستند
+      </h2>
+
+      <p id="analyzerSub"></p>
+
+    </div>
+
+
+    <div class="upload">
+
+      <div
+        id="selected"
+        class="selected hidden"
+      ></div>
+
+
+      <input
+        id="file"
+        class="file"
+        type="file"
+        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      >
+
+
+      <button
+        id="go"
+        class="primary"
+      >
+        ابدأ التحليل
+      </button>
+
+
+      <div
+        id="progressWrap"
+        class="progress-wrap hidden"
+      >
+
+        <div class="progress-head">
+
+          <span id="progressText">
+            جاهز
+          </span>
+
+          <strong id="progressNumber">
+            0%
+          </strong>
+
+        </div>
+
+
+        <div class="progress">
+
+          <div
+            id="bar"
+            class="bar"
+          ></div>
+
+        </div>
+
+
+        <div
+          id="elapsed"
+          class="elapsed"
+        >
+          الوقت المتوقع المتبقي: --
+        </div>
+
+
+        <div class="wait">
+
+          <div
+            id="waitText"
+            class="wait-text"
+          >
+            جاري تجهيز التحليل...
+          </div>
+
+          <small id="waitSource">
+            إحاطة
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="status"
+        class="status"
+      >
+        PDF أو DOCX • الحد الأقصى 25MB
+      </div>
+
+    </div>
+
 
     <div
-      id="prayerTimes"
-      class="prayer-times"
-    >
-    </div>
+      id="result"
+      class="result hidden"
+    ></div>
 
   </div>
-
-</div>
-
-
-<!-- اليومية -->
-
-<div class="daily-grid">
-
-  <div class="daily-card">
-
-    <div class="small-title">
-      📖 آية اليوم
-    </div>
-
-    <h3>
-      ﴿ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ ﴾
-    </h3>
-
-    <p>
-      سورة البقرة: 153
-    </p>
-
-  </div>
-
-
-  <div class="daily-card">
-
-    <div class="small-title">
-      🤲 ذكر اليوم
-    </div>
-
-    <h3 class="daily-arabic">
-      سبحان الله وبحمده، سبحان الله العظيم.
-    </h3>
-
-    <p>
-      ذكر يسير على اللسان عظيم الأجر.
-    </p>
-
-  </div>
-
-</div>
-
-
-<div class="section-title">
-
-  <h2>
-    ماذا تريد أن تفعل؟
-  </h2>
-
-  <p>
-    اختر الخدمة المناسبة للبدء
-  </p>
-
-</div>
-
-
-<div class="mode-grid">
-
-<button class="mode" id="contractsMode">
-
-  <div class="mode-icon">📄</div>
-
-  <h3>العقود</h3>
-
-  <p>
-    فحص البنود والمخاطر والالتزامات والمبالغ والتواريخ المهمة.
-  </p>
-
-  <span class="primary">
-    ابدأ تحليل عقد
-  </span>
-
-</button>
-
-
-<button class="mode" id="judgmentsMode">
-
-  <div class="mode-icon">⚖️</div>
-
-  <h3>الأحكام والوثائق القضائية</h3>
-
-  <p>
-    استخراج الوقائع والطلبات والأسباب والمنطوق والبيانات المهمة.
-  </p>
-
-  <span class="primary">
-    ابدأ تحليل حكم
-  </span>
-
-</button>
-
-
-<button
-  class="mode locked"
-  data-soon="مقارنة المستندين غير متاحة حاليًا، لكنها جاهزة من جهة البرمجة وسيتم فتحها في تحديث لاحق."
->
-
-  <div class="mode-icon">🔍</div>
-
-  <span class="soon">🔒 قريبًا</span>
-
-  <h3>مقارنة مستندين</h3>
-
-  <p>
-    اكتشف البنود المضافة والمحذوفة والتغييرات المهمة بين مستندين.
-  </p>
-
-  <span class="primary">
-    غير متاحة حاليًا
-  </span>
-
-</button>
-
-
-<button
-  class="mode locked"
-  data-soon="الاستشارات القانونية غير متاحة حاليًا، وستتوفر في تحديث مستقبلي."
->
-
-  <div class="mode-icon">💬</div>
-
-  <span class="soon">🔒 قريبًا</span>
-
-  <h3>الاستشارات القانونية</h3>
-
-  <p>
-    خدمة مستقبلية للمساعدة القانونية الموجهة.
-  </p>
-
-  <span class="primary">
-    غير متاحة حاليًا
-  </span>
-
-</button>
-
-</div>
-
-
-<!-- الخدمات -->
-
-<div class="section-title">
-
-  <h2>
-    الخدمات المتاحة
-  </h2>
-
-  <p>
-    أدوات إحاطة الحالية
-  </p>
-
-</div>
-
-<div class="service-grid">
-
-  <div class="service">
-    <div class="service-icon">📄</div>
-    <h3>تحليل العقود</h3>
-    <p>قراءة منظمة للعقد واستخراج أهم البنود والمخاطر والنقاط غير الواضحة.</p>
-    <span class="available">متاحة الآن</span>
-  </div>
-
-  <div class="service">
-    <div class="service-icon">⚖️</div>
-    <h3>تحليل الأحكام</h3>
-    <p>تلخيص الحكم واستخراج الوقائع والطلبات والأسباب والمنطوق.</p>
-    <span class="available">متاحة الآن</span>
-  </div>
-
-  <div class="service">
-    <div class="service-icon">🔎</div>
-    <h3>البحث الذكي</h3>
-    <p>ابحث عن المعلومة بطريقة طبيعية ودع إحاطة يرتبها لك.</p>
-    <span class="available">متاحة الآن</span>
-  </div>
-
-</div>
-
-
-<!-- المقالات -->
-
-<div class="section-title">
-
-  <h2>
-    أحدث المقالات
-  </h2>
-
-  <p>
-    محتوى مختصر يساعدك على فهم الموضوع قبل الغوص في التفاصيل
-  </p>
-
-</div>
-
-<div class="article-grid">
-
-  <article class="article">
-
-    <img
-      src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80"
-      alt="مستندات قانونية"
-    >
-
-    <div class="article-body">
-
-      <div class="article-tag">
-        عقود
-      </div>
-
-      <h3>
-        كيف تقرأ عقدًا قبل توقيعه؟
-      </h3>
-
-      <p>
-        أهم البنود التي تستحق انتباهك قبل الالتزام بأي عقد.
-      </p>
-
-    </div>
-
-  </article>
-
-
-  <article class="article">
-
-    <img
-      src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=80"
-      alt="كتب قانونية"
-    >
-
-    <div class="article-body">
-
-      <div class="article-tag">
-        معرفة قانونية
-      </div>
-
-      <h3>
-        ما الفرق بين الشرط والالتزام؟
-      </h3>
-
-      <p>
-        شرح مبسط لمفهومين يتكرران كثيرًا في المستندات القانونية.
-      </p>
-
-    </div>
-
-  </article>
-
-
-  <article class="article">
-
-    <img
-      src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=900&q=80"
-      alt="مكتبة"
-    >
-
-    <div class="article-body">
-
-      <div class="article-tag">
-        أنظمة
-      </div>
-
-      <h3>
-        كيف تفهم النص القانوني بسهولة؟
-      </h3>
-
-      <p>
-        طريقة عملية لتحويل النص الطويل إلى نقاط واضحة ومفهومة.
-      </p>
-
-    </div>
-
-  </article>
-
-</div>
-
-
-<!-- الأسئلة الشائعة -->
-
-<div class="section-title">
-
-  <h2>
-    الأسئلة الشائعة
-  </h2>
-
-  <p>
-    إجابات مختصرة على أكثر الأسئلة التي قد تدور في بالك
-  </p>
-
-</div>
-
-<div class="faq">
-
-  <div class="faq-item">
-
-    <button class="faq-q">
-      هل تحليل إحاطة يعتبر استشارة قانونية؟
-      <span>＋</span>
-    </button>
-
-    <div class="faq-a">
-      لا. التحليل يساعدك على فهم المستند والمعلومات الواردة فيه،
-      لكنه لا يحل محل المحامي أو المستشار القانوني.
-    </div>
-
-  </div>
-
-
-  <div class="faq-item">
-
-    <button class="faq-q">
-      ما أنواع الملفات التي يمكن رفعها؟
-      <span>＋</span>
-    </button>
-
-    <div class="faq-a">
-      حاليًا يدعم النظام ملفات PDF وDOCX بحد أقصى 25MB.
-    </div>
-
-  </div>
-
-
-  <div class="faq-item">
-
-    <button class="faq-q">
-      هل يستطيع النظام معرفة نوع العقد بنفسه؟
-      <span>＋</span>
-    </button>
-
-    <div class="faq-a">
-      نعم، التصنيف الذي تختاره يساعد النظام، لكنه يستطيع أيضًا
-      التحقق من طبيعة المستند أثناء التحليل.
-    </div>
-
-  </div>
-
-
-  <div class="faq-item">
-
-    <button class="faq-q">
-      هل يحتفظ إحاطة بالمستندات؟
-      <span>＋</span>
-    </button>
-
-    <div class="faq-a">
-      يعتمد ذلك على إعدادات الخادم وطريقة تشغيل المشروع.
-      لا تعرض للمستخدم وعدًا بالحذف أو عدم التخزين إلا إذا كان
-      ذلك مطبقًا فعليًا في الخادم.
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- التحديثات وعن إحاطة -->
-
-<div class="about-grid">
-
-  <div class="about-card">
-
-    <h2>
-      🏛️ عن إحاطة
-    </h2>
-
-    <p>
-      إحاطة منصة تهدف إلى جعل المعلومات القانونية والمستندات
-      أكثر وضوحًا وسهولة، باستخدام أدوات ذكية تساعد المستخدم
-      على الوصول إلى الصورة الكاملة قبل اتخاذ القرار.
-    </p>
-
-    <p>
-      رؤيتنا: معرفة أوضح، قرار أهدأ.
-    </p>
-
-  </div>
-
-
-  <div class="about-card">
-
-    <h2>
-      🔔 آخر التحديثات
-    </h2>
-
-    <div class="update">
-      <small>تحديث جديد</small>
-      <p>إضافة الوضع الليلي والنهاري.</p>
-    </div>
-
-    <div class="update">
-      <small>إضافة</small>
-      <p>عداد الصلاة ومواقيتها.</p>
-    </div>
-
-    <div class="update">
-      <small>تحسين</small>
-      <p>تطوير طريقة عرض نتائج التحليل.</p>
-    </div>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     CONTRACT SECTION
-========================= -->
-
-<section id="contractSection" class="hidden">
-
-<button class="back" data-back>
-  ← العودة للرئيسية
-</button>
-
-<div class="panel">
-
-<div class="section-title">
-
-<h2>📄 العقود</h2>
-
-<p>
-  اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
-</p>
-
-</div>
-
-<div class="quote">
-
-<div class="arabic">
-﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
-</div>
-
-<small>
-سورة المائدة: 1
-</small>
-
-</div>
-
-<div class="category-grid">
-
-<button class="category" data-category="مقاولات وأعمال">
-<span class="ico">🏗️</span>
-<span>
-<strong>المقاولات والأعمال</strong>
-<small>تنفيذ، إنشاء، تشييد وصيانة</small>
-</span>
-</button>
-
-<button class="category" data-category="عقود تجارية">
-<span class="ico">🏢</span>
-<span>
-<strong>العقود التجارية</strong>
-<small>بيع، شراء، تشغيل وخدمات</small>
-</span>
-</button>
-
-<button class="category" data-category="إيجار">
-<span class="ico">🏠</span>
-<span>
-<strong>الإيجار</strong>
-<small>عقود الإيجار والتأجير</small>
-</span>
-</button>
-
-<button class="category" data-category="عمل">
-<span class="ico">💼</span>
-<span>
-<strong>العمل</strong>
-<small>عقود الموظفين والعمل</small>
-</span>
-</button>
-
-<button class="category" data-category="توريد">
-<span class="ico">📦</span>
-<span>
-<strong>التوريد</strong>
-<small>التوريد والشراء</small>
-</span>
-</button>
-
-<button class="category" data-category="شراكات واستثمار">
-<span class="ico">🤝</span>
-<span>
-<strong>الشراكات والاستثمار</strong>
-<small>شراكات واستثمار واتفاقيات</small>
-</span>
-</button>
-
-<button class="category" data-category="تقنية وخدمات">
-<span class="ico">💻</span>
-<span>
-<strong>التقنية والخدمات</strong>
-<small>برمجيات واستشارات وخدمات</small>
-</span>
-</button>
-
-<button class="category" data-category="عقد آخر">
-<span class="ico">📄</span>
-<span>
-<strong>عقد آخر</strong>
-<small>أي عقد غير مصنف</small>
-</span>
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     JUDGMENT SECTION
-========================= -->
-
-<section id="judgmentSection" class="hidden">
-
-<button class="back" data-back>
-  ← العودة للرئيسية
-</button>
-
-<div class="panel">
-
-<div class="section-title">
-
-<h2>⚖️ الأحكام والوثائق القضائية</h2>
-
-<p>
-  تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
-</p>
-
-</div>
-
-<div class="quote">
-
-<div class="arabic">
-﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
-</div>
-
-<small>
-سورة النساء: 58
-</small>
-
-</div>
-
-<div class="category-grid">
-
-<button class="category" data-judgment-type="حكم قضائي">
-<span class="ico">🔨</span>
-<span>
-<strong>أحكام قضائية</strong>
-<small>صكوك الأحكام وما يتصل بها</small>
-</span>
-</button>
-
-<button class="category" data-judgment-type="قرار">
-<span class="ico">📑</span>
-<span>
-<strong>قرارات</strong>
-<small>قرارات ووثائق قضائية</small>
-</span>
-</button>
-
-<button class="category" data-judgment-type="وثيقة قضائية أخرى">
-<span class="ico">📜</span>
-<span>
-<strong>وثائق قضائية أخرى</strong>
-<small>أي وثيقة قضائية قابلة للتحليل</small>
-</span>
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =========================
-     ANALYZER
-========================= -->
-
-<section id="analyzer" class="hidden">
-
-<button class="back" id="analyzerBack">
-  ← العودة للاختيارات
-</button>
-
-<div class="panel">
-
-<div class="section-title">
-
-<h2 id="analyzerTitle">
-  رفع المستند
-</h2>
-
-<p id="analyzerSub"></p>
-
-</div>
-
-<div class="upload">
-
-<div id="selected" class="selected hidden"></div>
-
-<input
-  id="file"
-  class="file"
-  type="file"
-  accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
->
-
-<button id="go" class="primary">
-  ابدأ التحليل
-</button>
-
-<div id="progressWrap" class="progress-wrap hidden">
-
-<div class="progress-head">
-
-<span id="progressText">جاهز</span>
-
-<strong id="progressNumber">0%</strong>
-
-</div>
-
-<div class="progress">
-<div id="bar" class="bar"></div>
-</div>
-
-<div id="elapsed" class="elapsed">
-  الوقت المتوقع المتبقي: --
-</div>
-
-<div class="wait">
-
-<div id="waitText" class="wait-text">
-  كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن.
-</div>
-
-<small id="waitSource">
-  قال رسول الله ﷺ • رواه البخاري ومسلم
-</small>
-
-</div>
-
-</div>
-
-<div id="status" class="status">
-  PDF أو DOCX • الحد الأقصى 25MB
-</div>
-
-</div>
-
-<div id="result" class="result hidden"></div>
-
-</div>
 
 </section>
 
@@ -1836,108 +1325,82 @@ ul{
 
 <script>
 
-const $ = id => document.getElementById(id);
+/* =========================
+   Helpers
+========================= */
+
+const $ = id =>
+  document.getElementById(id);
 
 let mode = null;
 let category = null;
 
 let waitTimer = null;
 let etaTimer = null;
-let prayerTimer = null;
 let etaSeconds = 0;
 
 
 /* =========================
-   THEME
-========================= */
-
-const savedTheme =
-  localStorage.getItem("ehata-theme");
-
-if(savedTheme === "dark"){
-  document.body.classList.add("dark");
-  $("themeBtn").textContent = "☀️";
-}
-
-$("themeBtn").onclick = () => {
-
-  document.body.classList.toggle("dark");
-
-  const dark =
-    document.body.classList.contains("dark");
-
-  localStorage.setItem(
-    "ehata-theme",
-    dark ? "dark" : "light"
-  );
-
-  $("themeBtn").textContent =
-    dark ? "☀️" : "🌙";
-
-};
-
-
-/* =========================
-   DAILY CONTENT
+   رسائل الانتظار
 ========================= */
 
 const hadiths = [
 
 [
-"كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن.",
-"قال رسول الله ﷺ • رواه البخاري ومسلم"
+  "كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن.",
+  "قال رسول الله ﷺ • رواه البخاري ومسلم"
 ],
 
 [
-"لا حول ولا قوة إلا بالله.",
-"ذكر"
+  "لا حول ولا قوة إلا بالله.",
+  "ذكر"
 ],
 
 [
-"سبحان الله وبحمده.",
-"ذكر"
+  "سبحان الله وبحمده.",
+  "ذكر"
 ],
 
 [
-"سبحان الله العظيم.",
-"ذكر"
+  "سبحان الله العظيم.",
+  "ذكر"
 ],
 
 [
-"الحمد لله.",
-"ذكر"
+  "الحمد لله.",
+  "ذكر"
 ],
 
 [
-"اللهم صل وسلم على نبينا محمد.",
-"صلاة على النبي ﷺ"
+  "اللهم صل وسلم على نبينا محمد.",
+  "صلاة على النبي ﷺ"
 ],
 
 [
-"أستغفر الله وأتوب إليه.",
-"استغفار"
+  "أستغفر الله وأتوب إليه.",
+  "استغفار"
 ],
 
 [
-"رب اغفر لي وتب علي إنك أنت التواب الرحيم.",
-"دعاء"
+  "رب اغفر لي وتب علي إنك أنت التواب الرحيم.",
+  "دعاء"
 ],
 
 [
-"سبحان الله، والحمد لله، والله أكبر.",
-"ذكر"
+  "سبحان الله، والحمد لله، والله أكبر.",
+  "ذكر"
 ],
 
 [
-"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
-"ذكر"
+  "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
+  "ذكر"
 ]
 
 ];
 
 
 /* =========================
-   NAVIGATION
+   Navigation
 ========================= */
 
 function show(id){
@@ -1957,9 +1420,12 @@ function show(id){
     top:0,
     behavior:"smooth"
   });
-
 }
 
+
+/* =========================
+   Reset
+========================= */
 
 function reset(){
 
@@ -1978,354 +1444,11 @@ function reset(){
 
   clearInterval(waitTimer);
   clearInterval(etaTimer);
-
 }
 
 
 /* =========================
-   PRAYER TIMES
-========================= */
-
-const prayerNames = {
-  Fajr:"الفجر",
-  Sunrise:"الشروق",
-  Dhuhr:"الظهر",
-  Asr:"العصر",
-  Maghrib:"المغرب",
-  Isha:"العشاء"
-};
-
-
-function timeToMinutes(time){
-
-  const parts =
-    time.split(":").map(Number);
-
-  return parts[0] * 60 + parts[1];
-
-}
-
-
-function formatPrayerTime(time){
-
-  const parts =
-    time.split(":");
-
-  let hour =
-    Number(parts[0]);
-
-  const minute =
-    parts[1];
-
-  const suffix =
-    hour >= 12 ? "م" : "ص";
-
-  hour =
-    hour % 12 || 12;
-
-  return hour + ":" + minute + " " + suffix;
-
-}
-
-
-async function loadPrayerTimes(){
-
-  try{
-
-    const date =
-      new Date();
-
-    const day =
-      String(date.getDate()).padStart(2,"0");
-
-    const month =
-      String(date.getMonth()+1).padStart(2,"0");
-
-    const year =
-      date.getFullYear();
-
-    const url =
-      `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=24.7136&longitude=46.6753&method=4`;
-
-    const response =
-      await fetch(url);
-
-    const json =
-      await response.json();
-
-    const timings =
-      json?.data?.timings;
-
-    if(!timings)
-      throw new Error("Prayer data unavailable");
-
-    const order = [
-      "Fajr",
-      "Dhuhr",
-      "Asr",
-      "Maghrib",
-      "Isha"
-    ];
-
-    const now =
-      new Date();
-
-    const currentMinutes =
-      now.getHours() * 60 +
-      now.getMinutes();
-
-    let next = null;
-
-    for(const key of order){
-
-      const clean =
-        timings[key].split(" ")[0];
-
-      const mins =
-        timeToMinutes(clean);
-
-      if(mins > currentMinutes){
-
-        next = {
-          key,
-          time:clean,
-          minutes:mins
-        };
-
-        break;
-
-      }
-
-    }
-
-    if(!next){
-
-      next = {
-        key:"Fajr",
-        time:timings.Fajr.split(" ")[0],
-        minutes:
-          timeToMinutes(
-            timings.Fajr.split(" ")[0]
-          ) + 1440
-      };
-
-    }
-
-    $("nextPrayer").textContent =
-      prayerNames[next.key];
-
-    renderPrayerTimes(
-      timings,
-      next.key
-    );
-
-    startPrayerCountdown(
-      next
-    );
-
-  }catch(error){
-
-    $("nextPrayer").textContent =
-      "تعذر تحميل المواقيت";
-
-    $("countdown").textContent =
-      "--:--:--";
-
-  }
-
-}
-
-
-function renderPrayerTimes(
-  timings,
-  activeKey
-){
-
-  const order = [
-    "Fajr",
-    "Dhuhr",
-    "Asr",
-    "Maghrib",
-    "Isha"
-  ];
-
-  $("prayerTimes").innerHTML =
-    order.map(key => {
-
-      const time =
-        timings[key]
-          .split(" ")[0];
-
-      return `
-
-        <div class="prayer-time ${
-          key === activeKey
-            ? "active"
-            : ""
-        }">
-
-          <small>
-            ${prayerNames[key]}
-          </small>
-
-          <strong>
-            ${formatPrayerTime(time)}
-          </strong>
-
-        </div>
-
-      `;
-
-    }).join("");
-
-}
-
-
-function startPrayerCountdown(next){
-
-  clearInterval(prayerTimer);
-
-  const update = () => {
-
-    const now =
-      new Date();
-
-    let target =
-      new Date();
-
-    target.setHours(
-      Math.floor(next.minutes / 60),
-      next.minutes % 60,
-      0,
-      0
-    );
-
-    if(
-      target.getTime() <=
-      now.getTime()
-    ){
-
-      target.setDate(
-        target.getDate() + 1
-      );
-
-    }
-
-    const diff =
-      target.getTime() -
-      now.getTime();
-
-    const total =
-      Math.max(
-        0,
-        Math.floor(diff / 1000)
-      );
-
-    const hours =
-      Math.floor(total / 3600);
-
-    const minutes =
-      Math.floor(
-        (total % 3600) / 60
-      );
-
-    const seconds =
-      total % 60;
-
-    $("countdown").textContent =
-      [
-        hours,
-        minutes,
-        seconds
-      ]
-      .map(
-        n => String(n).padStart(2,"0")
-      )
-      .join(":");
-
-  };
-
-  update();
-
-  prayerTimer =
-    setInterval(
-      update,
-      1000
-    );
-
-}
-
-
-/* =========================
-   FAQ
-========================= */
-
-document
-.querySelectorAll(".faq-q")
-.forEach(button => {
-
-  button.onclick = () => {
-
-    const item =
-      button.parentElement;
-
-    item.classList.toggle("open");
-
-    const icon =
-      button.querySelector("span");
-
-    icon.textContent =
-      item.classList.contains("open")
-        ? "−"
-        : "＋";
-
-  };
-
-});
-
-
-/* =========================
-   SEARCH
-========================= */
-
-function searchSite(){
-
-  const query =
-    $("globalSearch")
-      .value
-      .trim();
-
-  if(!query){
-
-    $("globalSearch").focus();
-
-    return;
-
-  }
-
-  alert(
-    "البحث الذكي جاهز للربط مع محرك البحث في الخادم.\n\nبحث المستخدم: " +
-    query
-  );
-
-}
-
-$("searchBtn").onclick =
-  searchSite;
-
-$("globalSearch").addEventListener(
-  "keydown",
-  event => {
-
-    if(event.key === "Enter")
-      searchSite();
-
-  }
-);
-
-
-/* =========================
-   FORMAT HELPERS
+   Time
 ========================= */
 
 function fmtSeconds(seconds){
@@ -2337,9 +1460,7 @@ function fmtSeconds(seconds){
     );
 
   if(seconds < 60){
-
     return seconds + " ثانية";
-
   }
 
   return (
@@ -2348,9 +1469,12 @@ function fmtSeconds(seconds){
     (seconds % 60) +
     " ثانية"
   );
-
 }
 
+
+/* =========================
+   Waiting messages
+========================= */
 
 function startWait(){
 
@@ -2358,21 +1482,16 @@ function startWait(){
 
   let i =
     Math.floor(
-      Math.random() *
-      hadiths.length
+      Math.random() * hadiths.length
     );
+
 
   function setQuote(){
 
     const quote =
       hadiths[i];
 
-    $("waitText")
-      .classList
-      .remove("scrolling");
-
-    $("waitText").style.opacity =
-      "0";
+    $("waitText").style.opacity = "0";
 
     setTimeout(() => {
 
@@ -2384,6 +1503,10 @@ function startWait(){
 
       $("waitText").style.opacity =
         "1";
+
+      $("waitText")
+        .classList
+        .remove("scrolling");
 
       requestAnimationFrame(() => {
 
@@ -2401,10 +1524,11 @@ function startWait(){
       });
 
     },150);
-
   }
 
+
   setQuote();
+
 
   waitTimer =
     setInterval(() => {
@@ -2416,9 +1540,12 @@ function startWait(){
       setQuote();
 
     },6000);
-
 }
 
+
+/* =========================
+   ETA
+========================= */
 
 function startETA(fileSize){
 
@@ -2439,6 +1566,7 @@ function startETA(fileSize){
 
   clearInterval(etaTimer);
 
+
   const tick = () => {
 
     if(etaSeconds > 0){
@@ -2455,8 +1583,8 @@ function startETA(fileSize){
         "جاري إنهاء التحليل...";
 
     }
-
   };
+
 
   tick();
 
@@ -2465,20 +1593,23 @@ function startETA(fileSize){
       tick,
       1000
     );
-
 }
 
 
 function stopWait(){
 
   clearInterval(waitTimer);
+
   clearInterval(etaTimer);
 
   $("elapsed").textContent =
     "اكتمل التحليل ✓";
-
 }
 
+
+/* =========================
+   Security
+========================= */
 
 function esc(value){
 
@@ -2494,14 +1625,18 @@ function esc(value){
       "'":"&#039;"
     }[c])
   );
-
 }
 
 
+/* =========================
+   Validation
+========================= */
+
 function validate(file){
 
-  if(!file)
+  if(!file){
     return false;
+  }
 
   if(
     file.size >
@@ -2512,11 +1647,12 @@ function validate(file){
       "حجم الملف أكبر من 25MB.";
 
     return false;
-
   }
+
 
   const name =
     file.name.toLowerCase();
+
 
   if(
     !name.endsWith(".pdf") &&
@@ -2527,41 +1663,39 @@ function validate(file){
       "الصيغة المدعومة PDF أو DOCX فقط.";
 
     return false;
-
   }
 
-  return true;
 
+  return true;
 }
 
 
 /* =========================
-   NAVIGATION
+   Navigation Events
 ========================= */
 
 $("contractsMode").onclick =
   () => show("contractSection");
+
 
 $("judgmentsMode").onclick =
   () => show("judgmentSection");
 
 
 document
-.querySelectorAll("[data-soon]")
-.forEach(button => {
+  .querySelectorAll("[data-soon]")
+  .forEach(button => {
 
-  button.onclick = () => {
+    button.onclick = () => {
 
-    $("modalText").textContent =
-      button.dataset.soon;
+      $("modalText").textContent =
+        button.dataset.soon;
 
-    $("modal")
-      .classList
-      .remove("hidden");
-
-  };
-
-});
+      $("modal")
+        .classList
+        .remove("hidden");
+    };
+  });
 
 
 $("closeModal").onclick =
@@ -2572,84 +1706,78 @@ $("closeModal").onclick =
 
 
 document
-.querySelectorAll("[data-back]")
-.forEach(button => {
+  .querySelectorAll("[data-back]")
+  .forEach(button => {
 
-  button.onclick = () => {
+    button.onclick = () => {
 
-    reset();
+      reset();
 
-    show("home");
-
-  };
-
-});
+      show("home");
+    };
+  });
 
 
 /* =========================
-   CONTRACT CATEGORIES
+   Contract Categories
 ========================= */
 
 document
-.querySelectorAll("[data-category]")
-.forEach(button => {
+  .querySelectorAll("[data-category]")
+  .forEach(button => {
 
-  button.onclick = () => {
+    button.onclick = () => {
 
-    mode = "contract";
+      mode = "contract";
 
-    category =
-      button.dataset.category;
+      category =
+        button.dataset.category;
 
-    $("analyzerTitle")
-      .textContent =
-      "📄 رفع العقد";
+      $("analyzerTitle")
+        .textContent =
+        "📄 رفع العقد";
 
-    $("analyzerSub")
-      .textContent =
-      "القسم المختار: " +
-      category;
+      $("analyzerSub")
+        .textContent =
+        "القسم المختار: " +
+        category;
 
-    reset();
+      reset();
 
-    show("analyzer");
-
-  };
-
-});
+      show("analyzer");
+    };
+  });
 
 
 /* =========================
-   JUDGMENT CATEGORIES
+   Judgment Categories
 ========================= */
 
 document
-.querySelectorAll("[data-judgment-type]")
-.forEach(button => {
+  .querySelectorAll("[data-judgment-type]")
+  .forEach(button => {
 
-  button.onclick = () => {
+    button.onclick = () => {
 
-    mode = "judgment";
+      mode = "judgment";
 
-    category =
-      button.dataset.judgmentType;
+      category =
+        button.dataset.judgmentType;
 
-    $("analyzerTitle")
-      .textContent =
-      "⚖️ رفع الوثيقة القضائية";
+      $("analyzerTitle")
+        .textContent =
+        "⚖️ رفع الوثيقة القضائية";
 
-    $("analyzerSub")
-      .textContent =
-      "نوع التحليل: " +
-      category;
+      $("analyzerSub")
+        .textContent =
+        "نوع التحليل: " +
+        category;
 
-    reset();
+      reset();
 
-    show("analyzer");
-
-  };
-
-});
+      show("analyzer");
+    };
+  });
 
 
 $("analyzerBack").onclick =
@@ -2662,12 +1790,11 @@ $("analyzerBack").onclick =
         ? "contractSection"
         : "judgmentSection"
     );
-
   };
 
 
 /* =========================
-   FILE SELECTION
+   File Selection
 ========================= */
 
 $("file").onchange = () => {
@@ -2675,8 +1802,10 @@ $("file").onchange = () => {
   const file =
     $("file").files[0];
 
-  if(!file)
+  if(!file){
     return;
+  }
+
 
   if(validate(file)){
 
@@ -2697,14 +1826,12 @@ $("file").onchange = () => {
 
     $("status").textContent =
       "الملف جاهز للتحليل.";
-
   }
-
 };
 
 
 /* =========================
-   UPLOAD
+   API Request
 ========================= */
 
 function send(
@@ -2719,17 +1846,21 @@ function send(
       const xhr =
         new XMLHttpRequest();
 
+
       xhr.open(
         "POST",
         url,
         true
       );
 
+
       xhr.responseType =
         "json";
 
+
       xhr.timeout =
         10 * 60 * 1000;
+
 
       xhr.upload.onprogress =
         event => {
@@ -2745,10 +1876,9 @@ function send(
                 100
               )
             );
-
           }
-
         };
+
 
       xhr.onload = () => {
 
@@ -2769,10 +1899,9 @@ function send(
               "حدث خطأ أثناء التحليل."
             )
           );
-
         }
-
       };
+
 
       xhr.onerror = () =>
         reject(
@@ -2781,6 +1910,7 @@ function send(
           )
         );
 
+
       xhr.ontimeout = () =>
         reject(
           new Error(
@@ -2788,16 +1918,15 @@ function send(
           )
         );
 
-      xhr.send(formData);
 
+      xhr.send(formData);
     }
   );
-
 }
 
 
 /* =========================
-   LISTS
+   Lists
 ========================= */
 
 function list(array){
@@ -2805,20 +1934,19 @@ function list(array){
   return (
     array || []
   )
-  .map(
-    item =>
-      "<li>" +
-      esc(item) +
-      "</li>"
-  )
-  .join("") ||
-  "<li>لا يوجد.</li>";
-
+    .map(
+      item =>
+        "<li>" +
+        esc(item) +
+        "</li>"
+    )
+    .join("") ||
+    "<li>لا يوجد.</li>";
 }
 
 
 /* =========================
-   CONTRACT RESULT
+   Contract Result
 ========================= */
 
 function renderContract(data){
@@ -2863,27 +1991,12 @@ ${esc(risk.question)}
       .join("") ||
     "<p>لم تظهر مخاطر واضحة.</p>";
 
+
   const information =
     data.key_information || {};
 
+
   $("result").innerHTML = `
-
-<div class="result-intro">
-
-<small>
-تحليل إحاطة
-</small>
-
-<h2>
-الخلاصة أولًا
-</h2>
-
-<p>
-${esc(data.summary || "لم يتم توفير خلاصة.")}
-</p>
-
-</div>
-
 
 <div class="result-head">
 
@@ -2917,17 +2030,29 @@ ${esc(
 </div>
 
 
-<div class="result-section">
+<div class="summary">
 
-<h3>
-📌 أهم المعلومات
-</h3>
+<b>
+الخلاصة
+</b>
+
+<br>
+
+${esc(
+  data.summary ||
+  "لم يتم إنشاء خلاصة."
+)}
+
+</div>
+
 
 <div class="info-grid">
 
 <div class="info">
 
-<b>💰 المبالغ</b>
+<b>
+💰 المبالغ
+</b>
 
 <span>
 ${
@@ -2943,7 +2068,9 @@ ${
 
 <div class="info">
 
-<b>📅 التواريخ</b>
+<b>
+📅 التواريخ
+</b>
 
 <span>
 ${
@@ -2959,7 +2086,9 @@ ${
 
 <div class="info">
 
-<b>⏳ المدد</b>
+<b>
+⏳ المدد
+</b>
 
 <span>
 ${
@@ -2974,88 +2103,42 @@ ${
 
 </div>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
-🔎 المخاطر المحتملة
-</h3>
+<h2>
+🔎 المخاطر
+</h2>
 
 ${risks}
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 ✅ نقاط جيدة
-</h3>
+</h2>
 
 <ul>
 ${list(data.good_points)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 ⚠️ غير واضح أو ناقص
-</h3>
+</h2>
 
 <ul>
 ${list(data.missing_or_unclear)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 ⚖️ توازن الالتزامات
-</h3>
+</h2>
 
 <div class="summary">
+
 ${esc(
   data.balance_check?.assessment ||
   "غير محدد"
 )}
-</div>
-
-</div>
-
-
-<div class="result-section">
-
-<h3>
-📚 ملاحظات إضافية
-</h3>
-
-<div class="source-box">
-هذا التحليل مبني على محتوى المستند المرفوع، ويهدف إلى مساعدتك على فهمه بشكل أولي.
-إذا كانت هناك نقطة مؤثرة على حق أو التزام، فمن الأفضل مراجعتها مع مختص قانوني.
-</div>
-
-<div class="followup">
-
-<button>
-ما أخطر بند؟
-</button>
-
-<button>
-اشرح لي العقد ببساطة
-</button>
-
-<button>
-ما الذي يجب أن أسأل عنه؟
-</button>
-
-</div>
 
 </div>
 
@@ -3064,12 +2147,11 @@ ${esc(
   $("result")
     .classList
     .remove("hidden");
-
 }
 
 
 /* =========================
-   JUDGMENT RESULT
+   Judgment Result
 ========================= */
 
 function renderJudgment(data){
@@ -3080,27 +2162,8 @@ function renderJudgment(data){
   const parties =
     data.parties || {};
 
+
   $("result").innerHTML = `
-
-<div class="result-intro">
-
-<small>
-تحليل إحاطة
-</small>
-
-<h2>
-الخلاصة أولًا
-</h2>
-
-<p>
-${esc(
-  data.summary ||
-  "لم يتم توفير خلاصة."
-)}
-</p>
-
-</div>
-
 
 <div class="result-head">
 
@@ -3126,212 +2189,245 @@ ${esc(
 </div>
 
 
-<div class="result-section">
+<div class="summary">
 
-<h3>
-📌 بيانات القضية
-</h3>
+<b>
+الخلاصة
+</b>
+
+<br>
+
+${esc(
+  data.summary ||
+  "لم يتم إنشاء خلاصة."
+)}
+
+</div>
+
 
 <div class="info-grid">
 
 <div class="info">
-<b>🏛️ المحكمة</b>
-<span>${esc(info.court || "غير مذكور")}</span>
-</div>
 
-<div class="info">
-<b>⚖️ الدائرة</b>
-<span>${esc(info.chamber || "غير مذكور")}</span>
-</div>
+<b>
+🏛️ المحكمة
+</b>
 
-<div class="info">
-<b>🧾 رقم القضية</b>
-<span>${esc(info.case_number || "غير مذكور")}</span>
-</div>
-
-<div class="info">
-<b>📜 رقم الحكم</b>
-<span>${esc(info.judgment_number || "غير مذكور")}</span>
-</div>
-
-<div class="info">
-<b>📅 التاريخ</b>
-<span>${esc(info.judgment_date || "غير مذكور")}</span>
-</div>
-
-<div class="info">
-<b>👥 الأطراف</b>
 <span>
-${esc(parties.claimant || "غير مذكور")}
-/
-${esc(parties.defendant || "غير مذكور")}
+${esc(
+  info.court ||
+  "غير مذكور"
+)}
 </span>
+
+</div>
+
+
+<div class="info">
+
+<b>
+⚖️ الدائرة
+</b>
+
+<span>
+${esc(
+  info.chamber ||
+  "غير مذكور"
+)}
+</span>
+
+</div>
+
+
+<div class="info">
+
+<b>
+🧾 رقم القضية
+</b>
+
+<span>
+${esc(
+  info.case_number ||
+  "غير مذكور"
+)}
+</span>
+
+</div>
+
+
+<div class="info">
+
+<b>
+📜 رقم الحكم
+</b>
+
+<span>
+${esc(
+  info.judgment_number ||
+  "غير مذكور"
+)}
+</span>
+
+</div>
+
+
+<div class="info">
+
+<b>
+📅 التاريخ
+</b>
+
+<span>
+${esc(
+  info.judgment_date ||
+  "غير مذكور"
+)}
+</span>
+
+</div>
+
+
+<div class="info">
+
+<b>
+👥 الأطراف
+</b>
+
+<span>
+${esc(
+  parties.claimant ||
+  "غير مذكور"
+)}
+/
+${esc(
+  parties.defendant ||
+  "غير مذكور"
+)}
+</span>
+
 </div>
 
 </div>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 📌 الطلبات
-</h3>
+</h2>
 
 <ul>
 ${list(data.claims)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 🛡️ الدفوع
-</h3>
+</h2>
 
 <ul>
 ${list(data.defenses)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 📖 الوقائع
-</h3>
+</h2>
 
 <ul>
 ${list(data.facts)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 ⚖️ الأسباب
-</h3>
+</h2>
 
 <ul>
 ${list(data.reasons)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 🔨 منطوق الحكم
-</h3>
+</h2>
 
 <div class="summary">
+
 ${esc(
   data.judgment ||
   "غير مذكور"
 )}
-</div>
 
 </div>
 
 
-<div class="result-section">
-
-<h3>
+<h2>
 💰 الالتزامات المالية
-</h3>
+</h2>
 
 <ul>
 ${list(data.financial_obligations)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 📅 المدد
-</h3>
+</h2>
 
 <ul>
 ${list(data.deadlines)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 📨 الاعتراض والاستئناف
-</h3>
+</h2>
 
 <div class="summary">
+
 ${esc(
   data.appeal_information ||
   "غير مذكور"
 )}
-</div>
 
 </div>
 
 
-<div class="result-section">
-
-<h3>
+<h2>
 🔎 نقاط مهمة
-</h3>
+</h2>
 
 <ul>
 ${list(data.important_points)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 ⚠️ غير واضح أو ناقص
-</h3>
+</h2>
 
 <ul>
 ${list(data.missing_or_unclear)}
 </ul>
 
-</div>
 
-
-<div class="result-section">
-
-<h3>
+<h2>
 🧑‍⚖️ تحتاج مراجعة قانونية
-</h3>
+</h2>
 
 <ul>
 ${list(data.legal_review_needed)}
 </ul>
-
-</div>
 
 `;
 
   $("result")
     .classList
     .remove("hidden");
-
 }
 
 
 /* =========================
-   ANALYZE
+   Analyze
 ========================= */
 
 $("go").onclick =
@@ -3340,51 +2436,67 @@ $("go").onclick =
     const file =
       $("file").files[0];
 
-    if(!validate(file))
+
+    if(!validate(file)){
       return;
+    }
+
 
     $("go").disabled =
       true;
+
 
     $("progressWrap")
       .classList
       .remove("hidden");
 
+
     $("result")
       .classList
       .add("hidden");
+
 
     startWait();
 
     startETA(file.size);
 
+
     $("progressText")
       .textContent =
       "جاري رفع المستند...";
+
 
     $("progressNumber")
       .textContent =
       "0%";
 
+
     $("bar")
       .classList
       .remove("indeterminate");
 
+
     $("bar").style.width =
       "0%";
 
+
     const formData =
       new FormData();
+
 
     formData.append(
       "document",
       file
     );
 
+
     let url =
       "/api/analyze";
 
-    if(mode === "contract"){
+
+    if(
+      mode === "contract"
+    ){
 
       formData.append(
         "category",
@@ -3395,8 +2507,8 @@ $("go").onclick =
 
       url =
         "/api/analyze-judgment";
-
     }
+
 
     try{
 
@@ -3413,70 +2525,88 @@ $("go").onclick =
               .textContent =
               percent + "%";
 
+
             $("progressText")
               .textContent =
               "جاري رفع المستند... " +
               percent +
               "%";
 
-            if(percent === 100){
+
+            if(
+              percent === 100
+            ){
 
               $("bar")
                 .classList
-                .add("indeterminate");
+                .add(
+                  "indeterminate"
+                );
+
 
               $("progressText")
                 .textContent =
                 "تم الرفع ✓ • جاري التحليل...";
-
             }
 
           }
         );
 
+
       stopWait();
+
 
       $("bar")
         .classList
         .remove("indeterminate");
 
+
       $("bar").style.width =
         "100%";
+
 
       $("progressNumber")
         .textContent =
         "100%";
 
+
       $("progressText")
         .textContent =
         "اكتمل التحليل ✓";
+
 
       $("status")
         .textContent =
         "تم التحليل بنجاح.";
 
-      if(mode === "contract"){
+
+      if(
+        mode === "contract"
+      ){
 
         renderContract(data);
 
       }else{
 
         renderJudgment(data);
-
       }
+
 
       $("result")
         .scrollIntoView({
           behavior:"smooth"
         });
 
+
     }catch(error){
 
       stopWait();
 
+
       $("status")
         .textContent =
         error.message;
+
 
       $("progressText")
         .textContent =
@@ -3486,17 +2616,37 @@ $("go").onclick =
 
       $("go").disabled =
         false;
-
     }
 
   };
 
 
 /* =========================
-   START
+   إزالة شاشة البداية
+   احتياطياً بعد 4 ثوانٍ
 ========================= */
 
-loadPrayerTimes();
+setTimeout(() => {
+
+  const splash =
+    $("splash");
+
+  if(splash){
+
+    splash.style.opacity =
+      "0";
+
+    splash.style.pointerEvents =
+      "none";
+
+    setTimeout(() => {
+
+      splash.remove();
+
+    },700);
+  }
+
+},4500);
 
 </script>
 
