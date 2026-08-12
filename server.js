@@ -8,17 +8,35 @@ const path = require("path");
 const app = express();
 
 /* =========================================================
-   إعدادات عامة
+   IHATA
+   مساعد فحص أولي للمستندات القانونية
 ========================================================= */
 
 const MAX_FILE_SIZE = 25 * 1024 * 1024;
+const MAX_TEXT_CHARS = 55000;
+
+/*
+  gpt-5-mini:
+  أسرع وأقل تكلفة للاختبارات والاستخدام اليومي.
+*/
+const MODEL = "gpt-5-mini";
+
+/* =========================================================
+   FILE UPLOAD
+========================================================= */
 
 const upload = multer({
   storage: multer.memoryStorage(),
+
   limits: {
-    fileSize: MAX_FILE_SIZE
+    fileSize: MAX_FILE_SIZE,
+    files: 2
   }
 });
+
+/* =========================================================
+   STATIC WEBSITE
+========================================================= */
 
 app.use(
   express.static(
@@ -26,9 +44,14 @@ app.use(
   )
 );
 
+app.use(
+  express.json({
+    limit: "1mb"
+  })
+);
 
 /* =========================================================
-   Rate Limit
+   RATE LIMIT
 ========================================================= */
 
 const requestLog = new Map();
@@ -62,7 +85,7 @@ function rateLimit(req, res, next) {
   if (recent.length >= RATE_MAX) {
     return res.status(429).json({
       error:
-        "تم الوصول إلى الحد المؤقت من التحليلات. يرجى المحاولة مرة أخرى بعد قليل."
+        "تم الوصول إلى الحد المؤقت للتحليلات. حاول مرة أخرى بعد قليل."
     });
   }
 
@@ -76,9 +99,8 @@ function rateLimit(req, res, next) {
   next();
 }
 
-
 /* =========================================================
-   Health Check
+   HEALTH CHECK
 ========================================================= */
 
 app.get(
@@ -86,18 +108,17 @@ app.get(
   (req, res) => {
     res.json({
       ok: true,
-      service: "Ihata"
+      service: "Ihata",
+      model: MODEL
     });
   }
 );
 
-
 /* =========================================================
-   OpenAI
+   OPENAI CLIENT
 ========================================================= */
 
 function getClient() {
-
   if (!process.env.OPENAI_API_KEY) {
     throw new Error(
       "لم يتم إعداد مفتاح OpenAI في متغيرات البيئة."
@@ -110,40 +131,99 @@ function getClient() {
   });
 }
 
-
 /* =========================================================
-   Helpers
+   GENERAL HELPERS
 ========================================================= */
 
 function cleanJSON(raw) {
+  let text = String(raw || "").trim();
 
-  return String(raw || "")
-    .replace(
-      /^```json\s*/i,
-      ""
-    )
-    .replace(
-      /^```\s*/i,
-      ""
-    )
-    .replace(
-      /```\s*$/i,
-      ""
-    )
+  text = text
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/```\s*$/i, "")
     .trim();
 
+  return text;
 }
 
+function extractJSON(raw) {
+  const cleaned =
+    cleanJSON(raw);
+
+  if (!cleaned) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(cleaned);
+  } catch {}
+
+  /*
+    محاولة استخراج أول object JSON
+    إذا أضاف النموذج كلامًا قبل أو بعد JSON.
+  */
+
+  const first =
+    cleaned.indexOf("{");
+
+  const last =
+    cleaned.lastIndexOf("}");
+
+  if (
+    first !== -1 &&
+    last !== -1 &&
+    last > first
+  ) {
+    try {
+      return JSON.parse(
+        cleaned.slice(
+          first,
+          last + 1
+        )
+      );
+    } catch {}
+  }
+
+  return null;
+}
+
+function parseResponse(
+  response,
+  fallback
+) {
+  const raw =
+    response?.output_text || "";
+
+  const parsed =
+    extractJSON(raw);
+
+  if (parsed) {
+    return parsed;
+  }
+
+  /*
+    إذا رجع النموذج نصًا بدل JSON
+    لا نخلي الموقع ينهار.
+  */
+
+  return {
+    ...fallback,
+    summary:
+      cleanJSON(raw) ||
+      fallback.summary ||
+      "تعذر استخراج نتيجة منظمة من التحليل."
+  };
+}
 
 function getFileType(file) {
-
   const name =
     String(
-      file.originalname || ""
+      file?.originalname || ""
     ).toLowerCase();
 
   if (
-    file.mimetype ===
+    file?.mimetype ===
       "application/pdf" ||
     name.endsWith(".pdf")
   ) {
@@ -151,7 +231,7 @@ function getFileType(file) {
   }
 
   if (
-    file.mimetype ===
+    file?.mimetype ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
     name.endsWith(".docx")
   ) {
@@ -161,9 +241,7 @@ function getFileType(file) {
   return null;
 }
 
-
 function safeCategory(value) {
-
   const allowed = [
     "مقاولات وأعمال",
     "عقود تجارية",
@@ -180,38 +258,49 @@ function safeCategory(value) {
     : "غير محدد";
 }
 
-
 /* =========================================================
-   DOCX
+   DOCX EXTRACTION
 ========================================================= */
 
 async function extractDOCX(file) {
-
   const result =
     await mammoth.extractRawText({
       buffer: file.buffer
     });
 
-  return result.value.trim();
+  const text =
+    String(
+      result.value || ""
+    ).trim();
+
+  if (!text) {
+    throw new Error(
+      "لم أستطع استخراج نص من ملف Word."
+    );
+  }
+
+  return text.slice(
+    0,
+    MAX_TEXT_CHARS
+  );
 }
 
-
 /* =========================================================
-   PDF
+   PDF UPLOAD TO OPENAI
 ========================================================= */
 
 async function uploadPDF(
   client,
   file
 ) {
-
   const fileForOpenAI =
     await toFile(
       file.buffer,
       file.originalname ||
         "document.pdf",
       {
-        type: "application/pdf"
+        type:
+          "application/pdf"
       }
     );
 
@@ -221,289 +310,207 @@ async function uploadPDF(
   });
 }
 
-
 /* =========================================================
-   JSON Parser
+   COMMON LEGAL STYLE
 ========================================================= */
 
-function parseResponse(
-  response,
-  fallback
-) {
+const legalStyle = `
+أسلوبك في التحليل يجب أن يكون:
 
-  const raw =
-    cleanJSON(
-      response?.output_text ||
-      ""
-    );
-
-  if (!raw) {
-    return fallback;
-  }
-
-  try {
-
-    return JSON.parse(raw);
-
-  } catch {
-
-    return {
-      ...fallback,
-      summary: raw
-    };
-
-  }
-}
-
-
-/* =========================================================
-   الأسلوب العام لإحاطة
-========================================================= */
-
-const IHATA_STYLE = `
-
-أنت "إحاطة"، مساعد ذكي متخصص في الفحص الأولي للمستندات
-والمعلومات القانونية.
-
-أسلوبك القانوني يجب أن يكون:
-
-- رسميًا.
-- رصينًا.
-- دقيقًا.
-- واضحًا وسهل الفهم.
-- خاليًا من العامية.
-- خاليًا من المبالغة.
-- لا تستخدم عبارات تسويقية.
-- لا تستخدم لغة روبوتية جامدة.
-- لا تستخدم عبارات قطعية عندما لا تسمح الوثيقة أو المعطيات بذلك.
-
-استخدم المصطلحات القانونية الصحيحة، ثم وضح أثرها بلغة يفهمها غير المتخصص.
-
-لا تفترض أن المستخدم محامٍ.
-
-عند شرح أي نقطة مهمة، حاول تنظيمها ذهنيًا وفق:
-
-1. النتيجة أو الخلاصة.
-2. التحليل.
-3. الأثر المحتمل.
-4. ما يستحق المراجعة.
-
-لا يلزم إظهار هذه العناوين في كل إجابة إذا كان ذلك سيجعل النص متكررًا،
-لكن يجب أن يكون هذا التسلسل حاضرًا في طريقة التحليل.
-
-مثال على الأسلوب المطلوب:
-
-"تظهر مخاطرة تعاقدية في بند الإنهاء، إذ يتيح البند لأحد الأطراف
-إنهاء العقد وفق شروط محددة دون ظهور حق مماثل للطرف الآخر.
-وقد يؤدي ذلك إلى عدم توازن نسبي في حقوق الإنهاء. ويوصى بمراجعة
-نطاق هذا الحق وشروط ممارسته قبل التوقيع."
-
-وليس:
-
-"البند هذا فيه مشكلة كبيرة."
-
-إذا كانت المعلومة غير موجودة في المستند، قل:
-
-"غير مذكور في المستند."
-
-إذا كانت المسألة تحتاج إلى تفسير أو تحقق من نظام سعودي،
-قل:
-
-"تحتاج مراجعة قانونية سعودية."
-
-لا تقدم رأيًا قانونيًا قطعيًا عندما لا تتوافر المعطيات الكافية.
-
-لا تخترع:
-- مواد نظامية.
-- أحكامًا قضائية.
-- أرقام قضايا.
-- تواريخ.
-- مبالغ.
-- وقائع.
-- التزامات.
-- حقوقًا غير مذكورة.
-
-فرّق دائمًا بين:
-- ما ورد صراحة في المستند.
-- ما يمكن استنتاجه من صياغته.
-- وما يحتاج إلى مراجعة قانونية.
-
+1. قانونيًا ومنظمًا.
+2. واضحًا لغير المتخصص.
+3. هادئًا وغير مخيف.
+4. لا تستخدم لغة قانونية معقدة دون شرحها.
+5. إذا ذكرت مصطلحًا قانونيًا مهمًا، اشرح معناه بجملة قصيرة.
+6. لا تقل "هذا العقد باطل" أو "هذا البند غير قانوني" إلا إذا كان ذلك ثابتًا بشكل واضح من النص ومسموحًا بإثباته.
+7. الأفضل استخدام عبارات مثل:
+   - "هذه النقطة تستحق الانتباه."
+   - "قد تحمل هذه الصياغة مخاطرة."
+   - "يُنصح بمراجعة هذه النقطة."
+   - "تحتاج مراجعة قانونية سعودية."
+8. فرّق دائمًا بين:
+   - ما ورد فعلًا في المستند.
+   - ما يمكن ملاحظته من ناحية الصياغة.
+   - ما يحتاج إلى رأي أو تحقق قانوني.
+9. لا تخترع مادة نظامية أو رقم مادة أو حكم قضائي.
+10. لا تفترض وقائع غير موجودة في المستند.
 `;
 
-
 /* =========================================================
-   Contract Prompt
+   CONTRACT INSTRUCTIONS
 ========================================================= */
 
-function contractInstructions(category) {
-
+function contractInstructions(
+  category
+) {
   return `
+أنت "إحاطة"، مساعد ذكي للفحص الأولي للمستندات القانونية في السعودية.
 
-${IHATA_STYLE}
+${legalStyle}
 
-أنت الآن تحلل عقدًا.
+المستند الذي أمامك عقد.
 
-الاختيار المبدئي للمستخدم:
+القسم الذي اختاره المستخدم:
 ${category}
 
-لا تعتمد على الاختيار بشكل أعمى.
+مهم جدًا:
 
-حدد نوع العقد الحقيقي من محتواه، ثم قارنه بالتصنيف المختار.
+اختيار المستخدم ليس بالضرورة النوع الحقيقي للعقد.
 
-إذا كان التصنيف المختار غير مناسب، وضح ذلك في:
-selected_category
+افهم محتوى العقد أولًا، ثم حدد نوعه الحقيقي.
 
-والـ document_type يجب أن يعكس طبيعة المستند الفعلية.
+لا تعتمد على اسم الملف وحده.
 
-راجع العقد من الناحية التالية:
+حلل العقد كما هو مكتوب.
 
-أولًا: البيانات الأساسية
+ركّز على البنود التي يمكن أن يكون لها أثر عملي أو مالي أو تعاقدي.
+
+افحص خصوصًا:
 
 - أطراف العقد.
-- صفات الأطراف إذا كانت مذكورة.
 - موضوع العقد.
-- تاريخ العقد.
-- مدة العقد.
-- التجديد.
-- الإشعارات.
-- المبالغ.
-- العملات.
-- النسب.
+- الالتزامات الرئيسية.
+- المقابل المالي.
+- الدفعات.
 - المواعيد.
-
-ثانيًا: الالتزامات
-
-- التزامات كل طرف.
-- مواعيد التنفيذ.
-- شروط التسليم.
-- شروط الدفع.
-- الضمانات.
-- المسؤوليات.
-
-ثالثًا: المخاطر
-
-راجع خصوصًا:
-
-- الشرط الجزائي.
-- المسؤولية.
-- التعويض.
-- حدود المسؤولية.
+- المدد.
+- التجديد.
 - الإنهاء.
 - الفسخ.
-- التجديد.
+- الشرط الجزائي.
+- التعويض.
+- المسؤولية.
+- حدود المسؤولية.
 - التأخير.
-- الدفع.
-- تعديل الأسعار.
+- القوة القاهرة إذا وجدت.
 - السرية.
 - الملكية الفكرية.
+- عدم المنافسة إذا وجدت.
 - الاختصاص القضائي.
 - تسوية النزاعات.
-- الالتزامات غير المتوازنة.
-- المخاطر المالية.
-- المخاطر التشغيلية.
+- الإشعارات.
+- التنازل.
+- التعديل.
+- الضمانات.
+- التأمين.
+- الالتزامات التي تقع على طرف دون الآخر.
+- أي صياغة غامضة أو واسعة جدًا.
 
-إذا كان العقد مقاولات أو أعمالًا، راجع:
+إذا كان العقد مقاولات أو أعمال، راجع أيضًا:
 
 - نطاق العمل.
 - مدة التنفيذ.
-- المستخلصات.
+- الدفعات والمستخلصات.
 - الدفعة المقدمة.
+- الأعمال الإضافية.
+- أوامر التغيير.
 - التأخير.
 - غرامات التأخير.
-- الأعمال الإضافية.
-- تغيير نطاق العمل.
-- المواصفات.
 - الاستلام.
 - العيوب.
 - الضمان.
-- التأمين.
 - سحب الأعمال.
 - الإنهاء.
 
-إذا كان إيجارًا، راجع:
+إذا كان إيجارًا:
 
 - مدة الإيجار.
 - الأجرة.
-- التجديد.
 - الزيادة.
+- التجديد.
 - التأمين.
 - الصيانة.
 - الإخلاء.
 - الفسخ.
+- التزامات المؤجر والمستأجر.
 
-إذا كان عقد عمل، راجع:
+إذا كان عقد عمل:
 
 - الأجر.
-- مدة العقد.
+- المدة.
 - فترة التجربة.
 - ساعات العمل.
 - الإجازات.
-- الإنهاء.
 - السرية.
 - الملكية الفكرية.
+- إنهاء العلاقة.
+- الالتزامات بعد انتهاء العمل.
 
-إذا كان العقد تجاريًا أو تقنيًا، راجع كذلك:
+إذا كان عقد توريد:
 
-- نطاق الخدمات.
-- مستوى الخدمة إن وجد.
+- المواصفات.
+- الكميات.
+- الأسعار.
+- مواعيد التسليم.
+- قبول أو رفض المنتجات.
+- العيوب.
+- الضمان.
+- التأخير.
+- الدفع.
+
+إذا كان عقد تقنية أو خدمات:
+
+- نطاق الخدمة.
+- مستوى الخدمة.
 - الملكية الفكرية.
 - البيانات.
 - السرية.
 - الدعم.
-- التحديثات.
+- مدة الخدمة.
+- الإنهاء.
 - المسؤولية.
-- حدود الاستخدام.
+- حدود المسؤولية.
 
-مهم:
+استخرج المعلومات المهمة:
 
-لا تعتبر غياب بند معين مخالفة قانونية تلقائيًا.
+- المبالغ.
+- العملات.
+- النسب.
+- التواريخ.
+- المدد.
+- أرقام البنود المهمة.
 
-لا تعتبر وجود شرط معين مخالفًا للنظام لمجرد أنه غير مألوف.
+في المخاطر:
 
-إذا ظهرت نقطة قد يكون لها أثر قانوني مهم، اشرح السبب بدل إطلاق حكم قطعي.
+level يجب أن يكون:
+"high"
+أو
+"medium"
+أو
+"low"
 
-في risks:
+لكن لا تعتبر كل ملاحظة "خطرًا".
 
-level يجب أن يكون واحدًا من:
+الخطر العالي:
+نقطة قد يكون لها أثر مالي أو تعاقدي كبير.
 
-high
-medium
-low
+المتوسط:
+نقطة تستحق الانتباه أو التوضيح.
 
-استخدم:
+المنخفض:
+ملاحظة محدودة الأثر.
 
-high
-عندما يكون البند ذا أثر مالي أو قانوني جوهري أو ينشئ التزامًا
-قد يكون عالي الأثر.
+في clause:
+اكتب وصفًا مختصرًا للبند أو موضعه.
 
-medium
-عندما تكون المسألة مهمة ولكن أثرها يعتمد على ظروف أو صياغة إضافية.
-
-low
-عندما تكون الملاحظة محدودة الأثر أو تحتاج فقط إلى توضيح.
+في why:
+اشرح للمستخدم ببساطة لماذا تستحق النقطة الانتباه.
 
 في question:
-اكتب سؤالًا عمليًا يستطيع المستخدم طرحه على الطرف الآخر
-أو على المحامي.
+حوّل المشكلة إلى سؤال عملي يمكن للمستخدم طرحه قبل التوقيع.
 
-في good_points:
-اذكر البنود أو الحمايات الموجودة فعلًا في المستند.
+لا تقل إن غياب بند معين يعني تلقائيًا أن العقد مخالف للنظام.
 
-في missing_or_unclear:
-اذكر فقط ما ظهر أنه غير واضح أو غير موجود وله أهمية فعلية.
+إذا لم تجد معلومة مهمة:
+ضعها في missing_or_unclear.
 
-في balance_check:
-قيّم التوازن التعاقدي من حيث توزيع الالتزامات والحقوق،
-ولا تصدر حكمًا قانونيًا قطعيًا.
+النتيجة يجب أن تكون JSON صالح فقط.
 
-أخرج JSON صالح فقط.
-
-الصيغة:
+الشكل:
 
 {
   "document_type": "",
   "selected_category": "${category}",
-
   "score": 0,
 
   "summary": "",
@@ -534,29 +541,40 @@ low
   }
 }
 
+مهم:
+summary يجب أن يكون طبيعيًا وسهل القراءة، وكأنه مستشار يشرح لصاحب العقد ماذا وجد، وليس تقريرًا آليًا جامدًا.
+
+score من 0 إلى 100:
+
+0 = لا تظهر مخاطر جوهرية في الفحص الأولي.
+
+100 = توجد عدة نقاط عالية الأهمية تستحق مراجعة عاجلة.
+
+الدرجة تقديرية للفحص الأولي وليست تقييمًا قانونيًا نهائيًا.
 `;
 }
 
-
 /* =========================================================
-   Judgment Prompt
+   JUDGMENT INSTRUCTIONS
 ========================================================= */
 
 const judgmentInstructions = `
+أنت "إحاطة"، مساعد ذكي للفحص الأولي للأحكام والوثائق القضائية في السعودية.
 
-${IHATA_STYLE}
+${legalStyle}
 
-أنت الآن تحلل حكمًا أو وثيقة قضائية.
-
-التحليل يجب أن يركز على مضمون الوثيقة كما ورد فيها.
+حلل الوثيقة كما هي.
 
 لا تصدر حكمًا جديدًا.
 
-لا تتنبأ بنتيجة الاستئناف.
+لا تتوقع نتيجة الاستئناف.
 
 لا تقل إن الحكم صحيح أو باطل بشكل قطعي.
 
-لا تفترض أن الحكم نهائي إلا إذا ذكرت الوثيقة ذلك صراحة.
+لا تخترع مواد أو أنظمة أو وقائع.
+
+إذا كانت المعلومة غير موجودة:
+اكتب "غير مذكور في الوثيقة".
 
 استخرج قدر الإمكان:
 
@@ -571,7 +589,7 @@ ${IHATA_STYLE}
 - الوقائع.
 - الطلبات.
 - الدفوع.
-- الأدلة إذا وردت.
+- الأدلة إذا كانت مذكورة.
 - أسباب الحكم.
 - منطوق الحكم.
 - المبالغ.
@@ -579,38 +597,26 @@ ${IHATA_STYLE}
 - المدد.
 - الاعتراض.
 - الاستئناف.
-- القطعية إذا ذكرت صراحة.
+- القطعية إذا كانت مذكورة صراحة.
 
-عند تلخيص الحكم:
+اشرح للمستخدم باختصار:
+"ماذا حصل؟"
+"ماذا طلب الأطراف؟"
+"لماذا اتجهت المحكمة لهذا الحكم بحسب ما يظهر في الوثيقة؟"
+"ما الذي انتهى إليه الحكم؟"
+"ما الالتزامات الناتجة عنه؟"
 
-ابدأ بالنتيجة التي انتهت إليها المحكمة.
+لا تستنتج شيئًا غير مذكور.
 
-ثم وضح بصورة مختصرة:
-- ماذا طلب الأطراف؟
-- ما الذي اعتمدت عليه المحكمة؟
-- ماذا قررت؟
-- ما الالتزامات الناتجة عن الحكم؟
+إذا لاحظت تعارضًا ظاهرًا داخل الوثيقة، اذكره فقط إذا كان واضحًا من النص.
 
-إذا كان هناك فرق بين الوقائع والطلبات والمنطوق،
-حافظ على هذا الفرق.
-
-إذا وجدت تعارضًا ظاهرًا داخل الوثيقة،
-اذكره بوصفه تعارضًا ظاهرًا فقط.
-
-لا تحاول تصحيح الوثيقة من نفسك.
-
-في legal_review_needed:
-ضع النقاط التي تستحق مراجعة قانونية متخصصة،
-خصوصًا إذا كان فهمها يعتمد على نظام أو إجراء غير ظاهر في الوثيقة.
-
-إذا لم تكن المعلومة موجودة:
-اكتب "غير مذكور في الوثيقة".
+إذا كانت نقطة تحتاج معرفة أو تحققًا قانونيًا:
+ضعها في legal_review_needed.
 
 أخرج JSON صالح فقط:
 
 {
   "document_type": "",
-
   "case_type": "",
 
   "case_information": {
@@ -629,17 +635,13 @@ ${IHATA_STYLE}
   "summary": "",
 
   "claims": [],
-
   "defenses": [],
-
   "facts": [],
-
   "reasons": [],
 
   "judgment": "",
 
   "financial_obligations": [],
-
   "deadlines": [],
 
   "appeal_information": "",
@@ -651,32 +653,32 @@ ${IHATA_STYLE}
   "legal_review_needed": []
 }
 
+summary يجب أن يكون شرحًا طبيعيًا وواضحًا وليس مجرد إعادة نسخ للوثيقة.
 `;
 
-
 /* =========================================================
-   Comparison Prompt
+   COMPARISON INSTRUCTIONS
 ========================================================= */
 
 const comparisonInstructions = `
+أنت "إحاطة"، مساعد ذكي لمقارنة المستندات القانونية في السعودية.
 
-${IHATA_STYLE}
+${legalStyle}
 
-أنت الآن تقارن بين مستندين قانونيين.
+قارن المستند الأول والثاني بدقة.
 
-المطلوب تحديد الفروقات الفعلية بين المستندين،
-وليس مجرد تلخيص كل مستند.
+لا تفترض أن المستند الثاني أفضل أو أسوأ إلا بناءً على التغييرات الموجودة فعلًا.
 
-قارن خصوصًا:
+حدد:
 
 - البنود المضافة.
 - البنود المحذوفة.
-- البنود المعدلة.
-- المبالغ.
-- الأسعار.
-- النسب.
-- التواريخ.
-- المدد.
+- البنود التي تغيرت.
+- تغير المبالغ.
+- تغير الأسعار.
+- تغير النسب.
+- تغير التواريخ.
+- تغير المدد.
 - الشرط الجزائي.
 - الإنهاء.
 - التجديد.
@@ -688,21 +690,12 @@ ${IHATA_STYLE}
 - الاختصاص.
 - تسوية النزاعات.
 - الالتزامات.
-- المخاطر المالية.
-- المخاطر التشغيلية.
+- أي تغير قد يرفع أو يخفض المخاطر.
 
-عند اكتشاف تغيير:
+لا تخترع بندًا غير موجود.
 
-اشرح:
-1. ماذا كان في المستند الأول؟
-2. ماذا أصبح في المستند الثاني؟
-3. ما الأثر المحتمل لهذا التغيير؟
-
-لا تفترض أن التغيير ضار لمجرد أنه تغيير.
-
-إذا كان التغيير يحتاج إلى تفسير قانوني سعودي،
-اكتب:
-"تحتاج مراجعة قانونية سعودية."
+إذا لم يوجد تغيير:
+اذكر ذلك.
 
 أخرج JSON صالح فقط:
 
@@ -723,23 +716,16 @@ ${IHATA_STYLE}
   ],
 
   "added_clauses": [],
-
   "removed_clauses": [],
-
   "changed_amounts": [],
-
   "changed_dates_or_durations": [],
-
   "changed_obligations": [],
-
   "legal_review_needed": []
 }
-
 `;
 
-
 /* =========================================================
-   Analyze Single Document
+   ANALYZE SINGLE DOCUMENT
 ========================================================= */
 
 async function analyzeSingle(
@@ -747,7 +733,6 @@ async function analyzeSingle(
   file,
   instructions
 ) {
-
   const type =
     getFileType(file);
 
@@ -757,41 +742,30 @@ async function analyzeSingle(
     );
   }
 
-
-  /* DOCX */
+  /* -------------------------------------------------------
+     DOCX
+  ------------------------------------------------------- */
 
   if (type === "docx") {
-
     const text =
       await extractDOCX(file);
 
-    if (!text) {
-      throw new Error(
-        "لم أستطع استخراج النص من ملف Word."
-      );
-    }
-
     return client.responses.create({
-
-      model: "gpt-5",
+      model: MODEL,
 
       input: `
 ${instructions}
 
 نص الوثيقة:
 
-${text.slice(
-  0,
-  65000
-)}
+${text}
 `
-
     });
-
   }
 
-
-  /* PDF */
+  /* -------------------------------------------------------
+     PDF
+  ------------------------------------------------------- */
 
   const uploaded =
     await uploadPDF(
@@ -800,10 +774,8 @@ ${text.slice(
     );
 
   try {
-
     return await client.responses.create({
-
-      model: "gpt-5",
+      model: MODEL,
 
       input: [
         {
@@ -824,33 +796,33 @@ ${text.slice(
           ]
         }
       ]
-
     });
-
   } finally {
+    /*
+      حذف الملف من OpenAI بعد انتهاء التحليل.
+    */
 
     try {
-
       await client.files.delete(
         uploaded.id
       );
-
-    } catch {}
-
+    } catch (deleteError) {
+      console.warn(
+        "تعذر حذف ملف OpenAI المؤقت:",
+        deleteError.message
+      );
+    }
   }
-
 }
 
-
 /* =========================================================
-   Comparison Preparation
+   PREPARE COMPARISON FILE
 ========================================================= */
 
 async function prepareComparisonFile(
   client,
   file
 ) {
-
   const type =
     getFileType(file);
 
@@ -860,35 +832,17 @@ async function prepareComparisonFile(
     );
   }
 
-
   if (type === "docx") {
-
     const text =
       await extractDOCX(file);
 
-    if (!text) {
-      throw new Error(
-        "لم أستطع استخراج النص من ملف Word."
-      );
-    }
-
     return {
-
       type: "text",
-
       name:
         file.originalname,
-
-      text:
-        text.slice(
-          0,
-          65000
-        )
-
+      text
     };
-
   }
-
 
   const uploaded =
     await uploadPDF(
@@ -897,22 +851,16 @@ async function prepareComparisonFile(
     );
 
   return {
-
     type: "file",
-
     name:
       file.originalname,
-
     fileId:
       uploaded.id
-
   };
-
 }
 
-
 /* =========================================================
-   Compare Documents
+   COMPARE DOCUMENTS
 ========================================================= */
 
 async function compareDocuments(
@@ -920,7 +868,6 @@ async function compareDocuments(
   file1,
   file2
 ) {
-
   const first =
     await prepareComparisonFile(
       client,
@@ -933,9 +880,7 @@ async function compareDocuments(
       file2
     );
 
-
   const content = [
-
     {
       type: "input_text",
       text:
@@ -953,59 +898,49 @@ async function compareDocuments(
       text:
         `اسم المستند الثاني: ${second.name}`
     }
-
   ];
 
+  /* المستند الأول */
 
   if (
     first.type ===
     "file"
   ) {
-
     content.push({
       type: "input_file",
       file_id:
         first.fileId
     });
-
   } else {
-
     content.push({
       type: "input_text",
       text:
         `نص المستند الأول:\n${first.text}`
     });
-
   }
 
+  /* المستند الثاني */
 
   if (
     second.type ===
     "file"
   ) {
-
     content.push({
       type: "input_file",
       file_id:
         second.fileId
     });
-
   } else {
-
     content.push({
       type: "input_text",
       text:
         `نص المستند الثاني:\n${second.text}`
     });
-
   }
 
-
   try {
-
     return await client.responses.create({
-
-      model: "gpt-5",
+      model: MODEL,
 
       input: [
         {
@@ -1013,131 +948,90 @@ async function compareDocuments(
           content
         }
       ]
-
     });
-
   } finally {
+    /* حذف ملفات PDF المؤقتة */
 
     if (
       first.type ===
       "file"
     ) {
-
       try {
-
         await client.files.delete(
           first.fileId
         );
-
       } catch {}
-
     }
-
 
     if (
       second.type ===
       "file"
     ) {
-
       try {
-
         await client.files.delete(
           second.fileId
         );
-
       } catch {}
-
     }
-
   }
-
 }
 
-
 /* =========================================================
-   Contract API
+   CONTRACT API
 ========================================================= */
 
 app.post(
   "/api/analyze",
-
   rateLimit,
+  upload.single("document"),
 
-  upload.single(
-    "document"
-  ),
-
-  async (
-    req,
-    res
-  ) => {
-
+  async (req, res) => {
     try {
-
       const client =
         getClient();
 
-
       if (!req.file) {
-
         return res
           .status(400)
           .json({
             error:
-              "يرجى رفع ملف PDF أو DOCX."
+              "ارفع ملف PDF أو DOCX أولًا."
           });
-
       }
-
 
       const category =
         safeCategory(
           req.body?.category
         );
 
-
       const response =
         await analyzeSingle(
-
           client,
-
           req.file,
-
           contractInstructions(
             category
           )
-
         );
 
-
-      return res.json(
-
+      const result =
         parseResponse(
-
           response,
-
           {
-
             document_type:
               "غير محدد",
 
             selected_category:
               category,
 
-            score:
-              null,
+            score: null,
 
             summary:
-              "",
+              "تعذر استخراج نتيجة منظمة.",
 
             key_information: {
-
               amounts: [],
-
               dates: [],
-
               durations: []
-
             },
 
             risks: [],
@@ -1147,18 +1041,14 @@ app.post(
             missing_or_unclear: [],
 
             balance_check: {
-
-              assessment:
-                "",
-
+              assessment: "",
               notes: []
-
             }
-
           }
+        );
 
-        )
-
+      return res.json(
+        result
       );
 
     } catch (err) {
@@ -1168,136 +1058,92 @@ app.post(
         err
       );
 
+      const message =
+        err?.message ||
+        "حدث خطأ أثناء تحليل العقد.";
 
       return res
         .status(
-          err.message?.includes(
-            "25MB"
-          )
+          message
+            .toLowerCase()
+            .includes("25mb")
             ? 413
             : 500
         )
         .json({
-
           error:
-            err.message ||
-            "حدث خطأ أثناء تحليل العقد."
-
+            message
         });
-
     }
-
   }
 );
 
-
 /* =========================================================
-   Judgment API
+   JUDGMENT API
 ========================================================= */
 
 app.post(
   "/api/analyze-judgment",
-
   rateLimit,
+  upload.single("document"),
 
-  upload.single(
-    "document"
-  ),
-
-  async (
-    req,
-    res
-  ) => {
-
+  async (req, res) => {
     try {
-
       const client =
         getClient();
 
-
       if (!req.file) {
-
         return res
           .status(400)
           .json({
             error:
-              "يرجى رفع صك الحكم بصيغة PDF أو DOCX."
+              "ارفع الوثيقة القضائية بصيغة PDF أو DOCX."
           });
-
       }
-
 
       const response =
         await analyzeSingle(
-
           client,
-
           req.file,
-
           judgmentInstructions
-
         );
 
-
-      return res.json(
-
+      const result =
         parseResponse(
-
           response,
-
           {
-
             document_type:
               "وثيقة قضائية",
 
-            case_type:
-              "",
+            case_type: "",
 
             case_information: {
-
-              court:
-                "",
-
-              chamber:
-                "",
-
-              case_number:
-                "",
-
-              judgment_number:
-                "",
-
-              judgment_date:
-                ""
-
+              court: "",
+              chamber: "",
+              case_number: "",
+              judgment_number: "",
+              judgment_date: ""
             },
 
             parties: {
-
-              claimant:
-                "",
-
-              defendant:
-                ""
-
+              claimant: "",
+              defendant: ""
             },
 
             summary:
-              "",
+              "تعذر استخراج نتيجة منظمة.",
 
             claims: [],
             defenses: [],
             facts: [],
             reasons: [],
 
-            judgment:
-              "",
+            judgment: "",
 
             financial_obligations:
               [],
 
-            deadlines:
-              [],
+            deadlines: [],
 
             appeal_information:
               "",
@@ -1310,11 +1156,11 @@ app.post(
 
             legal_review_needed:
               []
-
           }
+        );
 
-        )
-
+      return res.json(
+        result
       );
 
     } catch (err) {
@@ -1324,114 +1170,71 @@ app.post(
         err
       );
 
-
       return res
         .status(500)
         .json({
-
           error:
-            err.message ||
+            err?.message ||
             "حدث خطأ أثناء تحليل الحكم."
-
         });
-
     }
-
   }
 );
 
-
 /* =========================================================
-   Comparison API
+   COMPARISON API
 ========================================================= */
 
 app.post(
-
   "/api/compare",
-
   rateLimit,
 
   upload.fields([
-
     {
-      name:
-        "document1",
-
-      maxCount:
-        1
-
+      name: "document1",
+      maxCount: 1
     },
 
     {
-      name:
-        "document2",
-
-      maxCount:
-        1
+      name: "document2",
+      maxCount: 1
     }
-
   ]),
 
-  async (
-    req,
-    res
-  ) => {
-
+  async (req, res) => {
     try {
-
       const client =
         getClient();
 
-
       const file1 =
-        req.files
-          ?.document1
-          ?.[0];
-
+        req.files?.document1?.[0];
 
       const file2 =
-        req.files
-          ?.document2
-          ?.[0];
-
+        req.files?.document2?.[0];
 
       if (
         !file1 ||
         !file2
       ) {
-
         return res
           .status(400)
           .json({
-
             error:
-              "يرجى رفع المستندين أولًا."
-
+              "ارفع المستندين أولًا."
           });
-
       }
-
 
       const response =
         await compareDocuments(
-
           client,
-
           file1,
-
           file2
-
         );
 
-
-      return res.json(
-
+      const result =
         parseResponse(
-
           response,
-
           {
-
             document_1_type:
               "غير محدد",
 
@@ -1439,7 +1242,7 @@ app.post(
               "غير محدد",
 
             summary:
-              "",
+              "تعذر استخراج نتيجة منظمة.",
 
             important_changes:
               [],
@@ -1461,11 +1264,11 @@ app.post(
 
             legal_review_needed:
               []
-
           }
+        );
 
-        )
-
+      return res.json(
+        result
       );
 
     } catch (err) {
@@ -1475,30 +1278,22 @@ app.post(
         err
       );
 
-
       return res
         .status(500)
         .json({
-
           error:
-            err.message ||
+            err?.message ||
             "حدث خطأ أثناء مقارنة المستندين."
-
         });
-
     }
-
   }
-
 );
 
-
 /* =========================================================
-   Multer Errors
+   MULTER ERROR HANDLER
 ========================================================= */
 
 app.use(
-
   (
     err,
     req,
@@ -1515,57 +1310,83 @@ app.use(
         err.code ===
         "LIMIT_FILE_SIZE"
       ) {
-
         return res
           .status(413)
           .json({
-
             error:
               "حجم الملف كبير. الحد الأقصى 25MB."
-
           });
-
       }
 
+      if (
+        err.code ===
+        "LIMIT_FILE_COUNT"
+      ) {
+        return res
+          .status(400)
+          .json({
+            error:
+              "عدد الملفات المسموح به غير صحيح."
+          });
+      }
 
       return res
         .status(400)
         .json({
-
           error:
             "حدث خطأ أثناء رفع الملف."
-
         });
-
     }
 
-
     next(err);
-
   }
-
 );
 
+/* =========================================================
+   GENERAL ERROR HANDLER
+========================================================= */
+
+app.use(
+  (
+    err,
+    req,
+    res,
+    next
+  ) => {
+
+    console.error(
+      "Unhandled error:",
+      err
+    );
+
+    if (
+      res.headersSent
+    ) {
+      return next(err);
+    }
+
+    res
+      .status(500)
+      .json({
+        error:
+          "حدث خطأ غير متوقع في الخادم."
+      });
+  }
+);
 
 /* =========================================================
-   Server
+   SERVER
 ========================================================= */
 
 const port =
   process.env.PORT ||
   3000;
 
-
 app.listen(
-
   port,
-
   () => {
-
     console.log(
-      `Ihata running on ${port}`
+      `Ihata running on port ${port}`
     );
-
   }
-
 );
