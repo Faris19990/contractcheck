@@ -183,13 +183,81 @@ button{
   overflow:hidden;
 }
 
+/* زخارف الخلفية */
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:520px;
+  height:520px;
+  border:1px solid rgba(184,148,82,.16);
+  border-radius:50%;
+  right:-210px;
+  top:20px;
+  box-shadow:
+    0 0 0 45px rgba(184,148,82,.035),
+    0 0 0 90px rgba(184,148,82,.025);
+  pointer-events:none;
+  z-index:0;
+}
+
+.hero::after{
+  content:"⚖";
+  position:absolute;
+  left:-35px;
+  bottom:35px;
+  font-family:Georgia,serif;
+  font-size:190px;
+  color:rgba(61,68,33,.035);
+  transform:rotate(-8deg);
+  pointer-events:none;
+  z-index:0;
+}
+
 .hero-center{
   text-align:center;
   position:relative;
   z-index:2;
+  isolation:isolate;
+}
+
+/* دائرة خلف الشعار */
+
+.hero-center::before{
+  content:"";
+  position:absolute;
+  width:330px;
+  height:330px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-48%);
+  border:1px solid rgba(184,148,82,.09);
+  border-radius:50%;
+  box-shadow:
+    0 0 0 22px rgba(184,148,82,.025),
+    0 0 0 44px rgba(61,68,33,.018);
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* الرمز الجانبي */
+
+.hero-center::after{
+  content:"§";
+  position:absolute;
+  right:-130px;
+  top:55%;
+  font-family:Georgia,serif;
+  font-size:150px;
+  color:rgba(61,68,33,.035);
+  transform:rotate(10deg);
+  pointer-events:none;
+  z-index:-1;
 }
 
 .hero-logo{
+  position:relative;
+  z-index:4;
   width:82px;
   height:82px;
   margin:auto;
@@ -199,18 +267,45 @@ button{
   display:grid;
   place-items:center;
   font-size:42px;
+  border:1px solid rgba(216,193,138,.22);
   box-shadow:0 18px 45px rgba(61,68,33,.20);
 }
 
+.hero-center .hero-logo::before,
+.hero-center .hero-logo::after{
+  content:"";
+  position:absolute;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:.65;
+}
+
+.hero-center .hero-logo::before{
+  right:-55px;
+  top:50%;
+}
+
+.hero-center .hero-logo::after{
+  left:-55px;
+  top:50%;
+}
+
 .hero h1{
+  position:relative;
+  z-index:3;
   font-family:Georgia,serif;
   font-size:clamp(65px,9vw,105px);
-  margin:17px 0 0;
+  margin:10px 0 2px;
   letter-spacing:-4px;
   color:var(--olive);
+  text-shadow:0 8px 25px rgba(61,68,33,.06);
 }
 
 .hero h2{
+  position:relative;
+  z-index:3;
   color:var(--gold);
   font-family:Georgia,serif;
   font-size:30px;
@@ -218,6 +313,8 @@ button{
 }
 
 .hero p{
+  position:relative;
+  z-index:3;
   max-width:680px;
   margin:auto;
   color:var(--muted);
@@ -226,6 +323,8 @@ button{
 }
 
 .hero-btn{
+  position:relative;
+  z-index:4;
   margin-top:25px;
   border:0;
   background:var(--olive);
@@ -235,6 +334,7 @@ button{
   font-weight:900;
   font-size:17px;
   box-shadow:0 12px 30px rgba(61,68,33,.18);
+  transition:.2s;
 }
 
 .hero-btn:hover{
@@ -288,13 +388,47 @@ button{
   box-shadow:0 2px 3px rgba(0,0,0,.12);
 }
 
-.frond:nth-child(1){transform:rotate(-65deg);top:70px;right:0}
-.frond:nth-child(2){transform:rotate(-42deg);top:43px;right:4px}
-.frond:nth-child(3){transform:rotate(-20deg);top:22px;right:15px}
-.frond:nth-child(4){transform:rotate(8deg);top:18px;right:22px}
-.frond:nth-child(5){transform:rotate(34deg);top:30px;right:8px}
-.frond:nth-child(6){transform:rotate(58deg);top:58px;right:0}
-.frond:nth-child(7){transform:rotate(82deg);top:83px;right:7px}
+.frond:nth-child(1){
+  transform:rotate(-65deg);
+  top:70px;
+  right:0;
+}
+
+.frond:nth-child(2){
+  transform:rotate(-42deg);
+  top:43px;
+  right:4px;
+}
+
+.frond:nth-child(3){
+  transform:rotate(-20deg);
+  top:22px;
+  right:15px;
+}
+
+.frond:nth-child(4){
+  transform:rotate(8deg);
+  top:18px;
+  right:22px;
+}
+
+.frond:nth-child(5){
+  transform:rotate(34deg);
+  top:30px;
+  right:8px;
+}
+
+.frond:nth-child(6){
+  transform:rotate(58deg);
+  top:58px;
+  right:0;
+}
+
+.frond:nth-child(7){
+  transform:rotate(82deg);
+  top:83px;
+  right:7px;
+}
 
 /* ================= PRAYER ================= */
 
@@ -690,8 +824,13 @@ body.dark .summary{
 }
 
 @keyframes moveBar{
-  0%{transform:translateX(180%)}
-  100%{transform:translateX(-330%)}
+  0%{
+    transform:translateX(180%)
+  }
+
+  100%{
+    transform:translateX(-330%)
+  }
 }
 
 .elapsed{
@@ -765,9 +904,17 @@ body.dark .summary{
   line-height:1.85;
 }
 
-.high{border-right:6px solid var(--danger)}
-.medium{border-right:6px solid var(--warning)}
-.low{border-right:6px solid var(--success)}
+.high{
+  border-right:6px solid var(--danger)
+}
+
+.medium{
+  border-right:6px solid var(--warning)
+}
+
+.low{
+  border-right:6px solid var(--success)
+}
 
 ul{
   line-height:2;
@@ -892,6 +1039,7 @@ ul{
 
   .hero h1{
     font-size:68px;
+    margin-top:8px;
   }
 
   .hero h2{
@@ -900,6 +1048,30 @@ ul{
 
   .hero p{
     font-size:16px;
+  }
+
+  .hero::before{
+    width:390px;
+    height:390px;
+    right:-220px;
+    top:20px;
+  }
+
+  .hero::after{
+    left:-70px;
+    bottom:15px;
+    font-size:140px;
+  }
+
+  .hero-center::before{
+    width:280px;
+    height:280px;
+  }
+
+  .hero-center::after{
+    right:-95px;
+    font-size:110px;
+    opacity:.7;
   }
 
   .mode-grid,
@@ -923,6 +1095,7 @@ ul{
   .result-head{
     flex-direction:column;
   }
+
 }
 </style>
 </head>
@@ -945,12 +1118,31 @@ ul{
   </div>
 
   <nav class="nav">
-    <button onclick="show('home')">الرئيسية</button>
-    <button onclick="document.querySelector('.articles').scrollIntoView()">مقالات</button>
-    <button onclick="show('judgmentSection')">الأحكام القضائية</button>
-    <button onclick="show('contractSection')">العقود</button>
-    <button onclick="alert('المصادر القانونية ستتوفر قريبًا')">المصادر</button>
-    <button onclick="alert('صفحة من نحن ستتوفر قريبًا')">من نحن</button>
+
+    <button onclick="show('home')">
+      الرئيسية
+    </button>
+
+    <button onclick="document.querySelector('.articles').scrollIntoView()">
+      مقالات
+    </button>
+
+    <button onclick="show('judgmentSection')">
+      الأحكام القضائية
+    </button>
+
+    <button onclick="show('contractSection')">
+      العقود
+    </button>
+
+    <button onclick="alert('المصادر القانونية ستتوفر قريبًا')">
+      المصادر
+    </button>
+
+    <button onclick="alert('صفحة من نحن ستتوفر قريبًا')">
+      من نحن
+    </button>
+
   </nav>
 
   <div class="actions">
@@ -981,8 +1173,15 @@ ul{
     <div class="prayer">
 
       <div class="prayer-head">
-        <strong>مواقيت الصلاة</strong>
-        <small id="hijriDate">الرياض</small>
+
+        <strong>
+          مواقيت الصلاة
+        </strong>
+
+        <small id="hijriDate">
+          الرياض
+        </small>
+
       </div>
 
       <div class="prayer-city">
@@ -990,6 +1189,7 @@ ul{
       </div>
 
       <div id="prayerTimes">
+
         <div class="prayer-row">
           <span>الفجر</span>
           <span>--:--</span>
@@ -1019,6 +1219,7 @@ ul{
           <span>العشاء</span>
           <span>--:--</span>
         </div>
+
       </div>
 
     </div>
@@ -1030,9 +1231,13 @@ ul{
         ⚖
       </div>
 
-      <h1>إحاطة</h1>
+      <h1>
+        إحاطة
+      </h1>
 
-      <h2>للذكاء القانوني</h2>
+      <h2>
+        للذكاء القانوني
+      </h2>
 
       <p>
         تحليل ذكي للمستندات القانونية يساعدك على فهم
@@ -1108,9 +1313,13 @@ ul{
       id="contractsMode"
     >
 
-      <div class="mode-icon">📄</div>
+      <div class="mode-icon">
+        📄
+      </div>
 
-      <h3>العقود</h3>
+      <h3>
+        العقود
+      </h3>
 
       <p>
         فحص البنود والمخاطر والالتزامات والمبالغ
@@ -1129,9 +1338,13 @@ ul{
       id="judgmentsMode"
     >
 
-      <div class="mode-icon">⚖️</div>
+      <div class="mode-icon">
+        ⚖️
+      </div>
 
-      <h3>الأحكام القضائية</h3>
+      <h3>
+        الأحكام القضائية
+      </h3>
 
       <p>
         استخراج الوقائع والطلبات والدفوع والأسباب
@@ -1150,11 +1363,17 @@ ul{
       data-soon="مقارنة المستندين ستتوفر في تحديث لاحق."
     >
 
-      <div class="mode-icon">🔍</div>
+      <div class="mode-icon">
+        🔍
+      </div>
 
-      <span class="soon">قريبًا 🔒</span>
+      <span class="soon">
+        قريبًا 🔒
+      </span>
 
-      <h3>مقارنة مستندين</h3>
+      <h3>
+        مقارنة مستندين
+      </h3>
 
       <p>
         اكتشف البنود المضافة والمحذوفة والتغييرات
@@ -1173,11 +1392,17 @@ ul{
       data-soon="الاستشارات القانونية ستتوفر في تحديث لاحق."
     >
 
-      <div class="mode-icon">💬</div>
+      <div class="mode-icon">
+        💬
+      </div>
 
-      <span class="soon">قريبًا 🔒</span>
+      <span class="soon">
+        قريبًا 🔒
+      </span>
 
-      <h3>الاستشارات القانونية</h3>
+      <h3>
+        الاستشارات القانونية
+      </h3>
 
       <p>
         خدمة مستقبلية للمساعدة القانونية الموجهة.
@@ -1211,7 +1436,9 @@ ul{
 
     <div class="search">
 
-      <span>⌕</span>
+      <span>
+        ⌕
+      </span>
 
       <input
         id="articleSearch"
@@ -1222,7 +1449,10 @@ ul{
     </div>
 
 
-    <div class="article-grid" id="articleGrid">
+    <div
+      class="article-grid"
+      id="articleGrid"
+    >
 
       <article class="article">
 
@@ -1314,7 +1544,9 @@ ul{
 
     <div class="section-title">
 
-      <h2>📄 العقود</h2>
+      <h2>
+        📄 العقود
+      </h2>
 
       <p>
         اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
@@ -1336,68 +1568,171 @@ ul{
 
     <div class="category-grid">
 
-      <button class="category" data-category="مقاولات وأعمال">
-        <span class="ico">🏗️</span>
-        <span>
-          <strong>المقاولات والأعمال</strong>
-          <small>تنفيذ، إنشاء، تشييد وصيانة</small>
+      <button
+        class="category"
+        data-category="مقاولات وأعمال"
+      >
+        <span class="ico">
+          🏗️
         </span>
+
+        <span>
+          <strong>
+            المقاولات والأعمال
+          </strong>
+
+          <small>
+            تنفيذ، إنشاء، تشييد وصيانة
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="عقود تجارية">
-        <span class="ico">🏢</span>
-        <span>
-          <strong>العقود التجارية</strong>
-          <small>بيع، شراء، تشغيل وخدمات</small>
+
+      <button
+        class="category"
+        data-category="عقود تجارية"
+      >
+        <span class="ico">
+          🏢
         </span>
+
+        <span>
+          <strong>
+            العقود التجارية
+          </strong>
+
+          <small>
+            بيع، شراء، تشغيل وخدمات
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="إيجار">
-        <span class="ico">🏠</span>
-        <span>
-          <strong>الإيجار</strong>
-          <small>عقود الإيجار والتأجير</small>
+
+      <button
+        class="category"
+        data-category="إيجار"
+      >
+        <span class="ico">
+          🏠
         </span>
+
+        <span>
+          <strong>
+            الإيجار
+          </strong>
+
+          <small>
+            عقود الإيجار والتأجير
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="عمل">
-        <span class="ico">💼</span>
-        <span>
-          <strong>العمل</strong>
-          <small>عقود الموظفين والعمل</small>
+
+      <button
+        class="category"
+        data-category="عمل"
+      >
+        <span class="ico">
+          💼
         </span>
+
+        <span>
+          <strong>
+            العمل
+          </strong>
+
+          <small>
+            عقود الموظفين والعمل
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="توريد">
-        <span class="ico">📦</span>
-        <span>
-          <strong>التوريد</strong>
-          <small>التوريد والشراء</small>
+
+      <button
+        class="category"
+        data-category="توريد"
+      >
+        <span class="ico">
+          📦
         </span>
+
+        <span>
+          <strong>
+            التوريد
+          </strong>
+
+          <small>
+            التوريد والشراء
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="شراكات واستثمار">
-        <span class="ico">🤝</span>
-        <span>
-          <strong>الشراكات والاستثمار</strong>
-          <small>شراكات واستثمار واتفاقيات</small>
+
+      <button
+        class="category"
+        data-category="شراكات واستثمار"
+      >
+        <span class="ico">
+          🤝
         </span>
+
+        <span>
+          <strong>
+            الشراكات والاستثمار
+          </strong>
+
+          <small>
+            شراكات واستثمار واتفاقيات
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="تقنية وخدمات">
-        <span class="ico">💻</span>
-        <span>
-          <strong>التقنية والخدمات</strong>
-          <small>برمجيات واستشارات وخدمات</small>
+
+      <button
+        class="category"
+        data-category="تقنية وخدمات"
+      >
+        <span class="ico">
+          💻
         </span>
+
+        <span>
+          <strong>
+            التقنية والخدمات
+          </strong>
+
+          <small>
+            برمجيات واستشارات وخدمات
+          </small>
+        </span>
+
       </button>
 
-      <button class="category" data-category="عقد آخر">
-        <span class="ico">📄</span>
-        <span>
-          <strong>عقد آخر</strong>
-          <small>أي عقد غير مصنف</small>
+
+      <button
+        class="category"
+        data-category="عقد آخر"
+      >
+        <span class="ico">
+          📄
         </span>
+
+        <span>
+          <strong>
+            عقد آخر
+          </strong>
+
+          <small>
+            أي عقد غير مصنف
+          </small>
+        </span>
+
       </button>
 
     </div>
@@ -1425,7 +1760,9 @@ ul{
 
     <div class="section-title">
 
-      <h2>⚖️ الأحكام والوثائق القضائية</h2>
+      <h2>
+        ⚖️ الأحكام والوثائق القضائية
+      </h2>
 
       <p>
         تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
@@ -1451,33 +1788,65 @@ ul{
         class="category"
         data-judgment-type="حكم قضائي"
       >
-        <span class="ico">🔨</span>
-        <span>
-          <strong>أحكام قضائية</strong>
-          <small>صكوك الأحكام وما يتصل بها</small>
+
+        <span class="ico">
+          🔨
         </span>
+
+        <span>
+          <strong>
+            أحكام قضائية
+          </strong>
+
+          <small>
+            صكوك الأحكام وما يتصل بها
+          </small>
+        </span>
+
       </button>
+
 
       <button
         class="category"
         data-judgment-type="قرار"
       >
-        <span class="ico">📑</span>
-        <span>
-          <strong>قرارات</strong>
-          <small>قرارات ووثائق قضائية</small>
+
+        <span class="ico">
+          📑
         </span>
+
+        <span>
+          <strong>
+            قرارات
+          </strong>
+
+          <small>
+            قرارات ووثائق قضائية
+          </small>
+        </span>
+
       </button>
+
 
       <button
         class="category"
         data-judgment-type="وثيقة قضائية أخرى"
       >
-        <span class="ico">📜</span>
-        <span>
-          <strong>وثائق قضائية أخرى</strong>
-          <small>أي وثيقة قضائية قابلة للتحليل</small>
+
+        <span class="ico">
+          📜
         </span>
+
+        <span>
+          <strong>
+            وثائق قضائية أخرى
+          </strong>
+
+          <small>
+            أي وثيقة قضائية قابلة للتحليل
+          </small>
+        </span>
+
       </button>
 
     </div>
@@ -1552,10 +1921,12 @@ ul{
         </div>
 
         <div class="progress">
+
           <div
             id="bar"
             class="bar"
           ></div>
+
         </div>
 
         <div
@@ -1669,8 +2040,12 @@ const savedTheme =
   localStorage.getItem("ehata-theme");
 
 if(savedTheme === "dark"){
+
   document.body.classList.add("dark");
-  $("themeBtn").textContent = "☀️";
+
+  $("themeBtn").textContent =
+    "☀️";
+
 }
 
 $("themeBtn").onclick = () => {
@@ -2158,6 +2533,7 @@ function renderContract(data){
       <div class="risk ${esc(risk.level)}">
 
         <h3>
+
           ${
             risk.level === "high"
               ? "🔴"
@@ -2200,7 +2576,9 @@ function renderContract(data){
 
       <div>
 
-        <small>نوع المستند</small>
+        <small>
+          نوع المستند
+        </small>
 
         <h2>
           ${esc(
@@ -2215,7 +2593,9 @@ function renderContract(data){
 
         ${esc(data.score ?? "—")}
 
-        <small>/100</small>
+        <small>
+          /100
+        </small>
 
       </div>
 
@@ -2223,7 +2603,9 @@ function renderContract(data){
 
     <div class="summary">
 
-      <b>الخلاصة</b>
+      <b>
+        الخلاصة
+      </b>
 
       <br>
 
@@ -2238,7 +2620,9 @@ function renderContract(data){
 
       <div class="info">
 
-        <b>💰 المبالغ</b>
+        <b>
+          💰 المبالغ
+        </b>
 
         <span>
           ${
@@ -2253,7 +2637,9 @@ function renderContract(data){
 
       <div class="info">
 
-        <b>📅 التواريخ</b>
+        <b>
+          📅 التواريخ
+        </b>
 
         <span>
           ${
@@ -2268,7 +2654,9 @@ function renderContract(data){
 
       <div class="info">
 
-        <b>⏳ المدد</b>
+        <b>
+          ⏳ المدد
+        </b>
 
         <span>
           ${
@@ -2283,23 +2671,31 @@ function renderContract(data){
 
     </div>
 
-    <h2>🔎 المخاطر</h2>
+    <h2>
+      🔎 المخاطر
+    </h2>
 
     ${risks}
 
-    <h2>✅ نقاط جيدة</h2>
+    <h2>
+      ✅ نقاط جيدة
+    </h2>
 
     <ul>
       ${list(data.good_points)}
     </ul>
 
-    <h2>⚠️ غير واضح أو ناقص</h2>
+    <h2>
+      ⚠️ غير واضح أو ناقص
+    </h2>
 
     <ul>
       ${list(data.missing_or_unclear)}
     </ul>
 
-    <h2>⚖️ توازن الالتزامات</h2>
+    <h2>
+      ⚖️ توازن الالتزامات
+    </h2>
 
     <div class="summary">
 
@@ -2337,7 +2733,9 @@ function renderJudgment(data){
 
       <div>
 
-        <small>نوع المستند</small>
+        <small>
+          نوع المستند
+        </small>
 
         <h2>
           ${esc(
@@ -2356,7 +2754,9 @@ function renderJudgment(data){
 
     <div class="summary">
 
-      <b>الخلاصة</b>
+      <b>
+        الخلاصة
+      </b>
 
       <br>
 
@@ -2371,27 +2771,37 @@ function renderJudgment(data){
 
       <div class="info">
         <b>🏛️ المحكمة</b>
-        <span>${esc(info.court || "غير مذكور")}</span>
+        <span>
+          ${esc(info.court || "غير مذكور")}
+        </span>
       </div>
 
       <div class="info">
         <b>⚖️ الدائرة</b>
-        <span>${esc(info.chamber || "غير مذكور")}</span>
+        <span>
+          ${esc(info.chamber || "غير مذكور")}
+        </span>
       </div>
 
       <div class="info">
         <b>🧾 رقم القضية</b>
-        <span>${esc(info.case_number || "غير مذكور")}</span>
+        <span>
+          ${esc(info.case_number || "غير مذكور")}
+        </span>
       </div>
 
       <div class="info">
         <b>📜 رقم الحكم</b>
-        <span>${esc(info.judgment_number || "غير مذكور")}</span>
+        <span>
+          ${esc(info.judgment_number || "غير مذكور")}
+        </span>
       </div>
 
       <div class="info">
         <b>📅 التاريخ</b>
-        <span>${esc(info.judgment_date || "غير مذكور")}</span>
+        <span>
+          ${esc(info.judgment_date || "غير مذكور")}
+        </span>
       </div>
 
       <div class="info">
@@ -2405,37 +2815,65 @@ function renderJudgment(data){
 
     </div>
 
-    <h2>📌 الطلبات</h2>
+    <h2>
+      📌 الطلبات
+    </h2>
 
-    <ul>${list(data.claims)}</ul>
+    <ul>
+      ${list(data.claims)}
+    </ul>
 
-    <h2>🛡️ الدفوع</h2>
+    <h2>
+      🛡️ الدفوع
+    </h2>
 
-    <ul>${list(data.defenses)}</ul>
+    <ul>
+      ${list(data.defenses)}
+    </ul>
 
-    <h2>📖 الوقائع</h2>
+    <h2>
+      📖 الوقائع
+    </h2>
 
-    <ul>${list(data.facts)}</ul>
+    <ul>
+      ${list(data.facts)}
+    </ul>
 
-    <h2>⚖️ الأسباب</h2>
+    <h2>
+      ⚖️ الأسباب
+    </h2>
 
-    <ul>${list(data.reasons)}</ul>
+    <ul>
+      ${list(data.reasons)}
+    </ul>
 
-    <h2>🔨 منطوق الحكم</h2>
+    <h2>
+      🔨 منطوق الحكم
+    </h2>
 
     <div class="summary">
       ${esc(data.judgment || "غير مذكور")}
     </div>
 
-    <h2>💰 الالتزامات المالية</h2>
+    <h2>
+      💰 الالتزامات المالية
+    </h2>
 
-    <ul>${list(data.financial_obligations)}</ul>
+    <ul>
+      ${list(data.financial_obligations)}
+    </ul>
 
-    <h2>📅 المدد</h2>
+    <h2>
+      📅 المدد
+    </h2>
 
-    <ul>${list(data.deadlines)}</ul>
+    <ul>
+      ${list(data.deadlines)}
+    </ul>
 
-    <h2>📨 الاعتراض والاستئناف</h2>
+    <h2>
+      📨 الاعتراض والاستئناف
+    </h2>
 
     <div class="summary">
       ${esc(
@@ -2444,17 +2882,29 @@ function renderJudgment(data){
       )}
     </div>
 
-    <h2>🔎 نقاط مهمة</h2>
+    <h2>
+      🔎 نقاط مهمة
+    </h2>
 
-    <ul>${list(data.important_points)}</ul>
+    <ul>
+      ${list(data.important_points)}
+    </ul>
 
-    <h2>⚠️ غير واضح أو ناقص</h2>
+    <h2>
+      ⚠️ غير واضح أو ناقص
+    </h2>
 
-    <ul>${list(data.missing_or_unclear)}</ul>
+    <ul>
+      ${list(data.missing_or_unclear)}
+    </ul>
 
-    <h2>🧑‍⚖️ تحتاج مراجعة قانونية</h2>
+    <h2>
+      🧑‍⚖️ تحتاج مراجعة قانونية
+    </h2>
 
-    <ul>${list(data.legal_review_needed)}</ul>
+    <ul>
+      ${list(data.legal_review_needed)}
+    </ul>
 
   `;
 
