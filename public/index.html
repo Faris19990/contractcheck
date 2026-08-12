@@ -21,7 +21,9 @@
   --soft:#eee8da;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 html{
   scroll-behavior:smooth;
@@ -52,7 +54,8 @@ body.dark{
   --soft:#202936;
 }
 
-button,input{
+button,
+input{
   font:inherit;
 }
 
@@ -68,6 +71,8 @@ button{
   width:min(1120px,100%);
   margin:auto;
   padding:22px 18px 70px;
+  position:relative;
+  z-index:1;
 }
 
 
@@ -80,14 +85,14 @@ button{
   inset:0;
   pointer-events:none;
   overflow:hidden;
-  z-index:-1;
+  z-index:0;
 }
 
 .decor::before,
 .decor::after{
   content:"";
   position:absolute;
-  opacity:.045;
+  opacity:.07;
   color:var(--gold);
   font-size:230px;
   font-family:Georgia,serif;
@@ -113,7 +118,7 @@ button{
   height:420px;
   border:1px solid var(--gold);
   border-radius:50%;
-  opacity:.07;
+  opacity:.09;
   left:50%;
   top:17%;
   transform:translateX(-50%);
@@ -136,7 +141,7 @@ button{
   transform:translateX(-50%);
   border-left:1px solid var(--gold);
   border-right:1px solid var(--gold);
-  opacity:.055;
+  opacity:.07;
   border-radius:450px 450px 0 0;
 }
 
@@ -792,6 +797,7 @@ body.dark .close{
 </style>
 </head>
 
+
 <body>
 
 <div class="decor">
@@ -801,6 +807,7 @@ body.dark .close{
 
 
 <main class="wrap">
+
 
 <header class="topbar">
 
@@ -838,271 +845,273 @@ body.dark .close{
 
 <section id="home">
 
-  <div class="hero">
 
-    <div class="hero-content">
+<div class="hero">
 
-      <div class="hero-mark">
-        ⚖️
-      </div>
+  <div class="hero-content">
 
-      <h1>
-        إحاطة
-      </h1>
+    <div class="hero-mark">
+      ⚖️
+    </div>
 
-      <p>
-        تحليل ذكي للمستندات القانونية يساعدك على فهم
-        البنود والالتزامات والنقاط المهمة قبل اتخاذ القرار.
-      </p>
+    <h1>
+      إحاطة
+    </h1>
 
-      <div class="quran">
-        ﴿ إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالإِحْسَانِ ﴾
-      </div>
+    <p>
+      تحليل ذكي للمستندات القانونية يساعدك على فهم
+      البنود والالتزامات والنقاط المهمة قبل اتخاذ القرار.
+    </p>
 
+    <div class="quran">
+      ﴿ إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالإِحْسَانِ ﴾
     </div>
 
   </div>
 
+</div>
+
+
+<div class="section-title">
+
+  <h2>
+    ماذا تريد أن تحلل؟
+  </h2>
+
+  <p>
+    اختر نوع المستند للبدء
+  </p>
+
+</div>
+
+
+<div class="mode-grid">
+
+
+<button
+  class="mode"
+  id="contractsMode"
+>
+
+  <div class="mode-icon">
+    📄
+  </div>
+
+  <h3>
+    العقود
+  </h3>
+
+  <p>
+    فحص البنود والمخاطر والالتزامات والمبالغ
+    والتواريخ والشرط الجزائي وغيرها.
+  </p>
+
+  <span class="primary">
+    ابدأ تحليل عقد
+  </span>
+
+</button>
+
+
+<button
+  class="mode"
+  id="judgmentsMode"
+>
+
+  <div class="mode-icon">
+    ⚖️
+  </div>
+
+  <h3>
+    الأحكام والوثائق القضائية
+  </h3>
+
+  <p>
+    استخراج الوقائع والطلبات والدفوع والأسباب
+    والمنطوق والبيانات المهمة.
+  </p>
+
+  <span class="primary">
+    ابدأ تحليل حكم
+  </span>
+
+</button>
+
+
+<button
+  class="mode locked"
+  data-soon="مقارنة المستندين ستكون متاحة في تحديث لاحق."
+>
+
+  <div class="mode-icon">
+    🔍
+  </div>
+
+  <span class="soon">
+    🔒 قريبًا
+  </span>
+
+  <h3>
+    مقارنة مستندين
+  </h3>
+
+  <p>
+    اكتشف البنود المضافة والمحذوفة والتغييرات
+    المهمة بين مستندين.
+  </p>
+
+  <span class="primary">
+    غير متاحة حاليًا
+  </span>
+
+</button>
+
+
+<button
+  class="mode locked"
+  data-soon="الاستشارات القانونية ستكون متاحة في تحديث لاحق."
+>
+
+  <div class="mode-icon">
+    💬
+  </div>
+
+  <span class="soon">
+    🔒 قريبًا
+  </span>
+
+  <h3>
+    الاستشارات القانونية
+  </h3>
+
+  <p>
+    خدمة مستقبلية للمساعدة القانونية الموجهة.
+  </p>
+
+  <span class="primary">
+    غير متاحة حاليًا
+  </span>
+
+</button>
+
+
+</div>
+
+
+<section class="articles">
 
   <div class="section-title">
 
     <h2>
-      ماذا تريد أن تحلل؟
+      📚 مقالات قانونية
     </h2>
 
     <p>
-      اختر نوع المستند للبدء
+      ابحث داخل المقالات والمعلومات المختارة
     </p>
 
   </div>
 
 
-  <div class="mode-grid">
+  <input
+    id="articleSearch"
+    class="search"
+    placeholder="ابحث عن موضوع قانوني..."
+  >
 
 
-    <button
-      class="mode"
-      id="contractsMode"
-    >
-
-      <div class="mode-icon">
-        📄
-      </div>
-
-      <h3>
-        العقود
-      </h3>
-
-      <p>
-        فحص البنود والمخاطر والالتزامات والمبالغ
-        والتواريخ والشرط الجزائي وغيرها.
-      </p>
-
-      <span class="primary">
-        ابدأ تحليل عقد
-      </span>
-
-    </button>
+  <div
+    id="articleGrid"
+    class="article-grid"
+  >
 
 
-    <button
-      class="mode"
-      id="judgmentsMode"
-    >
+    <article class="article">
 
-      <div class="mode-icon">
+      <div>
         ⚖️
       </div>
 
       <h3>
-        الأحكام والوثائق القضائية
+        فهم بنود العقد
       </h3>
 
       <p>
-        استخراج الوقائع والطلبات والدفوع والأسباب
-        والمنطوق والبيانات المهمة.
+        نظرة مبسطة على أهم البنود التي تستحق
+        الانتباه قبل التوقيع.
       </p>
 
-      <span class="primary">
-        ابدأ تحليل حكم
-      </span>
+      <a
+        href="https://laws.boe.gov.sa/"
+        target="_blank"
+        rel="noopener"
+      >
+        المصدر: هيئة الخبراء
+      </a>
 
-    </button>
+    </article>
 
 
-    <button
-      class="mode locked"
-      data-soon="مقارنة المستندين ستكون متاحة في تحديث لاحق."
-    >
+    <article class="article">
 
-      <div class="mode-icon">
-        🔍
+      <div>
+        📜
       </div>
 
-      <span class="soon">
-        🔒 قريبًا
-      </span>
-
       <h3>
-        مقارنة مستندين
+        الأنظمة واللوائح
       </h3>
 
       <p>
-        اكتشف البنود المضافة والمحذوفة والتغييرات
-        المهمة بين مستندين.
+        الوصول إلى الأنظمة السعودية المنشورة
+        والبحث فيها.
       </p>
 
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
+      <a
+        href="https://laws.boe.gov.sa/"
+        target="_blank"
+        rel="noopener"
+      >
+        المصدر الرسمي
+      </a>
 
-    </button>
+    </article>
 
 
-    <button
-      class="mode locked"
-      data-soon="الاستشارات القانونية ستكون متاحة في تحديث لاحق."
-    >
+    <article class="article">
 
-      <div class="mode-icon">
-        💬
+      <div>
+        🏛️
       </div>
 
-      <span class="soon">
-        🔒 قريبًا
-      </span>
-
       <h3>
-        الاستشارات القانونية
+        الخدمات العدلية
       </h3>
 
       <p>
-        خدمة مستقبلية للمساعدة القانونية الموجهة.
+        معلومات عامة عن الخدمات والأنظمة
+        العدلية في المملكة.
       </p>
 
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
+      <a
+        href="https://www.moj.gov.sa/"
+        target="_blank"
+        rel="noopener"
+      >
+        المصدر: وزارة العدل
+      </a>
 
-    </button>
+    </article>
+
 
   </div>
 
-
-  <!-- ARTICLES -->
-
-  <section class="articles">
-
-    <div class="section-title">
-
-      <h2>
-        📚 مقالات قانونية
-      </h2>
-
-      <p>
-        ابحث داخل المقالات والمعلومات المختارة
-      </p>
-
-    </div>
-
-
-    <input
-      id="articleSearch"
-      class="search"
-      placeholder="ابحث عن موضوع قانوني..."
-    >
-
-
-    <div
-      id="articleGrid"
-      class="article-grid"
-    >
-
-      <article class="article">
-
-        <div>
-          ⚖️
-        </div>
-
-        <h3>
-          فهم بنود العقد
-        </h3>
-
-        <p>
-          نظرة مبسطة على أهم البنود التي تستحق
-          الانتباه قبل التوقيع.
-        </p>
-
-        <a
-          href="https://laws.boe.gov.sa/"
-          target="_blank"
-          rel="noopener"
-        >
-          المصدر: هيئة الخبراء
-        </a>
-
-      </article>
-
-
-      <article class="article">
-
-        <div>
-          📜
-        </div>
-
-        <h3>
-          الأنظمة واللوائح
-        </h3>
-
-        <p>
-          الوصول إلى الأنظمة السعودية المنشورة
-          والبحث فيها.
-        </p>
-
-        <a
-          href="https://laws.boe.gov.sa/"
-          target="_blank"
-          rel="noopener"
-        >
-          المصدر الرسمي
-        </a>
-
-      </article>
-
-
-      <article class="article">
-
-        <div>
-          🏛️
-        </div>
-
-        <h3>
-          الخدمات العدلية
-        </h3>
-
-        <p>
-          معلومات عامة عن الخدمات والأنظمة
-          العدلية في المملكة.
-        </p>
-
-        <a
-          href="https://www.moj.gov.sa/"
-          target="_blank"
-          rel="noopener"
-        >
-          المصدر: وزارة العدل
-        </a>
-
-      </article>
-
-    </div>
-
-  </section>
+</section>
 
 </section>
 
 
-<!-- CONTRACTS -->
+<!-- CONTRACT SECTION -->
 
 <section
   id="contractSection"
@@ -1147,15 +1156,24 @@ body.dark .close{
 
   <div class="category-grid">
 
+
     <button
       class="category"
       data-category="مقاولات وأعمال"
     >
-      <span class="ico">🏗️</span>
+
+      <span class="ico">
+        🏗️
+      </span>
 
       <span>
-        <strong>المقاولات والأعمال</strong>
-        <small>تنفيذ، إنشاء، تشييد وصيانة</small>
+        <strong>
+          المقاولات والأعمال
+        </strong>
+
+        <small>
+          تنفيذ، إنشاء، تشييد وصيانة
+        </small>
       </span>
 
     </button>
@@ -1165,11 +1183,19 @@ body.dark .close{
       class="category"
       data-category="عقود تجارية"
     >
-      <span class="ico">🏢</span>
+
+      <span class="ico">
+        🏢
+      </span>
 
       <span>
-        <strong>العقود التجارية</strong>
-        <small>بيع، شراء، تشغيل وخدمات</small>
+        <strong>
+          العقود التجارية
+        </strong>
+
+        <small>
+          بيع، شراء، تشغيل وخدمات
+        </small>
       </span>
 
     </button>
@@ -1179,11 +1205,19 @@ body.dark .close{
       class="category"
       data-category="إيجار"
     >
-      <span class="ico">🏠</span>
+
+      <span class="ico">
+        🏠
+      </span>
 
       <span>
-        <strong>الإيجار</strong>
-        <small>عقود الإيجار والتأجير</small>
+        <strong>
+          الإيجار
+        </strong>
+
+        <small>
+          عقود الإيجار والتأجير
+        </small>
       </span>
 
     </button>
@@ -1193,11 +1227,19 @@ body.dark .close{
       class="category"
       data-category="عمل"
     >
-      <span class="ico">💼</span>
+
+      <span class="ico">
+        💼
+      </span>
 
       <span>
-        <strong>العمل</strong>
-        <small>عقود الموظفين والعمل</small>
+        <strong>
+          العمل
+        </strong>
+
+        <small>
+          عقود الموظفين والعمل
+        </small>
       </span>
 
     </button>
@@ -1207,11 +1249,19 @@ body.dark .close{
       class="category"
       data-category="توريد"
     >
-      <span class="ico">📦</span>
+
+      <span class="ico">
+        📦
+      </span>
 
       <span>
-        <strong>التوريد</strong>
-        <small>التوريد والشراء</small>
+        <strong>
+          التوريد
+        </strong>
+
+        <small>
+          التوريد والشراء
+        </small>
       </span>
 
     </button>
@@ -1221,11 +1271,19 @@ body.dark .close{
       class="category"
       data-category="شراكات واستثمار"
     >
-      <span class="ico">🤝</span>
+
+      <span class="ico">
+        🤝
+      </span>
 
       <span>
-        <strong>الشراكات والاستثمار</strong>
-        <small>شراكات واستثمار واتفاقيات</small>
+        <strong>
+          الشراكات والاستثمار
+        </strong>
+
+        <small>
+          شراكات واستثمار واتفاقيات
+        </small>
       </span>
 
     </button>
@@ -1235,11 +1293,19 @@ body.dark .close{
       class="category"
       data-category="تقنية وخدمات"
     >
-      <span class="ico">💻</span>
+
+      <span class="ico">
+        💻
+      </span>
 
       <span>
-        <strong>التقنية والخدمات</strong>
-        <small>برمجيات واستشارات وخدمات</small>
+        <strong>
+          التقنية والخدمات
+        </strong>
+
+        <small>
+          برمجيات واستشارات وخدمات
+        </small>
       </span>
 
     </button>
@@ -1249,14 +1315,23 @@ body.dark .close{
       class="category"
       data-category="عقد آخر"
     >
-      <span class="ico">📄</span>
+
+      <span class="ico">
+        📄
+      </span>
 
       <span>
-        <strong>عقد آخر</strong>
-        <small>أي عقد غير مصنف</small>
+        <strong>
+          عقد آخر
+        </strong>
+
+        <small>
+          أي عقد غير مصنف
+        </small>
       </span>
 
     </button>
+
 
   </div>
 
@@ -1310,6 +1385,7 @@ body.dark .close{
 
   <div class="category-grid">
 
+
     <button
       class="category"
       data-judgment-type="حكم قضائي"
@@ -1320,8 +1396,13 @@ body.dark .close{
       </span>
 
       <span>
-        <strong>أحكام قضائية</strong>
-        <small>صكوك الأحكام وما يتصل بها</small>
+        <strong>
+          أحكام قضائية
+        </strong>
+
+        <small>
+          صكوك الأحكام وما يتصل بها
+        </small>
       </span>
 
     </button>
@@ -1337,8 +1418,13 @@ body.dark .close{
       </span>
 
       <span>
-        <strong>قرارات</strong>
-        <small>قرارات ووثائق قضائية</small>
+        <strong>
+          قرارات
+        </strong>
+
+        <small>
+          قرارات ووثائق قضائية
+        </small>
       </span>
 
     </button>
@@ -1354,11 +1440,17 @@ body.dark .close{
       </span>
 
       <span>
-        <strong>وثائق قضائية أخرى</strong>
-        <small>أي وثيقة قضائية قابلة للتحليل</small>
+        <strong>
+          وثائق قضائية أخرى
+        </strong>
+
+        <small>
+          أي وثيقة قضائية قابلة للتحليل
+        </small>
       </span>
 
     </button>
+
 
   </div>
 
@@ -1438,10 +1530,12 @@ body.dark .close{
 
 
       <div class="progress">
+
         <div
           id="bar"
           class="bar"
         ></div>
+
       </div>
 
 
@@ -1492,9 +1586,12 @@ body.dark .close{
 
 
 <div class="note">
+
   إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
   المعلومات المستخرجة تعتمد على محتوى المستند المرفوع.
+
 </div>
+
 
 </main>
 
@@ -1534,12 +1631,17 @@ body.dark .close{
 
 <script>
 
+/* =========================
+   HELPERS
+========================= */
+
 const $ =
   id =>
     document.getElementById(id);
 
 let mode = null;
 let category = null;
+
 let etaTimer = null;
 let etaSeconds = 0;
 
@@ -1555,11 +1657,19 @@ function show(id){
     "contractSection",
     "judgmentSection",
     "analyzer"
-  ].forEach(x =>
-    $(x).classList.add("hidden")
-  );
+  ].forEach(section => {
 
-  $(id).classList.remove("hidden");
+    $(section)
+      .classList
+      .add("hidden");
+
+  });
+
+
+  $(id)
+    .classList
+    .remove("hidden");
+
 
   window.scrollTo({
     top:0,
@@ -1573,13 +1683,19 @@ function reset(){
 
   $("file").value = "";
 
-  $("selected").classList.add("hidden");
+  $("selected")
+    .classList
+    .add("hidden");
 
-  $("result").classList.add("hidden");
+  $("result")
+    .classList
+    .add("hidden");
 
   $("result").innerHTML = "";
 
-  $("progressWrap").classList.add("hidden");
+  $("progressWrap")
+    .classList
+    .add("hidden");
 
   $("status").textContent =
     "PDF أو DOCX • الحد الأقصى 25MB";
@@ -1601,11 +1717,13 @@ function fmtSeconds(seconds){
       Math.round(seconds)
     );
 
+
   if(seconds < 60){
 
     return seconds + " ثانية";
 
   }
+
 
   return (
     Math.floor(seconds / 60) +
@@ -1624,6 +1742,7 @@ function startETA(size){
     1024 /
     1024;
 
+
   etaSeconds =
     Math.max(
       15,
@@ -1633,7 +1752,9 @@ function startETA(size){
       )
     );
 
+
   clearInterval(etaTimer);
+
 
   const tick = () => {
 
@@ -1647,7 +1768,9 @@ function startETA(size){
 
   };
 
+
   tick();
+
 
   etaTimer =
     setInterval(
@@ -1697,13 +1820,13 @@ function validate(file){
   }
 
 
-  const n =
+  const name =
     file.name.toLowerCase();
 
 
   if(
-    !n.endsWith(".pdf") &&
-    !n.endsWith(".docx")
+    !name.endsWith(".pdf") &&
+    !name.endsWith(".docx")
   ){
 
     $("status").textContent =
@@ -1725,7 +1848,7 @@ function validate(file){
 
 function send(
   url,
-  fd,
+  formData,
   progress
 ){
 
@@ -1735,30 +1858,33 @@ function send(
       const xhr =
         new XMLHttpRequest();
 
+
       xhr.open(
         "POST",
         url,
         true
       );
 
+
       xhr.responseType =
         "json";
 
+
       xhr.timeout =
-        600000;
+        10 * 60 * 1000;
 
 
       xhr.upload.onprogress =
-        e => {
+        event => {
 
           if(
-            e.lengthComputable
+            event.lengthComputable
           ){
 
             progress(
               Math.round(
-                e.loaded /
-                e.total *
+                event.loaded /
+                event.total *
                 100
               )
             );
@@ -1815,7 +1941,7 @@ function send(
       };
 
 
-      xhr.send(fd);
+      xhr.send(formData);
 
     }
   );
@@ -1827,10 +1953,10 @@ function send(
    ESCAPE
 ========================= */
 
-function esc(v){
+function esc(value){
 
   return String(
-    v ?? ""
+    value ?? ""
   ).replace(
     /[&<>"']/g,
     c => ({
@@ -1845,15 +1971,15 @@ function esc(v){
 }
 
 
-function list(a){
+function list(array){
 
   return (
-    a || []
+    array || []
   )
   .map(
-    x =>
+    item =>
       "<li>" +
-      esc(x) +
+      esc(item) +
       "</li>"
   )
   .join("") ||
@@ -1866,42 +1992,60 @@ function list(a){
    CONTRACT RESULT
 ========================= */
 
-function renderContract(d){
+function renderContract(data){
 
   const risks =
-    (d.risks || [])
+    (data.risks || [])
       .map(
-        r => `
+        risk => `
 
-          <div class="risk ${esc(r.level)}">
+          <div class="risk ${esc(risk.level)}">
 
             <h3>
 
               ${
-                r.level === "high"
+                risk.level === "high"
                   ? "🔴"
-                  : r.level === "medium"
+                  : risk.level === "medium"
                   ? "🟠"
                   : "🟢"
               }
 
-              ${esc(r.title)}
+              ${esc(risk.title)}
 
             </h3>
 
-            <p>
-              <b>البند:</b>
-              ${esc(r.clause)}
-            </p>
 
             <p>
-              <b>السبب:</b>
-              ${esc(r.why)}
+
+              <b>
+                البند:
+              </b>
+
+              ${esc(risk.clause)}
+
             </p>
 
+
             <p>
-              <b>السؤال المقترح:</b>
-              ${esc(r.question)}
+
+              <b>
+                السبب:
+              </b>
+
+              ${esc(risk.why)}
+
+            </p>
+
+
+            <p>
+
+              <b>
+                السؤال المقترح:
+              </b>
+
+              ${esc(risk.question)}
+
             </p>
 
           </div>
@@ -1912,8 +2056,8 @@ function renderContract(d){
     "<p>لم تظهر مخاطر واضحة في التحليل الأولي.</p>";
 
 
-  const i =
-    d.key_information || {};
+  const information =
+    data.key_information || {};
 
 
   $("result").innerHTML = `
@@ -1928,7 +2072,7 @@ function renderContract(d){
 
         <h2>
           ${esc(
-            d.document_type ||
+            data.document_type ||
             "غير محدد"
           )}
         </h2>
@@ -1939,7 +2083,7 @@ function renderContract(d){
       <div class="score">
 
         ${esc(
-          d.score ?? "—"
+          data.score ?? "—"
         )}
 
         <small>
@@ -1960,7 +2104,7 @@ function renderContract(d){
       <br>
 
       ${esc(
-        d.summary ||
+        data.summary ||
         "لا توجد خلاصة متاحة."
       )}
 
@@ -1976,12 +2120,14 @@ function renderContract(d){
         </b>
 
         <span>
+
           ${
-            (i.amounts || [])
+            (information.amounts || [])
               .map(esc)
               .join(" • ") ||
             "لا يوجد"
           }
+
         </span>
 
       </div>
@@ -1994,12 +2140,14 @@ function renderContract(d){
         </b>
 
         <span>
+
           ${
-            (i.dates || [])
+            (information.dates || [])
               .map(esc)
               .join(" • ") ||
             "لا يوجد"
           }
+
         </span>
 
       </div>
@@ -2012,12 +2160,14 @@ function renderContract(d){
         </b>
 
         <span>
+
           ${
-            (i.durations || [])
+            (information.durations || [])
               .map(esc)
               .join(" • ") ||
             "لا يوجد"
           }
+
         </span>
 
       </div>
@@ -2037,7 +2187,7 @@ function renderContract(d){
     </h2>
 
     <ul>
-      ${list(d.good_points)}
+      ${list(data.good_points)}
     </ul>
 
 
@@ -2046,7 +2196,7 @@ function renderContract(d){
     </h2>
 
     <ul>
-      ${list(d.missing_or_unclear)}
+      ${list(data.missing_or_unclear)}
     </ul>
 
 
@@ -2057,7 +2207,7 @@ function renderContract(d){
     <div class="summary">
 
       ${esc(
-        d.balance_check?.assessment ||
+        data.balance_check?.assessment ||
         "غير محدد"
       )}
 
@@ -2077,13 +2227,13 @@ function renderContract(d){
    JUDGMENT RESULT
 ========================= */
 
-function renderJudgment(d){
+function renderJudgment(data){
 
-  const i =
-    d.case_information || {};
+  const info =
+    data.case_information || {};
 
-  const p =
-    d.parties || {};
+  const parties =
+    data.parties || {};
 
 
   $("result").innerHTML = `
@@ -2098,12 +2248,13 @@ function renderJudgment(d){
 
         <h2>
           ${esc(
-            d.document_type ||
+            data.document_type ||
             "وثيقة قضائية"
           )}
         </h2>
 
       </div>
+
 
       <div style="font-size:48px">
         ⚖️
@@ -2121,7 +2272,7 @@ function renderJudgment(d){
       <br>
 
       ${esc(
-        d.summary ||
+        data.summary ||
         "لا توجد خلاصة متاحة."
       )}
 
@@ -2131,52 +2282,107 @@ function renderJudgment(d){
     <div class="info-grid">
 
       <div class="info">
-        <b>🏛️ المحكمة</b>
+
+        <b>
+          🏛️ المحكمة
+        </b>
+
         <span>
-          ${esc(i.court || "غير مذكور")}
+          ${esc(
+            info.court ||
+            "غير مذكور"
+          )}
         </span>
+
       </div>
 
 
       <div class="info">
-        <b>⚖️ الدائرة</b>
+
+        <b>
+          ⚖️ الدائرة
+        </b>
+
         <span>
-          ${esc(i.chamber || "غير مذكور")}
+          ${esc(
+            info.chamber ||
+            "غير مذكور"
+          )}
         </span>
+
       </div>
 
 
       <div class="info">
-        <b>🧾 رقم القضية</b>
+
+        <b>
+          🧾 رقم القضية
+        </b>
+
         <span>
-          ${esc(i.case_number || "غير مذكور")}
+          ${esc(
+            info.case_number ||
+            "غير مذكور"
+          )}
         </span>
+
       </div>
 
 
       <div class="info">
-        <b>📜 رقم الحكم</b>
+
+        <b>
+          📜 رقم الحكم
+        </b>
+
         <span>
-          ${esc(i.judgment_number || "غير مذكور")}
+          ${esc(
+            info.judgment_number ||
+            "غير مذكور"
+          )}
         </span>
+
       </div>
 
 
       <div class="info">
-        <b>📅 التاريخ</b>
+
+        <b>
+          📅 التاريخ
+        </b>
+
         <span>
-          ${esc(i.judgment_date || "غير مذكور")}
+          ${esc(
+            info.judgment_date ||
+            "غير مذكور"
+          )}
         </span>
+
       </div>
 
 
       <div class="info">
-        <b>👥 الأطراف</b>
+
+        <b>
+          👥 الأطراف
+        </b>
+
         <span>
-          ${esc(p.claimant || "غير مذكور")}
+
+          ${esc(
+            parties.claimant ||
+            "غير مذكور"
+          )}
+
           /
-          ${esc(p.defendant || "غير مذكور")}
+
+          ${esc(
+            parties.defendant ||
+            "غير مذكور"
+          )}
+
         </span>
+
       </div>
 
     </div>
@@ -2187,7 +2393,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.claims)}
+      ${list(data.claims)}
     </ul>
 
 
@@ -2196,7 +2402,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.defenses)}
+      ${list(data.defenses)}
     </ul>
 
 
@@ -2205,7 +2411,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.facts)}
+      ${list(data.facts)}
     </ul>
 
 
@@ -2214,7 +2420,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.reasons)}
+      ${list(data.reasons)}
     </ul>
 
 
@@ -2223,10 +2429,12 @@ function renderJudgment(d){
     </h2>
 
     <div class="summary">
+
       ${esc(
-        d.judgment ||
+        data.judgment ||
         "غير مذكور"
       )}
+
     </div>
 
 
@@ -2235,7 +2443,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.financial_obligations)}
+      ${list(data.financial_obligations)}
     </ul>
 
 
@@ -2244,7 +2452,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.deadlines)}
+      ${list(data.deadlines)}
     </ul>
 
 
@@ -2253,10 +2461,12 @@ function renderJudgment(d){
     </h2>
 
     <div class="summary">
+
       ${esc(
-        d.appeal_information ||
+        data.appeal_information ||
         "غير مذكور"
       )}
+
     </div>
 
 
@@ -2265,7 +2475,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.important_points)}
+      ${list(data.important_points)}
     </ul>
 
 
@@ -2274,7 +2484,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.missing_or_unclear)}
+      ${list(data.missing_or_unclear)}
     </ul>
 
 
@@ -2283,7 +2493,7 @@ function renderJudgment(d){
     </h2>
 
     <ul>
-      ${list(d.legal_review_needed)}
+      ${list(data.legal_review_needed)}
     </ul>
 
   `;
@@ -2297,15 +2507,17 @@ function renderJudgment(d){
 
 
 /* =========================
-   BUTTONS
+   HOME
 ========================= */
 
 $("contractsMode").onclick =
-  () => show("contractSection");
+  () =>
+    show("contractSection");
 
 
 $("judgmentsMode").onclick =
-  () => show("judgmentSection");
+  () =>
+    show("judgmentSection");
 
 
 /* =========================
@@ -2314,12 +2526,12 @@ $("judgmentsMode").onclick =
 
 document
   .querySelectorAll("[data-soon]")
-  .forEach(b => {
+  .forEach(button => {
 
-    b.onclick = () => {
+    button.onclick = () => {
 
       $("modalText").textContent =
-        b.dataset.soon;
+        button.dataset.soon;
 
       $("modal")
         .classList
@@ -2346,9 +2558,9 @@ $("closeModal").onclick =
 
 document
   .querySelectorAll("[data-back]")
-  .forEach(b => {
+  .forEach(button => {
 
-    b.onclick = () => {
+    button.onclick = () => {
 
       reset();
 
@@ -2379,24 +2591,27 @@ $("analyzerBack").onclick =
 
 document
   .querySelectorAll("[data-category]")
-  .forEach(b => {
+  .forEach(button => {
 
-    b.onclick = () => {
+    button.onclick = () => {
 
       mode =
         "contract";
 
       category =
-        b.dataset.category;
+        button.dataset.category;
+
 
       $("analyzerTitle")
         .textContent =
         "📄 رفع العقد";
 
+
       $("analyzerSub")
         .textContent =
         "القسم المختار: " +
         category;
+
 
       reset();
 
@@ -2413,24 +2628,27 @@ document
 
 document
   .querySelectorAll("[data-judgment-type]")
-  .forEach(b => {
+  .forEach(button => {
 
-    b.onclick = () => {
+    button.onclick = () => {
 
       mode =
         "judgment";
 
       category =
-        b.dataset.judgmentType;
+        button.dataset.judgmentType;
+
 
       $("analyzerTitle")
         .textContent =
         "⚖️ رفع الوثيقة القضائية";
 
+
       $("analyzerSub")
         .textContent =
         "نوع التحليل: " +
         category;
+
 
       reset();
 
@@ -2448,24 +2666,25 @@ document
 $("file").onchange =
   () => {
 
-    const f =
+    const file =
       $("file").files[0];
 
-    if(!f)
+
+    if(!file)
       return;
 
 
     if(
-      validate(f)
+      validate(file)
     ){
 
       $("selected")
         .textContent =
         "📎 " +
-        f.name +
+        file.name +
         " • " +
         (
-          f.size /
+          file.size /
           1024 /
           1024
         ).toFixed(2) +
@@ -2493,12 +2712,12 @@ $("file").onchange =
 $("go").onclick =
   async () => {
 
-    const f =
+    const file =
       $("file").files[0];
 
 
     if(
-      !validate(f)
+      !validate(file)
     )
       return;
 
@@ -2518,7 +2737,7 @@ $("go").onclick =
 
 
     startETA(
-      f.size
+      file.size
     );
 
 
@@ -2541,13 +2760,13 @@ $("go").onclick =
       .remove("indeterminate");
 
 
-    const fd =
+    const formData =
       new FormData();
 
 
-    fd.append(
+    formData.append(
       "document",
-      f
+      file
     );
 
 
@@ -2559,7 +2778,7 @@ $("go").onclick =
       mode === "contract"
     ){
 
-      fd.append(
+      formData.append(
         "category",
         category
       );
@@ -2577,31 +2796,29 @@ $("go").onclick =
       const data =
         await send(
           url,
-          fd,
-          p => {
+          formData,
+          percent => {
 
-            $("bar")
-              .style
-              .width =
-              p + "%";
+            $("bar").style.width =
+              percent + "%";
 
 
             $("progressNumber")
               .textContent =
-              p + "%";
+              percent + "%";
 
 
             $("progressText")
               .textContent =
-              p === 100
+              percent === 100
                 ? "تم الرفع ✓ • جاري التحليل..."
                 : "جاري رفع المستند... " +
-                  p +
+                  percent +
                   "%";
 
 
             if(
-              p === 100
+              percent === 100
             ){
 
               $("bar")
@@ -2622,9 +2839,7 @@ $("go").onclick =
         .remove("indeterminate");
 
 
-      $("bar")
-        .style
-        .width =
+      $("bar").style.width =
         "100%";
 
 
@@ -2662,14 +2877,14 @@ $("go").onclick =
         });
 
 
-    }catch(e){
+    }catch(error){
 
       stopETA();
 
 
       $("status")
         .textContent =
-        e.message;
+        error.message;
 
 
       $("progressText")
@@ -2761,12 +2976,12 @@ $("articleSearch").oninput =
 
     document
       .querySelectorAll(".article")
-      .forEach(a => {
+      .forEach(article => {
 
-        a.classList.toggle(
+        article.classList.toggle(
           "hidden",
           q &&
-          !a.textContent
+          !article.textContent
             .toLowerCase()
             .includes(q)
         );
