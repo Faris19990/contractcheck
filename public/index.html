@@ -1,1220 +1,2243 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ContractCheck</title>
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta
+name="theme-color"
+content="#101827">
+
+<title>إحاطة | للذكاء القانوني</title>
 
 <style>
-*{box-sizing:border-box}
 
 :root{
-  --bg:#090b0e;
-  --panel:#11151a;
-  --panel2:#171c22;
-  --line:#292f37;
-  --text:#f5f7fa;
-  --muted:#98a1ac;
-  --gold:#d6b36a;
-  --gold2:#f1d58f;
-  --red:#ef6464;
-  --orange:#e2a640;
-  --green:#43c58b;
+--bg:#f4f1e9;
+--ink:#151b26;
+--muted:#69707c;
+--card:#fff;
+--navy:#101827;
+--gold:#c7a45b;
+--line:#e5e0d6;
+--red:#c93d45;
+--orange:#d99625;
+--green:#3e8b62;
+}
+
+*{
+box-sizing:border-box
+}
+
+html{
+scroll-behavior:smooth
 }
 
 body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 85% 0%,rgba(214,179,106,.14),transparent 30%),
-    radial-gradient(circle at 5% 65%,rgba(70,100,140,.09),transparent 28%),
-    var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Tahoma,Arial,sans-serif;
+margin:0;
+background:var(--bg);
+color:var(--ink);
+font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif
 }
 
-button,input{font:inherit}
-button{cursor:pointer}
+button,
+input{
+font:inherit
+}
 
-.container{
-  width:min(1080px,calc(100% - 24px));
-  margin:auto;
+button{
+cursor:pointer
+}
+
+.hidden{
+display:none!important
+}
+
+/* SPLASH */
+
+.splash{
+position:fixed;
+inset:0;
+background:var(--navy);
+z-index:50;
+display:grid;
+place-items:center;
+animation:splashOut .7s ease 1.55s forwards
+}
+
+.splash-inner{
+text-align:center;
+color:white;
+animation:logoIn 1.2s ease both
+}
+
+.splash-mark{
+font-size:92px;
+line-height:1;
+filter:drop-shadow(
+0 10px 28px
+rgba(199,164,91,.22)
+)
+}
+
+.splash h1{
+font-family:Georgia,"Times New Roman",serif;
+font-size:64px;
+margin:12px 0 2px
+}
+
+.splash p{
+margin:0;
+color:#d9d4c9
+}
+
+@keyframes logoIn{
+from{
+opacity:0;
+transform:scale(1.15)
+}
+to{
+opacity:1;
+transform:scale(1)
+}
+}
+
+@keyframes splashOut{
+to{
+opacity:0;
+visibility:hidden;
+pointer-events:none
+}
+}
+
+/* MAIN */
+
+.wrap{
+max-width:1060px;
+margin:auto;
+padding:22px 18px 48px
 }
 
 .topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:22px 0;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:10px 0 26px
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:800;
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:900
 }
 
 .brand-mark{
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
-  border:1px solid rgba(214,179,106,.35);
-  border-radius:14px;
-  background:linear-gradient(145deg,#20252c,#101318);
-  color:var(--gold2);
-  font-size:21px;
+width:42px;
+height:42px;
+border-radius:14px;
+background:var(--navy);
+color:var(--gold);
+display:grid;
+place-items:center;
+font-size:23px
 }
 
 .brand-name{
-  font-size:20px;
+font-family:Georgia,"Times New Roman",serif;
+font-size:26px
 }
 
 .badge{
-  color:var(--muted);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:7px 12px;
-  font-size:12px;
+font-size:12px;
+color:#766b58;
+background:#ece6d9;
+padding:7px 10px;
+border-radius:999px
 }
+
+/* HERO */
 
 .hero{
-  text-align:center;
-  padding:68px 0 44px;
+text-align:center;
+padding:48px 10px 34px
 }
 
-.kicker{
-  display:inline-block;
-  color:var(--gold2);
-  background:rgba(214,179,106,.07);
-  border:1px solid rgba(214,179,106,.22);
-  border-radius:999px;
-  padding:8px 14px;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:20px;
+.hero-mark{
+font-size:46px
 }
 
 .hero h1{
-  margin:0;
-  font-size:clamp(44px,8vw,78px);
-  line-height:1;
-  letter-spacing:-3px;
-}
-
-.hero h2{
-  margin:18px 0 0;
-  font-size:clamp(20px,4vw,29px);
+font-family:Georgia,"Times New Roman",serif;
+font-size:clamp(42px,8vw,76px);
+margin:7px 0
 }
 
 .hero p{
-  max-width:650px;
-  margin:15px auto 0;
-  color:var(--muted);
-  line-height:1.9;
+max-width:650px;
+margin:auto;
+color:var(--muted);
+font-size:18px;
+line-height:1.9
 }
 
-/* اختيار الخدمة */
-
-.choices{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  margin-bottom:65px;
+.section-title{
+text-align:center;
+margin:10px 0 20px
 }
 
-.choice{
-  position:relative;
-  min-height:270px;
-  text-align:right;
-  color:var(--text);
-  padding:30px;
-  border:1px solid var(--line);
-  border-radius:25px;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012)),
-    var(--panel);
-  overflow:hidden;
-  transition:.25s;
+.section-title h2{
+margin:0;
+font-size:26px
 }
 
-.choice:hover{
-  transform:translateY(-5px);
-  border-color:rgba(214,179,106,.55);
-  box-shadow:0 25px 70px rgba(0,0,0,.3);
+.section-title p{
+color:var(--muted);
+margin:7px 0
 }
 
-.choice-icon{
-  width:60px;
-  height:60px;
-  display:grid;
-  place-items:center;
-  border-radius:18px;
-  background:rgba(214,179,106,.09);
-  border:1px solid rgba(214,179,106,.2);
-  font-size:28px;
-  margin-bottom:27px;
+/* MODE */
+
+.mode-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:18px
 }
 
-.choice h3{
-  margin:0 0 10px;
-  font-size:25px;
+.mode{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:24px;
+padding:28px;
+text-align:right;
+transition:.2s;
+box-shadow:
+0 12px 35px
+rgba(20,25,35,.04)
 }
 
-.choice p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.9;
+.mode:hover{
+transform:translateY(-3px);
+box-shadow:
+0 18px 45px
+rgba(20,25,35,.08)
 }
 
-.arrow{
-  position:absolute;
-  left:27px;
-  bottom:25px;
-  color:var(--gold2);
-  font-size:22px;
+.mode-icon{
+font-size:42px
 }
 
-/* الصفحات */
-
-.workspace{
-  display:none;
-  margin-bottom:55px;
+.mode h3{
+font-size:24px;
+margin:13px 0 7px
 }
 
-.workspace.active{
-  display:block;
+.mode p{
+color:var(--muted);
+line-height:1.8;
+margin:0 0 18px
 }
 
-.workspace-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:18px;
+.primary{
+background:var(--navy);
+color:white;
+border:0;
+border-radius:13px;
+padding:12px 18px;
+font-weight:800
 }
 
-.workspace-title{
-  display:flex;
-  gap:13px;
-  align-items:center;
-}
+/* PANEL */
 
-.workspace-title-icon{
-  font-size:28px;
-}
-
-.workspace-title h2{
-  margin:0;
-  font-size:25px;
-}
-
-.workspace-title p{
-  margin:5px 0 0;
-  color:var(--muted);
-  font-size:14px;
+.panel{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:24px;
+padding:24px;
+margin-top:20px
 }
 
 .back{
-  color:var(--muted);
-  background:transparent;
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:9px 14px;
+background:transparent;
+border:0;
+color:var(--muted);
+padding:8px 0;
+font-weight:700
 }
 
-.back:hover{
-  color:var(--text);
+/* CATEGORIES */
+
+.category-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px
 }
 
-/* الرفع */
-
-.upload-card{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:25px;
-  padding:10px;
+.category{
+background:#fbfaf7;
+border:1px solid var(--line);
+border-radius:18px;
+padding:18px;
+display:flex;
+align-items:center;
+gap:14px;
+text-align:right;
+transition:.18s
 }
 
-.dropzone{
-  min-height:290px;
-  border:1px dashed #3a424c;
-  border-radius:19px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:30px;
+.category:hover{
+border-color:#c9b78e;
+transform:translateY(-2px)
 }
 
-.drop-icon{
-  width:70px;
-  height:70px;
-  display:grid;
-  place-items:center;
-  border-radius:21px;
-  background:rgba(255,255,255,.045);
-  font-size:31px;
-  margin-bottom:17px;
+.category .ico{
+width:46px;
+height:46px;
+border-radius:14px;
+background:#f0eadc;
+display:grid;
+place-items:center;
+font-size:24px;
+flex:0 0 auto
 }
 
-.dropzone h3{
-  margin:0;
-  font-size:20px;
+.category strong{
+display:block;
+font-size:17px
 }
 
-.dropzone p{
-  color:var(--muted);
-  font-size:14px;
-  margin:9px 0 20px;
+.category small{
+color:var(--muted);
+display:block;
+margin-top:4px
 }
 
-.file-input{
-  display:none;
+/* QURAN */
+
+.quote{
+margin:20px 0 25px;
+background:#f7f1e2;
+border:1px solid #e8dcc0;
+border-radius:18px;
+padding:19px;
+text-align:center
 }
 
-.choose{
-  display:inline-block;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#101010;
-  border-radius:12px;
-  padding:12px 20px;
-  font-weight:850;
+.quote .arabic{
+font-family:Georgia,"Times New Roman",serif;
+font-size:22px;
+line-height:1.9
 }
 
-.file-name{
-  margin-top:16px;
-  color:var(--gold2);
-  font-size:14px;
-  word-break:break-word;
+.quote small{
+color:#796d57
 }
 
-.analyze{
-  width:100%;
-  margin-top:10px;
-  padding:16px;
-  border:0;
-  border-radius:15px;
-  background:#f3f4f6;
-  color:#090a0c;
-  font-weight:850;
+/* UPLOAD */
+
+.upload{
+border:2px dashed #cfc7b7;
+border-radius:20px;
+padding:28px;
+text-align:center;
+background:#fcfbf8
 }
 
-.analyze:disabled{
-  opacity:.45;
-  cursor:not-allowed;
+.file{
+width:100%;
+margin:15px 0
 }
 
-.status{
-  min-height:25px;
-  color:var(--muted);
-  text-align:center;
-  font-size:14px;
-  padding:12px 5px 3px;
+.selected{
+display:inline-flex;
+align-items:center;
+gap:8px;
+background:#eef1f5;
+padding:8px 12px;
+border-radius:999px;
+color:#4e5662;
+font-size:13px
 }
 
-/* التقدم */
+/* PROGRESS */
+
+.progress-wrap{
+margin-top:20px
+}
+
+.progress-head{
+display:flex;
+justify-content:space-between;
+color:var(--muted);
+font-size:14px
+}
 
 .progress{
-  display:none;
-  margin-top:17px;
-  padding:21px;
-  background:var(--panel2);
-  border:1px solid var(--line);
-  border-radius:20px;
-}
-
-.progress.show{
-  display:block;
-}
-
-.progress-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px;
-}
-
-.progress-title{
-  font-weight:800;
-}
-
-.progress-percent{
-  color:var(--gold2);
-  font-size:20px;
-  font-weight:900;
-}
-
-.track{
-  width:100%;
-  height:9px;
-  background:#282e35;
-  border-radius:99px;
-  overflow:hidden;
+height:10px;
+background:#ebe7df;
+border-radius:99px;
+overflow:hidden;
+margin-top:8px
 }
 
 .bar{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg,var(--gold),var(--gold2));
-  border-radius:99px;
-  transition:width .7s ease;
+height:100%;
+width:0;
+background:
+linear-gradient(
+90deg,
+var(--navy),
+var(--gold)
+);
+border-radius:99px;
+transition:width .35s ease
 }
 
-.progress-step{
-  margin-top:11px;
-  color:var(--muted);
-  font-size:13px;
+.status{
+color:var(--muted);
+margin-top:12px;
+min-height:24px
 }
 
-.progress-note{
-  margin-top:6px;
-  color:#68727d;
-  font-size:11px;
-}
-
-/* النتائج */
+/* RESULTS */
 
 .result{
-  display:none;
-  margin-top:20px;
-  padding:25px;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:25px;
+margin-top:24px
 }
 
-.result.show{
-  display:block;
+.result-head{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px
 }
 
-.result-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  border-bottom:1px solid var(--line);
-  padding-bottom:20px;
-}
-
-.document-label{
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:7px;
-}
-
-.document-type{
-  font-size:24px;
-  font-weight:850;
-}
-
-.score-box{
-  min-width:110px;
-  text-align:center;
+.result-type{
+color:var(--muted);
+font-size:14px
 }
 
 .score{
-  font-size:44px;
-  font-weight:950;
-  line-height:1;
+font-size:48px;
+font-weight:950;
+line-height:1
 }
 
-.score-label{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:6px;
+.score small{
+font-size:17px;
+color:var(--muted)
 }
 
 .summary{
-  margin:20px 0;
-  padding:18px;
-  border-radius:18px;
-  background:rgba(214,179,106,.07);
-  border:1px solid rgba(214,179,106,.15);
-  line-height:1.9;
+background:#f7f1e2;
+border-radius:17px;
+padding:17px;
+line-height:1.9;
+margin:18px 0
+}
+
+.info-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin:16px 0
+}
+
+.info{
+border:1px solid var(--line);
+border-radius:15px;
+padding:13px;
+background:#fcfbf8
+}
+
+.info b{
+display:block;
+margin-bottom:6px
+}
+
+.info span{
+color:var(--muted);
+font-size:14px;
+line-height:1.6
 }
 
 .risk{
-  padding:18px;
-  margin:12px 0;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--panel2);
+border:1px solid var(--line);
+border-radius:17px;
+padding:17px;
+margin:12px 0
 }
 
-.risk.high{
-  border-right:4px solid var(--red);
+.high{
+border-right:6px solid var(--red)
 }
 
-.risk.medium{
-  border-right:4px solid var(--orange);
+.medium{
+border-right:6px solid var(--orange)
 }
 
-.risk.low{
-  border-right:4px solid var(--green);
+.low{
+border-right:6px solid var(--green)
 }
 
 .risk h3{
-  margin:0 0 12px;
+margin:0 0 10px
 }
 
 .risk p{
-  color:#c7ccd2;
-  line-height:1.8;
-  margin:7px 0;
+line-height:1.8;
+margin:7px 0
 }
 
-.result-section{
-  margin-top:26px;
+ul{
+line-height:2
 }
 
-.result-section h3{
-  margin-bottom:10px;
+.note{
+color:var(--muted);
+font-size:13px;
+line-height:1.8;
+margin-top:28px;
+text-align:center
 }
 
-.result-section ul{
-  margin:0;
-  padding-right:20px;
-  color:#c7ccd2;
-  line-height:2;
-}
-
-.notice{
-  margin-top:18px;
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-}
-
-footer{
-  text-align:center;
-  color:#68717c;
-  font-size:12px;
-  line-height:1.8;
-  padding:25px 0 45px;
-}
+/* MOBILE */
 
 @media(max-width:720px){
 
-  .container{
-    width:calc(100% - 22px);
-  }
-
-  .badge{
-    display:none;
-  }
-
-  .hero{
-    padding:50px 0 35px;
-  }
-
-  .hero h1{
-    letter-spacing:-2px;
-  }
-
-  .choices{
-    grid-template-columns:1fr;
-    margin-bottom:40px;
-  }
-
-  .choice{
-    min-height:220px;
-  }
-
-  .workspace-head{
-    align-items:flex-start;
-  }
-
-  .result-top{
-    align-items:flex-start;
-  }
-
-  .document-type{
-    font-size:20px;
-  }
+.mode-grid,
+.category-grid,
+.info-grid{
+grid-template-columns:1fr
 }
+
+.hero{
+padding-top:28px
+}
+
+.splash h1{
+font-size:50px
+}
+
+.splash-mark{
+font-size:76px
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
+<!-- SPLASH -->
 
-<header class="topbar">
+<div
+class="splash"
+id="splash">
 
-  <div class="brand">
-    <div class="brand-mark">⚖</div>
-    <div class="brand-name">ContractCheck</div>
-  </div>
+<div class="splash-inner">
 
-  <div class="badge">
-    تحليل قانوني بالذكاء الاصطناعي
-  </div>
+<div class="splash-mark">
+⚖️
+</div>
 
-</header>
+<h1>
+إحاطة
+</h1>
 
+<p>
+للذكاء القانوني
+</p>
 
-<section class="hero">
-
-  <div class="kicker">
-    ✦ فحص ذكي للمستندات القانونية
-  </div>
-
-  <h1>ContractCheck</h1>
-
-  <h2>
-    تحليل العقود والأحكام بالذكاء الاصطناعي
-  </h2>
-
-  <p>
-    افهم مستندك القانوني بشكل أسرع، واكتشف المخاطر
-    والبنود والنقاط التي تستحق المراجعة.
-  </p>
-
-</section>
-
-
-<section id="choices" class="choices">
-
-  <button id="contractChoice" class="choice">
-
-    <div class="choice-icon">📄</div>
-
-    <h3>تحليل العقود</h3>
-
-    <p>
-      فحص عقود المقاولات، الإيجار، البيع، العمل،
-      الخدمات، التوريد وغيرها، واكتشاف البنود المهمة والمخاطر.
-    </p>
-
-    <div class="arrow">←</div>
-
-  </button>
-
-
-  <button id="judgmentChoice" class="choice">
-
-    <div class="choice-icon">⚖️</div>
-
-    <h3>تحليل الأحكام</h3>
-
-    <p>
-      قراءة صك الحكم واستخراج الوقائع والطلبات
-      والأسباب والمنطوق والنقاط التي تستحق المراجعة.
-    </p>
-
-    <div class="arrow">←</div>
-
-  </button>
-
-</section>
-
-
-<!-- تحليل العقود -->
-
-<section id="contractWorkspace" class="workspace">
-
-  <div class="workspace-head">
-
-    <div class="workspace-title">
-
-      <div class="workspace-title-icon">📄</div>
-
-      <div>
-        <h2>تحليل العقود</h2>
-        <p>ارفع العقد ودع ContractCheck يفحصه.</p>
-      </div>
-
-    </div>
-
-    <button id="contractBack" class="back">
-      العودة
-    </button>
-
-  </div>
-
-
-  <div class="upload-card">
-
-    <div class="dropzone">
-
-      <div class="drop-icon">↑</div>
-
-      <h3>ارفع العقد هنا</h3>
-
-      <p>
-        PDF أو Word (DOCX) · الحد الأقصى 12MB
-      </p>
-
-      <label class="choose">
-
-        اختيار ملف
-
-        <input
-          id="file"
-          class="file-input"
-          type="file"
-          accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        >
-
-      </label>
-
-      <div id="fileName" class="file-name"></div>
-
-    </div>
-
-
-    <button id="go" class="analyze">
-      تحليل العقد
-    </button>
-
-
-    <div id="progress" class="progress">
-
-      <div class="progress-header">
-
-        <div class="progress-title">
-          جاري تحليل العقد
-        </div>
-
-        <div id="progressPercent" class="progress-percent">
-          0%
-        </div>
-
-      </div>
-
-      <div class="track">
-        <div id="progressBar" class="bar"></div>
-      </div>
-
-      <div id="progressStep" class="progress-step">
-        تجهيز الملف...
-      </div>
-
-      <div class="progress-note">
-        النسبة تقديرية، وتكتمل عند وصول نتيجة التحليل.
-      </div>
-
-    </div>
-
-
-    <div id="status" class="status"></div>
-
-  </div>
-
-
-  <section id="result" class="result"></section>
-
-</section>
-
-
-<!-- تحليل الأحكام -->
-
-<section id="judgmentWorkspace" class="workspace">
-
-  <div class="workspace-head">
-
-    <div class="workspace-title">
-
-      <div class="workspace-title-icon">⚖️</div>
-
-      <div>
-        <h2>تحليل الأحكام</h2>
-        <p>ارفع صك الحكم لتحليل محتواه.</p>
-      </div>
-
-    </div>
-
-    <button id="judgmentBack" class="back">
-      العودة
-    </button>
-
-  </div>
-
-
-  <div class="upload-card">
-
-    <div class="dropzone">
-
-      <div class="drop-icon">⚖</div>
-
-      <h3>ارفع صك الحكم هنا</h3>
-
-      <p>
-        PDF أو Word (DOCX) · الحد الأقصى 12MB
-      </p>
-
-      <label class="choose">
-
-        اختيار ملف
-
-        <input
-          id="judgmentFile"
-          class="file-input"
-          type="file"
-          accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        >
-
-      </label>
-
-      <div id="judgmentFileName" class="file-name"></div>
-
-    </div>
-
-
-    <button id="judgmentGo" class="analyze">
-      تحليل الحكم
-    </button>
-
-    <div id="judgmentStatus" class="status"></div>
-
-  </div>
-
-
-  <section id="judgmentResult" class="result"></section>
-
-</section>
-
-
-<footer>
-
-  ContractCheck أداة مساعدة للفحص الأولي للمستندات القانونية،
-  وليست بديلًا عن المحامي أو المستشار القانوني.
-
-</footer>
+</div>
 
 </div>
 
 
+<main class="wrap">
+
+<!-- TOP -->
+
+<div class="topbar">
+
+<div class="brand">
+
+<div class="brand-mark">
+⚖
+</div>
+
+<div class="brand-name">
+إحاطة
+</div>
+
+</div>
+
+<div class="badge">
+نسخة تجريبية
+</div>
+
+</div>
+
+
+<!-- HERO -->
+
+<section
+class="hero">
+
+<div class="hero-mark">
+⚖️
+</div>
+
+<h1>
+إحاطة
+</h1>
+
+<p>
+تحليل ذكي للمستندات القانونية يساعدك
+على فهم البنود والنقاط المهمة قبل اتخاذ القرار.
+</p>
+
+</section>
+
+
+<!-- HOME -->
+
+<section id="home">
+
+<div class="section-title">
+
+<h2>
+ماذا تريد أن تحلل؟
+</h2>
+
+<p>
+اختر نوع المستند للبدء
+</p>
+
+</div>
+
+
+<div class="mode-grid">
+
+<button
+class="mode"
+id="contractsMode">
+
+<div class="mode-icon">
+📄
+</div>
+
+<h3>
+العقود
+</h3>
+
+<p>
+فحص البنود والمخاطر والالتزامات
+والمبالغ والتواريخ المهمة.
+</p>
+
+<span class="primary">
+ابدأ تحليل عقد
+</span>
+
+</button>
+
+
+<button
+class="mode"
+id="judgmentsMode">
+
+<div class="mode-icon">
+⚖️
+</div>
+
+<h3>
+الأحكام والوثائق القضائية
+</h3>
+
+<p>
+استخراج الوقائع والطلبات والأسباب
+والمنطوق والبيانات المهمة.
+</p>
+
+<span class="primary">
+ابدأ تحليل حكم
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- CONTRACTS -->
+
+<section
+id="contractSection"
+class="hidden">
+
+<button
+class="back"
+data-back>
+
+← العودة للرئيسية
+
+</button>
+
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2>
+📄 العقود
+</h2>
+
+<p>
+اختر أقرب نوع للعقد، وسيتحقق النظام
+من النوع الحقيقي داخل المستند.
+</p>
+
+</div>
+
+
+<div class="quote">
+
+<div class="arabic">
+
+﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
+
+</div>
+
+<small>
+سورة المائدة: 1
+</small>
+
+</div>
+
+
+<div class="category-grid">
+
+<button
+class="category"
+data-category="مقاولات وأعمال">
+
+<span class="ico">
+🏗️
+</span>
+
+<span>
+<strong>
+المقاولات والأعمال
+</strong>
+
+<small>
+تنفيذ، إنشاء، تشييد وصيانة
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="عقود تجارية">
+
+<span class="ico">
+🏢
+</span>
+
+<span>
+<strong>
+العقود التجارية
+</strong>
+
+<small>
+بيع، شراء، تشغيل وخدمات
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="إيجار">
+
+<span class="ico">
+🏠
+</span>
+
+<span>
+<strong>
+الإيجار
+</strong>
+
+<small>
+عقود الإيجار والتأجير
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="عمل">
+
+<span class="ico">
+💼
+</span>
+
+<span>
+<strong>
+العمل
+</strong>
+
+<small>
+عقود الموظفين والعمل
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="توريد">
+
+<span class="ico">
+📦
+</span>
+
+<span>
+<strong>
+التوريد
+</strong>
+
+<small>
+التوريد والشراء
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="شراكات واستثمار">
+
+<span class="ico">
+🤝
+</span>
+
+<span>
+<strong>
+الشراكات والاستثمار
+</strong>
+
+<small>
+شراكات واستثمار واتفاقيات
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="تقنية وخدمات">
+
+<span class="ico">
+💻
+</span>
+
+<span>
+<strong>
+التقنية والخدمات
+</strong>
+
+<small>
+برمجيات واستشارات وخدمات
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-category="عقد آخر">
+
+<span class="ico">
+📄
+</span>
+
+<span>
+<strong>
+عقد آخر
+</strong>
+
+<small>
+أي عقد غير مصنف
+</small>
+
+</span>
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- JUDGMENTS -->
+
+<section
+id="judgmentSection"
+class="hidden">
+
+<button
+class="back"
+data-back>
+
+← العودة للرئيسية
+
+</button>
+
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2>
+⚖️ الأحكام والوثائق القضائية
+</h2>
+
+<p>
+تحليل أولي للمحتوى الوارد في الوثيقة
+دون إصدار حكم قانوني جديد.
+</p>
+
+</div>
+
+
+<div class="category-grid">
+
+<button
+class="category"
+data-judgment-type="حكم قضائي">
+
+<span class="ico">
+🔨
+</span>
+
+<span>
+
+<strong>
+أحكام قضائية
+</strong>
+
+<small>
+صكوك الأحكام وما يتصل بها
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-judgment-type="قرار">
+
+<span class="ico">
+📑
+</span>
+
+<span>
+
+<strong>
+قرارات
+</strong>
+
+<small>
+قرارات ووثائق قضائية
+</small>
+
+</span>
+
+</button>
+
+
+<button
+class="category"
+data-judgment-type="وثيقة قضائية أخرى">
+
+<span class="ico">
+📜
+</span>
+
+<span>
+
+<strong>
+وثائق قضائية أخرى
+</strong>
+
+<small>
+أي وثيقة قضائية قابلة للتحليل
+</small>
+
+</span>
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ANALYZER -->
+
+<section
+id="analyzer"
+class="hidden">
+
+<button
+class="back"
+id="analyzerBack">
+
+← العودة للاختيارات
+
+</button>
+
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2 id="analyzerTitle">
+رفع المستند
+</h2>
+
+<p id="analyzerSub"></p>
+
+</div>
+
+
+<div class="upload">
+
+<div
+id="selectedLabel"
+class="selected hidden">
+</div>
+
+
+<input
+id="file"
+class="file"
+type="file"
+accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+
+<button
+id="go"
+class="primary">
+
+ابدأ التحليل
+
+</button>
+
+
+<div
+class="progress-wrap hidden"
+id="progressWrap">
+
+<div class="progress-head">
+
+<span id="progressText">
+جاري تجهيز المستند...
+</span>
+
+<strong id="progressNumber">
+0%
+</strong>
+
+</div>
+
+<div class="progress">
+
+<div
+class="bar"
+id="bar">
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="status"
+class="status">
+</div>
+
+</div>
+
+
+<section
+id="result"
+class="result hidden">
+</section>
+
+</div>
+
+</section>
+
+
+<div class="note">
+
+إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
+
+</div>
+
+</main>
+
+
 <script>
 
-const choices=document.getElementById("choices");
+const $ =
+id => document.getElementById(id);
 
-const contractChoice=document.getElementById("contractChoice");
-const judgmentChoice=document.getElementById("judgmentChoice");
+const fileEl =
+$("file");
 
-const contractWorkspace=document.getElementById("contractWorkspace");
-const judgmentWorkspace=document.getElementById("judgmentWorkspace");
+const go =
+$("go");
 
-const contractBack=document.getElementById("contractBack");
-const judgmentBack=document.getElementById("judgmentBack");
+const status =
+$("status");
 
-const fileEl=document.getElementById("file");
-const fileName=document.getElementById("fileName");
+const result =
+$("result");
 
-const go=document.getElementById("go");
-const status=document.getElementById("status");
+const progressWrap =
+$("progressWrap");
 
-const progress=document.getElementById("progress");
-const progressBar=document.getElementById("progressBar");
-const progressPercent=document.getElementById("progressPercent");
-const progressStep=document.getElementById("progressStep");
+const progressBar =
+$("bar");
 
-const result=document.getElementById("result");
+const progressNumber =
+$("progressNumber");
 
-const judgmentFile=document.getElementById("judgmentFile");
-const judgmentFileName=document.getElementById("judgmentFileName");
-const judgmentGo=document.getElementById("judgmentGo");
-const judgmentStatus=document.getElementById("judgmentStatus");
+const progressText =
+$("progressText");
 
+const selectedLabel =
+$("selectedLabel");
 
-function esc(v){
+let mode = null;
 
-  return String(v??"").replace(/[&<>"']/g,c=>({
+let category = null;
 
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-
-  }[c]));
-
-}
+let progressTimer = null;
 
 
-function openWorkspace(type){
+/* ESCAPE */
 
-  choices.style.display="none";
+function esc(value){
 
-  contractWorkspace.classList.remove("active");
-  judgmentWorkspace.classList.remove("active");
-
-  if(type==="contract"){
-    contractWorkspace.classList.add("active");
-  }
-
-  if(type==="judgment"){
-    judgmentWorkspace.classList.add("active");
-  }
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+return String(
+value ?? ""
+).replace(
+/[&<>"']/g,
+char => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[char])
+);
 
 }
 
 
-function closeWorkspace(){
+/* SHOW SECTION */
 
-  contractWorkspace.classList.remove("active");
-  judgmentWorkspace.classList.remove("active");
+function show(id){
 
-  choices.style.display="grid";
+[
+"home",
+"contractSection",
+"judgmentSection",
+"analyzer"
+].forEach(
+section =>
+$(section)
+.classList
+.add("hidden")
+);
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+$(id)
+.classList
+.remove("hidden");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* RESET */
+
+function resetAnalyzer(){
+
+fileEl.value = "";
+
+selectedLabel
+.classList
+.add("hidden");
+
+result
+.classList
+.add("hidden");
+
+result.innerHTML = "";
+
+status.textContent = "";
+
+progressWrap
+.classList
+.add("hidden");
+
+progressBar.style.width =
+"0%";
+
+progressNumber.textContent =
+"0%";
+
+clearInterval(
+progressTimer
+);
 
 }
 
 
-contractChoice.onclick=()=>{
-  openWorkspace("contract");
-};
-
-judgmentChoice.onclick=()=>{
-  openWorkspace("judgment");
-};
-
-contractBack.onclick=closeWorkspace;
-judgmentBack.onclick=closeWorkspace;
-
-
-fileEl.onchange=()=>{
-
-  fileName.textContent=
-    fileEl.files[0]
-      ? fileEl.files[0].name
-      : "";
-
-};
-
-
-judgmentFile.onchange=()=>{
-
-  judgmentFileName.textContent=
-    judgmentFile.files[0]
-      ? judgmentFile.files[0].name
-      : "";
-
-};
-
-
-/* شريط التقدم */
-
-let progressTimer=null;
-
-function resetProgress(){
-
-  if(progressTimer){
-    clearInterval(progressTimer);
-    progressTimer=null;
-  }
-
-  progressBar.style.width="0%";
-  progressPercent.textContent="0%";
-  progressStep.textContent="تجهيز الملف...";
-
-}
-
+/* PROGRESS */
 
 function startProgress(){
 
-  resetProgress();
+clearInterval(
+progressTimer
+);
 
-  progress.classList.add("show");
+let number = 8;
 
-  const stages=[
+progressBar.style.width =
+number + "%";
 
-    [8,"رفع الملف وتجهيزه..."],
-    [20,"قراءة المستند..."],
-    [35,"استخراج محتوى العقد..."],
-    [50,"فحص البنود الرئيسية..."],
-    [64,"تحليل الالتزامات والمخاطر..."],
-    [76,"مراجعة المسؤوليات والجزاءات..."],
-    [87,"تقييم مستوى المخاطر..."],
-    [94,"تجهيز التقرير النهائي..."]
+progressNumber.textContent =
+number + "%";
 
-  ];
+progressText.textContent =
+"جاري قراءة المستند...";
 
-  let i=0;
+const stages = [
 
-  function move(){
+[
+25,
+"جاري استخراج المحتوى..."
+],
 
-    if(i>=stages.length){
-      return;
-    }
+[
+45,
+"جاري فهم بنود المستند..."
+],
 
-    const [percent,text]=stages[i];
+[
+65,
+"جاري فحص النقاط المهمة..."
+],
 
-    progressBar.style.width=percent+"%";
-    progressPercent.textContent=percent+"%";
-    progressStep.textContent=text;
+[
+82,
+"جاري إعداد التقرير..."
+]
 
-    i++;
+];
 
-  }
+let index = 0;
 
-  move();
+progressTimer =
+setInterval(
+() => {
 
-  progressTimer=setInterval(move,1100);
+if(index < stages.length){
+
+const [
+target,
+text
+] = stages[index++];
+
+number = target;
+
+progressBar.style.width =
+number + "%";
+
+progressNumber.textContent =
+number + "%";
+
+progressText.textContent =
+text;
+
+}
+
+else if(number < 94){
+
+number++;
+
+progressBar.style.width =
+number + "%";
+
+progressNumber.textContent =
+number + "%";
+
+progressText.textContent =
+"تمت المعالجة، نجهز النتيجة النهائية...";
+
+}
+
+},
+900
+);
 
 }
 
 
 function finishProgress(){
 
-  if(progressTimer){
-    clearInterval(progressTimer);
-    progressTimer=null;
-  }
+clearInterval(
+progressTimer
+);
 
-  progressBar.style.width="100%";
-  progressPercent.textContent="100%";
-  progressStep.textContent="اكتمل التحليل ✓";
+progressBar.style.width =
+"100%";
+
+progressNumber.textContent =
+"100%";
+
+progressText.textContent =
+"اكتمل التحليل";
 
 }
 
 
-/* تحليل العقد */
+/* CONTRACT RESULT */
 
-go.onclick=async()=>{
+function renderContract(data){
 
-  if(!fileEl.files[0]){
+const icons = {
+high:"🔴",
+medium:"🟠",
+low:"🟢"
+};
 
-    status.textContent="اختر العقد أولًا.";
-    return;
+const risks =
+(data.risks || [])
+.map(
+risk => `
 
-  }
+<div class="risk ${esc(risk.level)}">
 
+<h3>
 
-  go.disabled=true;
+${icons[risk.level] || "⚪"}
 
-  result.classList.remove("show");
+${esc(risk.title)}
 
-  status.textContent="";
+</h3>
 
-  startProgress();
+<p>
+<b>البند:</b>
+${esc(risk.clause)}
+</p>
 
+<p>
+<b>ليش مهم؟</b>
+${esc(risk.why)}
+</p>
 
-  const fd=new FormData();
+<p>
+<b>سؤال للمختص:</b>
+${esc(risk.question)}
+</p>
 
-  fd.append(
-    "contract",
-    fileEl.files[0]
-  );
+</div>
 
+`
+)
+.join("");
 
-  try{
 
-    const response=await fetch("/api/analyze",{
+const info =
+data.key_information || {};
 
-      method:"POST",
-      body:fd
 
-    });
+result.innerHTML = `
 
+<div class="result-head">
 
-    const data=await response.json();
+<div>
 
+<div class="result-type">
+نوع المستند
+</div>
 
-    if(!response.ok){
+<h2>
+${esc(
+data.document_type ||
+"غير محدد"
+)}
+</h2>
 
-      throw new Error(
-        data.error || "حدث خطأ أثناء التحليل."
-      );
+</div>
 
-    }
 
+<div class="score">
 
-    const icon={
+${esc(
+data.score ??
+"—"
+)}
 
-      high:"🔴",
-      medium:"🟠",
-      low:"🟢"
+<small>
+/100
+</small>
 
-    };
+</div>
 
+</div>
 
-    const risks=(data.risks||[]).map(item=>`
 
-      <div class="risk ${esc(item.level)}">
+<div class="summary">
 
-        <h3>
-          ${icon[item.level]||"⚪"}
-          ${esc(item.title)}
-        </h3>
+<b>
+الخلاصة
+</b>
 
-        <p>
-          <b>البند:</b>
-          ${esc(item.clause)}
-        </p>
+<br>
 
-        <p>
-          <b>لماذا مهم؟</b>
-          ${esc(item.why)}
-        </p>
+${esc(data.summary)}
 
-        <p>
-          <b>سؤال للمختص:</b>
-          ${esc(item.question)}
-        </p>
+</div>
 
-      </div>
 
-    `).join("");
+<div class="info-grid">
 
+<div class="info">
 
-    result.innerHTML=`
+<b>
+💰 مبالغ مهمة
+</b>
 
-      <div class="result-top">
+<span>
 
-        <div>
+${
+(info.amounts || [])
+.map(esc)
+.join(" • ")
+|| "لا يوجد"
+}
 
-          <div class="document-label">
-            نوع المستند
-          </div>
+</span>
 
-          <div class="document-type">
-            ${esc(data.contract_type || "غير محدد")}
-          </div>
+</div>
 
-        </div>
 
+<div class="info">
 
-        <div class="score-box">
+<b>
+📅 تواريخ
+</b>
 
-          <div class="score">
-            ${esc(data.score)}
-          </div>
+<span>
 
-          <div class="score-label">
-            درجة المخاطرة من 100
-          </div>
+${
+(info.dates || [])
+.map(esc)
+.join(" • ")
+|| "لا يوجد"
+}
 
-        </div>
+</span>
 
-      </div>
+</div>
 
 
-      <div class="summary">
-        ${esc(data.summary)}
-      </div>
+<div class="info">
 
+<b>
+⏳ مدد
+</b>
 
-      <div class="result-section">
+<span>
 
-        <h3>
-          البنود التي تستحق الانتباه
-        </h3>
+${
+(info.durations || [])
+.map(esc)
+.join(" • ")
+|| "لا يوجد"
+}
 
-        ${
-          risks ||
-          "<p>لم تظهر مخاطر واضحة في التحليل.</p>"
-        }
+</span>
 
-      </div>
+</div>
 
+</div>
 
-      <div class="result-section">
 
-        <h3>
-          نقاط جيدة
-        </h3>
+<h2>
+🔎 البنود التي تستحق الانتباه
+</h2>
 
-        <ul>
+${
+risks ||
+"<p>لم تظهر مخاطر واضحة في التحليل.</p>"
+}
 
-          ${(data.good_points||[])
-            .map(x=>`<li>${esc(x)}</li>`)
-            .join("")}
 
-        </ul>
+<h2>
+✅ نقاط جيدة
+</h2>
 
-      </div>
+<ul>
 
+${
+(data.good_points || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>لا توجد نقاط محددة.</li>"
+}
 
-      <div class="result-section">
+</ul>
 
-        <h3>
-          غير واضح أو ناقص
-        </h3>
 
-        <ul>
+<h2>
+⚠️ غير واضح أو ناقص
+</h2>
 
-          ${(data.missing_or_unclear||[])
-            .map(x=>`<li>${esc(x)}</li>`)
-            .join("")}
+<ul>
 
-        </ul>
+${
+(data.missing_or_unclear || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>لم تظهر نقاط ناقصة واضحة.</li>"
+}
 
-      </div>
+</ul>
 
 
-      <div class="notice">
-        هذا التحليل آلي وأولي، ولا يُعد رأيًا أو استشارة قانونية ملزمة.
-        أي نقطة تحتاج تطبيقًا أو تفسيرًا للنظام السعودي يجب مراجعتها مع مختص.
-      </div>
+<h2>
+⚖️ توازن الالتزامات
+</h2>
 
-    `;
+<div class="summary">
 
+${esc(
+data.balance_check?.assessment ||
+"غير محدد"
+)}
 
-    finishProgress();
+</div>
 
-    result.classList.add("show");
+<ul>
 
-    result.scrollIntoView({
-      behavior:"smooth"
-    });
+${
+(data.balance_check?.notes || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+}
 
-    status.textContent="تم تحليل العقد بنجاح.";
+</ul>
 
+`;
 
-  }catch(error){
+}
 
-    if(progressTimer){
-      clearInterval(progressTimer);
-      progressTimer=null;
-    }
 
-    progressStep.textContent="تعذر إكمال التحليل.";
+/* JUDGMENT RESULT */
 
-    status.textContent=error.message;
+function renderJudgment(data){
 
+const info =
+data.case_information || {};
 
-  }finally{
+const parties =
+data.parties || {};
 
-    go.disabled=false;
 
-  }
+function box(
+title,
+value
+){
+
+return `
+
+<div class="info">
+
+<b>
+${title}
+</b>
+
+<span>
+
+${esc(
+value ||
+"غير مذكور"
+)}
+
+</span>
+
+</div>
+
+`;
+
+}
+
+
+result.innerHTML = `
+
+<div class="result-head">
+
+<div>
+
+<div class="result-type">
+نوع المستند
+</div>
+
+<h2>
+${esc(
+data.document_type ||
+"وثيقة قضائية"
+)}
+</h2>
+
+</div>
+
+<div style="font-size:48px">
+🔨
+</div>
+
+</div>
+
+
+<div class="summary">
+
+<b>
+الخلاصة
+</b>
+
+<br>
+
+${esc(data.summary)}
+
+</div>
+
+
+<div class="info-grid">
+
+${box(
+"🏛️ المحكمة",
+info.court
+)}
+
+${box(
+"⚖️ الدائرة",
+info.chamber
+)}
+
+${box(
+"🧾 رقم القضية",
+info.case_number
+)}
+
+${box(
+"📜 رقم الحكم",
+info.judgment_number
+)}
+
+${box(
+"📅 تاريخ الحكم",
+info.judgment_date
+)}
+
+${box(
+"👥 نوع القضية",
+data.case_type
+)}
+
+</div>
+
+
+<h2>
+👥 الأطراف
+</h2>
+
+<div class="info-grid">
+
+${box(
+"المدعي",
+parties.claimant
+)}
+
+${box(
+"المدعى عليه",
+parties.defendant
+)}
+
+</div>
+
+
+<h2>
+📌 طلبات الأطراف
+</h2>
+
+<ul>
+
+${
+(data.claims || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+🛡️ الدفوع
+</h2>
+
+<ul>
+
+${
+(data.defenses || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+📖 الوقائع
+</h2>
+
+<ul>
+
+${
+(data.facts || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+⚖️ أسباب الحكم
+</h2>
+
+<ul>
+
+${
+(data.reasons || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+🔨 منطوق الحكم
+</h2>
+
+<div class="summary">
+
+${esc(
+data.judgment ||
+"غير مذكور"
+)}
+
+</div>
+
+
+<h2>
+💰 الالتزامات المالية
+</h2>
+
+<ul>
+
+${
+(data.financial_obligations || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+📅 المدد
+</h2>
+
+<ul>
+
+${
+(data.deadlines || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>غير مذكور.</li>"
+}
+
+</ul>
+
+
+<h2>
+📨 الاعتراض والاستئناف
+</h2>
+
+<div class="summary">
+
+${esc(
+data.appeal_information ||
+"غير مذكور"
+)}
+
+</div>
+
+
+<h2>
+🔎 نقاط مهمة
+</h2>
+
+<ul>
+
+${
+(data.important_points || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>لا توجد نقاط إضافية محددة.</li>"
+}
+
+</ul>
+
+
+<h2>
+⚠️ غير واضح أو ناقص
+</h2>
+
+<ul>
+
+${
+(data.missing_or_unclear || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>لا توجد نقاط محددة.</li>"
+}
+
+</ul>
+
+
+<h2>
+🧑‍⚖️ تحتاج مراجعة قانونية
+</h2>
+
+<ul>
+
+${
+(data.legal_review_needed || [])
+.map(
+x => `<li>${esc(x)}</li>`
+)
+.join("")
+||
+"<li>لا توجد نقطة محددة.</li>"
+}
+
+</ul>
+
+`;
+
+}
+
+
+/* HOME */
+
+$("contractsMode").onclick =
+() => show("contractSection");
+
+$("judgmentsMode").onclick =
+() => show("judgmentSection");
+
+
+/* BACK */
+
+document
+.querySelectorAll("[data-back]")
+.forEach(
+button => {
+
+button.onclick = () => {
+
+resetAnalyzer();
+
+show("home");
+
+};
+
+});
+
+
+$("analyzerBack").onclick =
+() => {
+
+resetAnalyzer();
+
+show(
+mode === "contract"
+? "contractSection"
+: "judgmentSection"
+);
 
 };
 
 
-/* الأحكام: الواجهة فقط حاليًا */
+/* CONTRACT TYPES */
 
-judgmentGo.onclick=()=>{
+document
+.querySelectorAll("[data-category]")
+.forEach(
+button => {
 
-  if(!judgmentFile.files[0]){
+button.onclick = () => {
 
-    judgmentStatus.textContent=
-      "اختر صك الحكم أولًا.";
+mode = "contract";
 
-    return;
+category =
+button.dataset.category;
 
-  }
+$("analyzerTitle")
+.textContent =
+"📄 رفع العقد";
 
-  judgmentStatus.textContent=
-    "ميزة تحليل الأحكام ستُفعّل في الخطوة التالية.";
+$("analyzerSub")
+.textContent =
+`القسم المختار: ${category}`;
+
+resetAnalyzer();
+
+show("analyzer");
 
 };
+
+});
+
+
+/* JUDGMENT TYPES */
+
+document
+.querySelectorAll("[data-judgment-type]")
+.forEach(
+button => {
+
+button.onclick = () => {
+
+mode = "judgment";
+
+category =
+button.dataset.judgmentType;
+
+$("analyzerTitle")
+.textContent =
+"⚖️ رفع الوثيقة القضائية";
+
+$("analyzerSub")
+.textContent =
+`نوع التحليل: ${category}`;
+
+resetAnalyzer();
+
+show("analyzer");
+
+};
+
+});
+
+
+/* FILE */
+
+fileEl.onchange =
+() => {
+
+const file =
+fileEl.files[0];
+
+if(!file) return;
+
+selectedLabel.textContent =
+`📎 ${file.name}`;
+
+selectedLabel
+.classList
+.remove("hidden");
+
+};
+
+
+/* ANALYZE */
+
+go.onclick =
+async () => {
+
+const file =
+fileEl.files[0];
+
+if(!file){
+
+status.textContent =
+"اختر الملف أولًا.";
+
+return;
+
+}
+
+
+const name =
+file.name.toLowerCase();
+
+if(
+!name.endsWith(".pdf") &&
+!name.endsWith(".docx")
+){
+
+status.textContent =
+"الصيغة المدعومة PDF أو DOCX فقط.";
+
+return;
+
+}
+
+
+go.disabled = true;
+
+status.textContent = "";
+
+result
+.classList
+.add("hidden");
+
+progressWrap
+.classList
+.remove("hidden");
+
+startProgress();
+
+
+const formData =
+new FormData();
+
+formData.append(
+"document",
+file
+);
+
+
+let endpoint =
+"/api/analyze";
+
+
+if(mode === "contract"){
+
+formData.append(
+"category",
+category
+);
+
+}
+
+else{
+
+endpoint =
+"/api/analyze-judgment";
+
+}
+
+
+try{
+
+const response =
+await fetch(
+endpoint,
+{
+method:"POST",
+body:formData
+}
+);
+
+
+const data =
+await response.json();
+
+
+if(!response.ok){
+
+throw new Error(
+data.error ||
+"حدث خطأ أثناء التحليل."
+);
+
+}
+
+
+finishProgress();
+
+
+if(mode === "contract"){
+
+renderContract(data);
+
+}
+
+else{
+
+renderJudgment(data);
+
+}
+
+
+result
+.classList
+.remove("hidden");
+
+
+status.textContent =
+"تم التحليل بنجاح.";
+
+
+setTimeout(
+() => {
+
+result.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+},
+120
+);
+
+
+}
+
+catch(error){
+
+clearInterval(
+progressTimer
+);
+
+status.textContent =
+error.message ||
+"صار خطأ غير متوقع.";
+
+}
+
+finally{
+
+go.disabled = false;
+
+}
+
+};
+
+
+/* REMOVE SPLASH */
+
+setTimeout(
+() => {
+
+const splash =
+$("splash");
+
+if(splash){
+
+splash.remove();
+
+}
+
+},
+2500
+);
 
 </script>
 
