@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101827">
-
 <title>إحاطة | للذكاء القانوني</title>
 
 <style>
@@ -22,6 +21,21 @@
   --red:#c93d45;
   --orange:#d99625;
   --green:#3e8b62;
+  --soft:#f7f1e2;
+}
+
+body.dark{
+  --bg:#0d131d;
+  --card:#151e2b;
+  --navy:#e9dfc6;
+  --navy2:#202c3e;
+  --gold:#d6b66e;
+  --gold2:#ead9ad;
+  --ink:#f4f1e8;
+  --muted:#aab2bf;
+  --line:#293547;
+  --blue:#72a8ff;
+  --soft:#1b2533;
 }
 
 *{
@@ -35,29 +49,15 @@ html{
 body{
   margin:0;
   background:
-    radial-gradient(
-      circle at 90% 5%,
-      rgba(199,164,91,.12),
-      transparent 260px
-    ),
-    radial-gradient(
-      circle at 5% 35%,
-      rgba(16,24,39,.06),
-      transparent 300px
-    ),
+    radial-gradient(circle at 90% 5%,rgba(199,164,91,.12),transparent 260px),
+    radial-gradient(circle at 5% 35%,rgba(16,24,39,.06),transparent 300px),
     var(--bg);
   color:var(--ink);
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Tahoma,
-    Arial,
-    sans-serif;
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+  transition:.25s;
 }
 
-button,
-input{
+button,input{
   font:inherit;
 }
 
@@ -72,8 +72,9 @@ button{
 .wrap{
   width:min(1100px,100%);
   margin:auto;
-  padding:24px 18px 70px;
+  padding:20px 18px 70px;
 }
+
 
 /* =========================
    HEADER
@@ -84,7 +85,7 @@ button{
   align-items:center;
   justify-content:space-between;
   gap:15px;
-  padding:5px 0 20px;
+  padding:5px 0 15px;
 }
 
 .brand{
@@ -97,12 +98,12 @@ button{
   width:48px;
   height:48px;
   border-radius:16px;
-  background:var(--navy);
-  color:var(--gold2);
+  background:#101827;
+  color:#ead9ad;
   display:grid;
   place-items:center;
-  font-size:25px;
-  box-shadow:0 8px 25px rgba(16,24,39,.12);
+  font-size:24px;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
 }
 
 .brand-name{
@@ -111,14 +112,32 @@ button{
   font-weight:900;
 }
 
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
 .badge{
   font-size:13px;
   color:#766b58;
   background:#ebe5d7;
   padding:9px 13px;
   border-radius:999px;
-  white-space:nowrap;
 }
+
+.dark-toggle{
+  width:43px;
+  height:43px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:var(--card);
+  color:var(--ink);
+  display:grid;
+  place-items:center;
+  font-size:19px;
+}
+
 
 /* =========================
    HERO
@@ -127,19 +146,12 @@ button{
 .hero{
   position:relative;
   text-align:center;
-  padding:55px 10px 45px;
+  padding:35px 10px 32px;
   overflow:hidden;
 }
 
 .hero::before{
-  content:"⚖";
-  position:absolute;
-  font-size:260px;
-  color:rgba(199,164,91,.055);
-  left:50%;
-  top:-80px;
-  transform:translateX(-50%);
-  pointer-events:none;
+  display:none;
 }
 
 .hero-content{
@@ -148,32 +160,61 @@ button{
 }
 
 .hero-mark{
-  width:72px;
-  height:72px;
-  margin:auto;
-  border-radius:24px;
+  width:62px;
+  height:62px;
+  margin:0 auto 10px;
+  border-radius:19px;
   display:grid;
   place-items:center;
-  background:var(--navy);
-  color:var(--gold2);
-  font-size:40px;
-  box-shadow:0 18px 45px rgba(16,24,39,.14);
+  background:#101827;
+  color:#ead9ad;
+  font-size:30px;
+  box-shadow:0 12px 30px rgba(16,24,39,.14);
 }
 
 .hero h1{
   font-family:Georgia,serif;
-  font-size:clamp(54px,9vw,82px);
-  margin:16px 0 5px;
+  font-size:clamp(52px,8vw,78px);
+  margin:5px 0 8px;
   letter-spacing:-2px;
 }
 
 .hero p{
-  max-width:720px;
+  max-width:700px;
   margin:auto;
   color:var(--muted);
   font-size:19px;
   line-height:1.9;
 }
+
+
+/* =========================
+   DUA
+========================= */
+
+.dua{
+  max-width:760px;
+  margin:0 auto 30px;
+  padding:18px 22px;
+  text-align:center;
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:22px;
+}
+
+.dua-text{
+  font-family:Georgia,serif;
+  font-size:18px;
+  line-height:1.9;
+}
+
+.dua-source{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+}
+
 
 /* =========================
    TITLES
@@ -181,18 +222,19 @@ button{
 
 .section-title{
   text-align:center;
-  margin:10px 0 24px;
+  margin:12px 0 24px;
 }
 
 .section-title h2{
   margin:0;
-  font-size:28px;
+  font-size:29px;
 }
 
 .section-title p{
   color:var(--muted);
   margin:8px 0 0;
 }
+
 
 /* =========================
    MODES
@@ -208,6 +250,7 @@ button{
   position:relative;
   overflow:hidden;
   background:var(--card);
+  color:var(--ink);
   border:1px solid var(--line);
   border-radius:26px;
   padding:28px;
@@ -229,11 +272,10 @@ button{
 
 .mode:hover:not(.locked){
   transform:translateY(-4px);
-  box-shadow:0 20px 50px rgba(20,25,35,.09);
 }
 
 .mode-icon{
-  font-size:43px;
+  font-size:42px;
 }
 
 .mode h3{
@@ -249,7 +291,7 @@ button{
 
 .primary{
   display:inline-block;
-  background:var(--navy);
+  background:#101827;
   color:#fff;
   border:0;
   border-radius:13px;
@@ -260,12 +302,6 @@ button{
 .locked{
   opacity:.72;
   cursor:pointer;
-  background:#faf8f3;
-}
-
-.locked .primary{
-  background:#e8e3d8;
-  color:#777;
 }
 
 .soon{
@@ -278,12 +314,87 @@ button{
   font-weight:800;
 }
 
+
+/* =========================
+   ARTICLES
+========================= */
+
+.articles{
+  margin-top:55px;
+}
+
+.search-box{
+  max-width:650px;
+  margin:0 auto 22px;
+  position:relative;
+}
+
+.search-box input{
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--ink);
+  border-radius:18px;
+  padding:15px 48px 15px 18px;
+  outline:none;
+}
+
+.search-box span{
+  position:absolute;
+  right:17px;
+  top:13px;
+  font-size:20px;
+}
+
+.article-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.article{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:20px;
+  transition:.2s;
+}
+
+.article:hover{
+  transform:translateY(-3px);
+}
+
+.article-icon{
+  font-size:28px;
+}
+
+.article h3{
+  margin:10px 0 8px;
+  font-size:19px;
+}
+
+.article p{
+  color:var(--muted);
+  line-height:1.8;
+  font-size:14px;
+}
+
+.article-source{
+  display:inline-block;
+  margin-top:8px;
+  color:var(--blue);
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+}
+
+
 /* =========================
    PANELS
 ========================= */
 
 .panel{
-  background:rgba(255,255,255,.94);
+  background:var(--card);
   border:1px solid var(--line);
   border-radius:27px;
   padding:25px;
@@ -301,8 +412,8 @@ button{
 
 .quote,
 .summary{
-  background:#f7f1e2;
-  border:1px solid #e8dcc0;
+  background:var(--soft);
+  border:1px solid var(--line);
   border-radius:19px;
   padding:18px;
   margin:18px 0;
@@ -319,8 +430,9 @@ button{
 }
 
 .quote small{
-  color:#796d57;
+  color:var(--muted);
 }
+
 
 /* =========================
    CATEGORIES
@@ -336,7 +448,8 @@ button{
   display:flex;
   align-items:center;
   gap:14px;
-  background:#fff;
+  background:var(--card);
+  color:var(--ink);
   border:1px solid var(--line);
   border-radius:19px;
   padding:17px;
@@ -346,14 +459,13 @@ button{
 
 .category:hover{
   transform:translateY(-2px);
-  border-color:#d8c69d;
 }
 
 .category .ico{
   width:48px;
   height:48px;
   border-radius:15px;
-  background:#f0eadc;
+  background:var(--soft);
   display:grid;
   place-items:center;
   font-size:24px;
@@ -370,16 +482,17 @@ button{
   margin-top:4px;
 }
 
+
 /* =========================
    UPLOAD
 ========================= */
 
 .upload{
-  border:2px dashed #cfc7b7;
+  border:2px dashed var(--line);
   border-radius:22px;
   padding:30px;
   text-align:center;
-  background:#fcfbf8;
+  background:var(--soft);
 }
 
 .file{
@@ -389,10 +502,11 @@ button{
 
 .selected{
   display:inline-flex;
-  background:#eef1f5;
+  background:var(--card);
+  border:1px solid var(--line);
   padding:9px 13px;
   border-radius:999px;
-  color:#4e5662;
+  color:var(--muted);
   font-size:13px;
   max-width:100%;
   overflow:hidden;
@@ -405,6 +519,7 @@ button{
   margin-top:13px;
   min-height:24px;
 }
+
 
 /* =========================
    PROGRESS
@@ -423,7 +538,7 @@ button{
 
 .progress{
   height:10px;
-  background:#ebe7df;
+  background:var(--line);
   border-radius:99px;
   overflow:hidden;
   margin-top:8px;
@@ -432,11 +547,7 @@ button{
 .bar{
   height:100%;
   width:0;
-  background:linear-gradient(
-    90deg,
-    var(--navy),
-    var(--gold)
-  );
+  background:linear-gradient(90deg,#101827,var(--gold));
   border-radius:99px;
   transition:width .2s;
 }
@@ -447,28 +558,22 @@ button{
 }
 
 @keyframes moveBar{
-  0%{
-    transform:translateX(180%);
-  }
-
-  100%{
-    transform:translateX(-330%);
-  }
+  0%{transform:translateX(180%)}
+  100%{transform:translateX(-330%)}
 }
 
 .elapsed{
   margin-top:7px;
   font-size:13px;
-  color:#8a8172;
+  color:var(--muted);
 }
 
 .wait{
   margin-top:18px;
   padding:17px;
   border-radius:18px;
-  background:#f7f1e2;
-  border:1px solid #e8dcc0;
-  overflow:hidden;
+  background:var(--soft);
+  border:1px solid var(--line);
 }
 
 .wait-text{
@@ -480,8 +585,9 @@ button{
 .wait small{
   display:block;
   margin-top:6px;
-  color:#796d57;
+  color:var(--muted);
 }
+
 
 /* =========================
    RESULTS
@@ -518,7 +624,7 @@ button{
   border:1px solid var(--line);
   border-radius:16px;
   padding:14px;
-  background:#fcfbf8;
+  background:var(--soft);
 }
 
 .info b{
@@ -539,17 +645,9 @@ button{
   line-height:1.85;
 }
 
-.high{
-  border-right:6px solid var(--red);
-}
-
-.medium{
-  border-right:6px solid var(--orange);
-}
-
-.low{
-  border-right:6px solid var(--green);
-}
+.high{border-right:6px solid var(--red)}
+.medium{border-right:6px solid var(--orange)}
+.low{border-right:6px solid var(--green)}
 
 ul{
   line-height:2;
@@ -563,6 +661,7 @@ ul{
   margin-top:35px;
   padding:0 20px;
 }
+
 
 /* =========================
    MODAL
@@ -579,7 +678,8 @@ ul{
 }
 
 .modal-card{
-  background:#fff;
+  background:var(--card);
+  color:var(--ink);
   border-radius:25px;
   padding:28px;
   max-width:420px;
@@ -592,13 +692,14 @@ ul{
 }
 
 .close{
-  background:var(--navy);
+  background:#101827;
   color:#fff;
   border:0;
   border-radius:12px;
   padding:11px 18px;
   font-weight:800;
 }
+
 
 /* =========================
    MOBILE
@@ -607,25 +708,70 @@ ul{
 @media(max-width:720px){
 
   .wrap{
-    padding:18px 14px 50px;
+    padding:16px 14px 50px;
+  }
+
+  .topbar{
+    padding-bottom:8px;
+  }
+
+  .brand-name{
+    font-size:25px;
+  }
+
+  .brand-mark{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+  }
+
+  .badge{
+    font-size:12px;
+    padding:8px 10px;
   }
 
   .hero{
-    padding:38px 8px 35px;
+    padding:25px 8px 25px;
+  }
+
+  .hero-mark{
+    width:58px;
+    height:58px;
+    font-size:28px;
   }
 
   .hero h1{
-    font-size:58px;
+    font-size:52px;
   }
 
   .hero p{
-    font-size:17px;
+    max-width:350px;
+    font-size:16px;
+    line-height:1.85;
+  }
+
+  .dua{
+    margin-bottom:25px;
+    padding:15px;
+  }
+
+  .dua-text{
+    font-size:16px;
   }
 
   .mode-grid,
   .category-grid,
-  .info-grid{
+  .info-grid,
+  .article-grid{
     grid-template-columns:1fr;
+  }
+
+  .mode{
+    padding:22px;
+  }
+
+  .mode h3{
+    font-size:22px;
   }
 
   .panel{
@@ -647,602 +793,733 @@ ul{
 
 <main class="wrap">
 
-  <!-- HEADER -->
+<header class="topbar">
 
-  <header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">⚖</div>
+    <div class="brand-name">إحاطة</div>
+  </div>
 
-    <div class="brand">
-
-      <div class="brand-mark">
-        ⚖
-      </div>
-
-      <div class="brand-name">
-        إحاطة
-      </div>
-
-    </div>
+  <div class="header-actions">
 
     <div class="badge">
       نسخة تجريبية
     </div>
 
-  </header>
+    <button
+      id="darkToggle"
+      class="dark-toggle"
+      aria-label="تبديل المظهر"
+    >🌙</button>
+
+  </div>
+
+</header>
 
 
-  <!-- HOME -->
+<!-- =========================
+     HOME
+========================= -->
 
-  <section id="home">
+<section id="home">
 
-    <div class="hero">
+  <div class="hero">
 
-      <div class="hero-content">
+    <div class="hero-content">
 
-        <div class="hero-mark">
-          ⚖️
-        </div>
-
-        <h1>
-          إحاطة
-        </h1>
-
-        <p>
-          تحليل ذكي للمستندات القانونية يساعدك على فهم
-          البنود والالتزامات والنقاط المهمة قبل اتخاذ القرار.
-        </p>
-
+      <div class="hero-mark">
+        ⚖
       </div>
+
+      <h1>إحاطة</h1>
+
+      <p>
+        تحليل ذكي للمستندات القانونية يساعدك على فهم
+        البنود والالتزامات والنقاط المهمة قبل اتخاذ القرار.
+      </p>
 
     </div>
 
+  </div>
+
+
+  <!-- DUA -->
+
+  <div class="dua">
+
+    <div id="duaText" class="dua-text">
+      اللهم لا سهل إلا ما جعلته سهلاً
+    </div>
+
+    <span id="duaSource" class="dua-source">
+      دعاء
+    </span>
+
+  </div>
+
+
+  <div class="section-title">
+
+    <h2>
+      ماذا تريد أن تحلل؟
+    </h2>
+
+    <p>
+      اختر نوع المستند للبدء
+    </p>
+
+  </div>
+
+
+  <div class="mode-grid">
+
+
+    <button
+      class="mode"
+      id="contractsMode"
+    >
+
+      <div class="mode-icon">📄</div>
+
+      <h3>العقود</h3>
+
+      <p>
+        فحص البنود والمخاطر والالتزامات والمبالغ
+        والتواريخ والشرط الجزائي وغيرها.
+      </p>
+
+      <span class="primary">
+        ابدأ تحليل عقد
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode"
+      id="judgmentsMode"
+    >
+
+      <div class="mode-icon">⚖️</div>
+
+      <h3>الأحكام والوثائق القضائية</h3>
+
+      <p>
+        استخراج الوقائع والطلبات والدفوع والأسباب
+        والمنطوق والبيانات المهمة.
+      </p>
+
+      <span class="primary">
+        ابدأ تحليل حكم
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="مقارنة المستندين ستكون متاحة في تحديث لاحق."
+    >
+
+      <div class="mode-icon">🔍</div>
+
+      <span class="soon">🔒 قريبًا</span>
+
+      <h3>مقارنة مستندين</h3>
+
+      <p>
+        اكتشف البنود المضافة والمحذوفة والتغييرات
+        المهمة بين مستندين.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="الاستشارات القانونية ستكون متاحة في تحديث لاحق."
+    >
+
+      <div class="mode-icon">💬</div>
+
+      <span class="soon">🔒 قريبًا</span>
+
+      <h3>الاستشارات القانونية</h3>
+
+      <p>
+        خدمة مستقبلية للمساعدة القانونية الموجهة.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
+    </button>
+
+
+    <button
+      class="mode locked"
+      data-soon="قسم الأنظمة واللوائح سيكون متاحًا في تحديث لاحق."
+    >
+
+      <div class="mode-icon">📚</div>
+
+      <span class="soon">🔒 قريبًا</span>
+
+      <h3>الأنظمة واللوائح</h3>
+
+      <p>
+        قراءة الأنظمة واللوائح وشرحها بطريقة مبسطة.
+      </p>
+
+      <span class="primary">
+        غير متاحة حاليًا
+      </span>
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       ARTICLES
+  ========================= -->
+
+  <section class="articles">
 
     <div class="section-title">
 
       <h2>
-        ماذا تريد أن تحلل؟
+        📰 مقالات قانونية
       </h2>
 
       <p>
-        اختر نوع المستند للبدء
+        معلومات مختصرة مع روابط للمصادر الرسمية.
       </p>
 
     </div>
 
 
-    <div class="mode-grid">
+    <div class="search-box">
 
-      <!-- CONTRACTS -->
+      <span>🔎</span>
 
-      <button
-        class="mode"
-        id="contractsMode"
+      <input
+        id="articleSearch"
+        type="search"
+        placeholder="ابحث في المقالات..."
       >
-
-        <div class="mode-icon">
-          📄
-        </div>
-
-        <h3>
-          العقود
-        </h3>
-
-        <p>
-          فحص البنود والمخاطر والالتزامات والمبالغ
-          والتواريخ والشرط الجزائي وغيرها.
-        </p>
-
-        <span class="primary">
-          ابدأ تحليل عقد
-        </span>
-
-      </button>
-
-
-      <!-- JUDGMENTS -->
-
-      <button
-        class="mode"
-        id="judgmentsMode"
-      >
-
-        <div class="mode-icon">
-          ⚖️
-        </div>
-
-        <h3>
-          الأحكام والوثائق القضائية
-        </h3>
-
-        <p>
-          استخراج الوقائع والطلبات والدفوع والأسباب
-          والمنطوق والبيانات المهمة.
-        </p>
-
-        <span class="primary">
-          ابدأ تحليل حكم
-        </span>
-
-      </button>
-
-
-      <!-- COMPARISON -->
-
-      <button
-        class="mode locked"
-        data-soon="مقارنة المستندين ستكون متاحة في تحديث لاحق."
-      >
-
-        <div class="mode-icon">
-          🔍
-        </div>
-
-        <span class="soon">
-          🔒 قريبًا
-        </span>
-
-        <h3>
-          مقارنة مستندين
-        </h3>
-
-        <p>
-          اكتشف البنود المضافة والمحذوفة والتغييرات
-          المهمة بين مستندين.
-        </p>
-
-        <span class="primary">
-          غير متاحة حاليًا
-        </span>
-
-      </button>
-
-
-      <!-- CONSULTATION -->
-
-      <button
-        class="mode locked"
-        data-soon="الاستشارات القانونية ستكون متاحة في تحديث لاحق."
-      >
-
-        <div class="mode-icon">
-          💬
-        </div>
-
-        <span class="soon">
-          🔒 قريبًا
-        </span>
-
-        <h3>
-          الاستشارات القانونية
-        </h3>
-
-        <p>
-          خدمة مستقبلية للمساعدة القانونية الموجهة.
-        </p>
-
-        <span class="primary">
-          غير متاحة حاليًا
-        </span>
-
-      </button>
-
-
-      <!-- SYSTEMS -->
-
-      <button
-        class="mode locked"
-        data-soon="قسم الأنظمة واللوائح سيكون متاحًا في تحديث لاحق."
-      >
-
-        <div class="mode-icon">
-          📚
-        </div>
-
-        <span class="soon">
-          🔒 قريبًا
-        </span>
-
-        <h3>
-          الأنظمة واللوائح
-        </h3>
-
-        <p>
-          قراءة الأنظمة واللوائح وشرحها بطريقة مبسطة.
-        </p>
-
-        <span class="primary">
-          غير متاحة حاليًا
-        </span>
-
-      </button>
 
     </div>
 
-  </section>
 
-
-  <!-- CONTRACT SECTION -->
-
-  <section
-    id="contractSection"
-    class="hidden"
-  >
-
-    <button
-      class="back"
-      data-back
+    <div
+      id="articleGrid"
+      class="article-grid"
     >
-      ← العودة للرئيسية
-    </button>
 
-    <div class="panel">
+      <article
+        class="article"
+        data-search="الأنظمة السعودية هيئة الخبراء الأنظمة اللوائح"
+      >
 
-      <div class="section-title">
+        <div class="article-icon">📚</div>
 
-        <h2>
-          📄 العقود
-        </h2>
+        <h3>
+          أين تجد الأنظمة السعودية الرسمية؟
+        </h3>
 
         <p>
-          اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
+          توفر بوابة هيئة الخبراء بمجلس الوزراء إمكانية
+          الاطلاع على الأنظمة السعودية والبحث فيها.
         </p>
 
-      </div>
-
-
-      <div class="quote">
-
-        <div class="arabic">
-          ﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
-        </div>
-
-        <small>
-          سورة المائدة: 1
-        </small>
-
-      </div>
-
-
-      <div class="category-grid">
-
-        <button
-          class="category"
-          data-category="مقاولات وأعمال"
+        <a
+          class="article-source"
+          href="https://boe.gov.sa/ar/Pages/default.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">🏗️</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>المقاولات والأعمال</strong>
-            <small>تنفيذ، إنشاء، تشييد وصيانة</small>
-          </span>
-        </button>
+      </article>
 
 
-        <button
-          class="category"
-          data-category="عقود تجارية"
+      <article
+        class="article"
+        data-search="الأنظمة العدلية وزارة العدل اللوائح"
+      >
+
+        <div class="article-icon">⚖️</div>
+
+        <h3>
+          الأنظمة واللوائح العدلية
+        </h3>
+
+        <p>
+          تقدم وزارة العدل بوابة للأنظمة واللوائح التنفيذية
+          والتصنيفات المتعلقة بالأنظمة العدلية.
+        </p>
+
+        <a
+          class="article-source"
+          href="https://www.moj.gov.sa/ar/LawsAndRegulations/Pages/default.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">🏢</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>العقود التجارية</strong>
-            <small>بيع، شراء، تشغيل وخدمات</small>
-          </span>
-        </button>
+      </article>
 
 
-        <button
-          class="category"
-          data-category="إيجار"
+      <article
+        class="article"
+        data-search="البوابة القانونية وزارة العدل التشريعات"
+      >
+
+        <div class="article-icon">🔎</div>
+
+        <h3>
+          البوابة القانونية لوزارة العدل
+        </h3>
+
+        <p>
+          يمكن البحث في التشريعات والأنظمة والاطلاع على
+          عدد من الخدمات والمراجع القانونية الرسمية.
+        </p>
+
+        <a
+          class="article-source"
+          href="https://laws.moj.gov.sa/"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">🏠</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>الإيجار</strong>
-            <small>عقود الإيجار والتأجير</small>
-          </span>
-        </button>
+      </article>
 
 
-        <button
-          class="category"
-          data-category="عمل"
+      <article
+        class="article"
+        data-search="الأنظمة تحديث التعديلات هيئة الخبراء"
+      >
+
+        <div class="article-icon">🔄</div>
+
+        <h3>
+          متابعة تحديثات الأنظمة
+        </h3>
+
+        <p>
+          تتيح بوابة هيئة الخبراء متابعة تحديثات الأنظمة
+          والاطلاع على النسخ المنشورة وفق آخر التعديلات.
+        </p>
+
+        <a
+          class="article-source"
+          href="https://boe.gov.sa/ar/Pages/default.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">💼</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>العمل</strong>
-            <small>عقود الموظفين والعمل</small>
-          </span>
-        </button>
+      </article>
 
 
-        <button
-          class="category"
-          data-category="توريد"
+      <article
+        class="article"
+        data-search="وزارة العدل كتابات العدل العقود التوثيق"
+      >
+
+        <div class="article-icon">📝</div>
+
+        <h3>
+          التوثيق وكتابات العدل
+        </h3>
+
+        <p>
+          تختص كتابات العدل بعدد من أعمال التوثيق
+          والعقود والإقرارات وفق الأنظمة المرعية.
+        </p>
+
+        <a
+          class="article-source"
+          href="https://www.moj.gov.sa/ar/Ministry/Notary/Pages/default.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">📦</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>التوريد</strong>
-            <small>التوريد والشراء</small>
-          </span>
-        </button>
+      </article>
 
 
-        <button
-          class="category"
-          data-category="شراكات واستثمار"
+      <article
+        class="article"
+        data-search="الاستشارات القانونية وزارة العدل استطلاع"
+      >
+
+        <div class="article-icon">💡</div>
+
+        <h3>
+          الاستشارات القانونية الحكومية
+        </h3>
+
+        <p>
+          توضح وزارة العدل قنوات المشاركة والاستشارات
+          القانونية المتعلقة بالأنظمة واللوائح والسياسات.
+        </p>
+
+        <a
+          class="article-source"
+          href="https://www.moj.gov.sa/ar/ministry/eparticipation/pages/consulting.aspx"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <span class="ico">🤝</span>
+          المصدر الرسمي ↗
+        </a>
 
-          <span>
-            <strong>الشراكات والاستثمار</strong>
-            <small>شراكات واستثمار واتفاقيات</small>
-          </span>
-        </button>
-
-
-        <button
-          class="category"
-          data-category="تقنية وخدمات"
-        >
-          <span class="ico">💻</span>
-
-          <span>
-            <strong>التقنية والخدمات</strong>
-            <small>برمجيات واستشارات وخدمات</small>
-          </span>
-        </button>
-
-
-        <button
-          class="category"
-          data-category="عقد آخر"
-        >
-          <span class="ico">📄</span>
-
-          <span>
-            <strong>عقد آخر</strong>
-            <small>أي عقد غير مصنف</small>
-          </span>
-        </button>
-
-      </div>
+      </article>
 
     </div>
 
+    <p
+      id="noArticles"
+      class="note hidden"
+    >
+      لا توجد مقالات مطابقة للبحث.
+    </p>
+
   </section>
 
-
-  <!-- JUDGMENTS -->
-
-  <section
-    id="judgmentSection"
-    class="hidden"
-  >
-
-    <button
-      class="back"
-      data-back
-    >
-      ← العودة للرئيسية
-    </button>
-
-    <div class="panel">
-
-      <div class="section-title">
-
-        <h2>
-          ⚖️ الأحكام والوثائق القضائية
-        </h2>
-
-        <p>
-          تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
-        </p>
-
-      </div>
+</section>
 
 
-      <div class="quote">
+<!-- =========================
+     CONTRACT SECTION
+========================= -->
 
-        <div class="arabic">
-          ﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
-        </div>
+<section
+  id="contractSection"
+  class="hidden"
+>
 
-        <small>
-          سورة النساء: 58
-        </small>
+<button
+  class="back"
+  data-back
+>
+  ← العودة للرئيسية
+</button>
 
-      </div>
+<div class="panel">
 
+  <div class="section-title">
 
-      <div class="category-grid">
+    <h2>📄 العقود</h2>
 
-        <button
-          class="category"
-          data-judgment-type="حكم قضائي"
-        >
+    <p>
+      اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
+    </p>
 
-          <span class="ico">
-            🔨
-          </span>
-
-          <span>
-            <strong>أحكام قضائية</strong>
-            <small>صكوك الأحكام وما يتصل بها</small>
-          </span>
-
-        </button>
+  </div>
 
 
-        <button
-          class="category"
-          data-judgment-type="قرار"
-        >
+  <div class="quote">
 
-          <span class="ico">
-            📑
-          </span>
-
-          <span>
-            <strong>قرارات</strong>
-            <small>قرارات ووثائق قضائية</small>
-          </span>
-
-        </button>
-
-
-        <button
-          class="category"
-          data-judgment-type="وثيقة قضائية أخرى"
-        >
-
-          <span class="ico">
-            📜
-          </span>
-
-          <span>
-            <strong>وثائق قضائية أخرى</strong>
-            <small>أي وثيقة قضائية قابلة للتحليل</small>
-          </span>
-
-        </button>
-
-      </div>
-
+    <div class="arabic">
+      ﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
     </div>
 
-  </section>
+    <small>
+      سورة المائدة: 1
+    </small>
+
+  </div>
 
 
-  <!-- ANALYZER -->
+  <div class="category-grid">
 
-  <section
-    id="analyzer"
-    class="hidden"
-  >
+    <button class="category" data-category="مقاولات وأعمال">
+      <span class="ico">🏗️</span>
+      <span>
+        <strong>المقاولات والأعمال</strong>
+        <small>تنفيذ، إنشاء، تشييد وصيانة</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="عقود تجارية">
+      <span class="ico">🏢</span>
+      <span>
+        <strong>العقود التجارية</strong>
+        <small>بيع، شراء، تشغيل وخدمات</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="إيجار">
+      <span class="ico">🏠</span>
+      <span>
+        <strong>الإيجار</strong>
+        <small>عقود الإيجار والتأجير</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="عمل">
+      <span class="ico">💼</span>
+      <span>
+        <strong>العمل</strong>
+        <small>عقود الموظفين والعمل</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="توريد">
+      <span class="ico">📦</span>
+      <span>
+        <strong>التوريد</strong>
+        <small>التوريد والشراء</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="شراكات واستثمار">
+      <span class="ico">🤝</span>
+      <span>
+        <strong>الشراكات والاستثمار</strong>
+        <small>شراكات واستثمار واتفاقيات</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="تقنية وخدمات">
+      <span class="ico">💻</span>
+      <span>
+        <strong>التقنية والخدمات</strong>
+        <small>برمجيات واستشارات وخدمات</small>
+      </span>
+    </button>
+
+    <button class="category" data-category="عقد آخر">
+      <span class="ico">📄</span>
+      <span>
+        <strong>عقد آخر</strong>
+        <small>أي عقد غير مصنف</small>
+      </span>
+    </button>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     JUDGMENTS
+========================= -->
+
+<section
+  id="judgmentSection"
+  class="hidden"
+>
+
+<button class="back" data-back>
+  ← العودة للرئيسية
+</button>
+
+<div class="panel">
+
+  <div class="section-title">
+
+    <h2>⚖️ الأحكام والوثائق القضائية</h2>
+
+    <p>
+      تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
+    </p>
+
+  </div>
+
+
+  <div class="quote">
+
+    <div class="arabic">
+      ﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
+    </div>
+
+    <small>
+      سورة النساء: 58
+    </small>
+
+  </div>
+
+
+  <div class="category-grid">
+
+    <button class="category" data-judgment-type="حكم قضائي">
+      <span class="ico">🔨</span>
+      <span>
+        <strong>أحكام قضائية</strong>
+        <small>صكوك الأحكام وما يتصل بها</small>
+      </span>
+    </button>
+
+    <button class="category" data-judgment-type="قرار">
+      <span class="ico">📑</span>
+      <span>
+        <strong>قرارات</strong>
+        <small>قرارات ووثائق قضائية</small>
+      </span>
+    </button>
+
+    <button class="category" data-judgment-type="وثيقة قضائية أخرى">
+      <span class="ico">📜</span>
+      <span>
+        <strong>وثائق قضائية أخرى</strong>
+        <small>أي وثيقة قضائية قابلة للتحليل</small>
+      </span>
+    </button>
+
+  </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     ANALYZER
+========================= -->
+
+<section
+  id="analyzer"
+  class="hidden"
+>
+
+<button
+  class="back"
+  id="analyzerBack"
+>
+  ← العودة للاختيارات
+</button>
+
+
+<div class="panel">
+
+  <div class="section-title">
+
+    <h2 id="analyzerTitle">
+      رفع المستند
+    </h2>
+
+    <p id="analyzerSub"></p>
+
+  </div>
+
+
+  <div class="upload">
+
+    <div
+      id="selected"
+      class="selected hidden"
+    ></div>
+
+
+    <input
+      id="file"
+      class="file"
+      type="file"
+      accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    >
+
 
     <button
-      class="back"
-      id="analyzerBack"
+      id="go"
+      class="primary"
     >
-      ← العودة للاختيارات
+      ابدأ التحليل
     </button>
 
 
-    <div class="panel">
+    <div
+      id="progressWrap"
+      class="progress-wrap hidden"
+    >
 
-      <div class="section-title">
+      <div class="progress-head">
 
-        <h2 id="analyzerTitle">
-          رفع المستند
-        </h2>
+        <span id="progressText">
+          جاهز
+        </span>
 
-        <p id="analyzerSub"></p>
+        <strong id="progressNumber">
+          0%
+        </strong>
 
       </div>
 
 
-      <div class="upload">
-
+      <div class="progress">
         <div
-          id="selected"
-          class="selected hidden"
+          id="bar"
+          class="bar"
         ></div>
-
-
-        <input
-          id="file"
-          class="file"
-          type="file"
-          accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        >
-
-
-        <button
-          id="go"
-          class="primary"
-        >
-          ابدأ التحليل
-        </button>
-
-
-        <div
-          id="progressWrap"
-          class="progress-wrap hidden"
-        >
-
-          <div class="progress-head">
-
-            <span id="progressText">
-              جاهز
-            </span>
-
-            <strong id="progressNumber">
-              0%
-            </strong>
-
-          </div>
-
-
-          <div class="progress">
-            <div
-              id="bar"
-              class="bar"
-            ></div>
-          </div>
-
-
-          <div
-            id="elapsed"
-            class="elapsed"
-          >
-            الوقت المتوقع المتبقي: --
-          </div>
-
-
-          <div class="wait">
-
-            <div
-              id="waitText"
-              class="wait-text"
-            >
-              جاري تجهيز المستند للتحليل...
-            </div>
-
-            <small>
-              إحاطة • الفحص الأولي للمستندات
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div
-          id="status"
-          class="status"
-        >
-          PDF أو DOCX • الحد الأقصى 25MB
-        </div>
-
       </div>
 
 
       <div
-        id="result"
-        class="result hidden"
-      ></div>
+        id="elapsed"
+        class="elapsed"
+      >
+        الوقت المتوقع المتبقي: --
+      </div>
+
+
+      <div class="wait">
+
+        <div
+          id="waitText"
+          class="wait-text"
+        >
+          جاري تجهيز المستند للتحليل...
+        </div>
+
+        <small>
+          إحاطة • الفحص الأولي للمستندات
+        </small>
+
+      </div>
 
     </div>
 
-  </section>
 
+    <div
+      id="status"
+      class="status"
+    >
+      PDF أو DOCX • الحد الأقصى 25MB
+    </div>
 
-  <div class="note">
-    إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
-    المعلومات المستخرجة تعتمد على محتوى المستند المرفوع.
   </div>
+
+
+  <div
+    id="result"
+    class="result hidden"
+  ></div>
+
+</div>
+
+</section>
+
+
+<div class="note">
+  إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
+  المعلومات المستخرجة تعتمد على محتوى المستند المرفوع.
+</div>
 
 </main>
 
@@ -1254,28 +1531,26 @@ ul{
   class="modal hidden"
 >
 
-  <div class="modal-card">
+<div class="modal-card">
 
-    <div class="modal-icon">
-      🔒
-    </div>
+  <div class="modal-icon">🔒</div>
 
-    <h3>
-      الميزة غير متاحة حاليًا
-    </h3>
+  <h3>
+    الميزة غير متاحة حاليًا
+  </h3>
 
-    <p id="modalText">
-      ستتوفر هذه الخدمة في تحديث مستقبلي.
-    </p>
+  <p id="modalText">
+    ستتوفر هذه الخدمة في تحديث مستقبلي.
+  </p>
 
-    <button
-      class="close"
-      id="closeModal"
-    >
-      حسنًا
-    </button>
+  <button
+    class="close"
+    id="closeModal"
+  >
+    حسنًا
+  </button>
 
-  </div>
+</div>
 
 </div>
 
@@ -1286,14 +1561,141 @@ ul{
    HELPERS
 ========================= */
 
-const $ = id =>
-  document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 let mode = null;
 let category = null;
 
 let etaTimer = null;
 let etaSeconds = 0;
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+const savedTheme =
+  localStorage.getItem("ihata-theme");
+
+if(savedTheme === "dark"){
+  document.body.classList.add("dark");
+  $("darkToggle").textContent = "☀️";
+}
+
+$("darkToggle").onclick = () => {
+
+  document.body.classList.toggle("dark");
+
+  const dark =
+    document.body.classList.contains("dark");
+
+  localStorage.setItem(
+    "ihata-theme",
+    dark ? "dark" : "light"
+  );
+
+  $("darkToggle").textContent =
+    dark ? "☀️" : "🌙";
+};
+
+
+/* =========================
+   DUA
+========================= */
+
+const duas = [
+
+  {
+    text:"اللهم لا سهل إلا ما جعلته سهلاً",
+    source:"دعاء"
+  },
+
+  {
+    text:"رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي",
+    source:"سورة طه: 25–26"
+  },
+
+  {
+    text:"حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+    source:"سورة آل عمران: 173"
+  },
+
+  {
+    text:"رَبِّ زِدْنِي عِلْمًا",
+    source:"سورة طه: 114"
+  }
+
+];
+
+let duaIndex = 0;
+
+function rotateDua(){
+
+  $("duaText").textContent =
+    duas[duaIndex].text;
+
+  $("duaSource").textContent =
+    duas[duaIndex].source;
+
+  duaIndex =
+    (duaIndex + 1) %
+    duas.length;
+}
+
+rotateDua();
+
+setInterval(
+  rotateDua,
+  8000
+);
+
+
+/* =========================
+   ARTICLE SEARCH
+========================= */
+
+$("articleSearch").addEventListener(
+  "input",
+  event => {
+
+    const query =
+      event.target.value
+        .trim()
+        .toLowerCase();
+
+    let visible = 0;
+
+    document
+      .querySelectorAll(".article")
+      .forEach(article => {
+
+        const text =
+          (
+            article.textContent +
+            " " +
+            article.dataset.search
+          ).toLowerCase();
+
+        const match =
+          !query ||
+          text.includes(query);
+
+        article.style.display =
+          match ? "" : "none";
+
+        if(match)
+          visible++;
+
+      });
+
+    $("noArticles")
+      .classList.toggle(
+        "hidden",
+        visible !== 0
+      );
+
+  }
+);
 
 
 /* =========================
@@ -1365,9 +1767,8 @@ function fmtSeconds(seconds){
       Math.round(seconds)
     );
 
-  if(seconds < 60){
+  if(seconds < 60)
     return seconds + " ثانية";
-  }
 
   return (
     Math.floor(seconds / 60) +
@@ -1382,9 +1783,7 @@ function fmtSeconds(seconds){
 function startETA(size){
 
   const mb =
-    size /
-    1024 /
-    1024;
+    size / 1024 / 1024;
 
   etaSeconds =
     Math.max(
@@ -1449,9 +1848,7 @@ function validate(file){
       "اختر ملفًا أولًا.";
 
     return false;
-
   }
-
 
   if(
     file.size >
@@ -1462,13 +1859,10 @@ function validate(file){
       "حجم الملف أكبر من 25MB.";
 
     return false;
-
   }
-
 
   const name =
     file.name.toLowerCase();
-
 
   if(
     !name.endsWith(".pdf") &&
@@ -1479,24 +1873,17 @@ function validate(file){
       "الصيغة المدعومة PDF أو DOCX فقط.";
 
     return false;
-
   }
 
-
   return true;
-
 }
 
 
 /* =========================
-   FILE UPLOAD
+   XHR
 ========================= */
 
-function send(
-  url,
-  formData,
-  progress
-){
+function send(url,formData,progress){
 
   return new Promise(
     (resolve,reject) => {
@@ -1516,13 +1903,10 @@ function send(
       xhr.timeout =
         10 * 60 * 1000;
 
-
       xhr.upload.onprogress =
         event => {
 
-          if(
-            event.lengthComputable
-          ){
+          if(event.lengthComputable){
 
             progress(
               Math.round(
@@ -1535,7 +1919,6 @@ function send(
           }
 
         };
-
 
       xhr.onload = () => {
 
@@ -1561,7 +1944,6 @@ function send(
 
       };
 
-
       xhr.onerror = () => {
 
         reject(
@@ -1571,7 +1953,6 @@ function send(
         );
 
       };
-
 
       xhr.ontimeout = () => {
 
@@ -1583,12 +1964,10 @@ function send(
 
       };
 
-
       xhr.send(formData);
 
     }
   );
-
 }
 
 
@@ -1614,23 +1993,19 @@ function esc(value){
 }
 
 
-/* =========================
-   LIST
-========================= */
-
 function list(array){
 
   return (
     array || []
   )
-    .map(
-      item =>
-        "<li>" +
-        esc(item) +
-        "</li>"
-    )
-    .join("") ||
-    "<li>لا يوجد.</li>";
+  .map(
+    item =>
+      "<li>" +
+      esc(item) +
+      "</li>"
+  )
+  .join("") ||
+  "<li>لا يوجد.</li>";
 
 }
 
@@ -1643,57 +2018,52 @@ function renderContract(data){
 
   const risks =
     (data.risks || [])
-      .map(risk => `
+    .map(risk => `
 
-        <div class="risk ${esc(risk.level)}">
+      <div class="risk ${esc(risk.level)}">
 
-          <h3>
-            ${
-              risk.level === "high"
-                ? "🔴"
-                : risk.level === "medium"
-                ? "🟠"
-                : "🟢"
-            }
+        <h3>
+          ${
+            risk.level === "high"
+              ? "🔴"
+              : risk.level === "medium"
+              ? "🟠"
+              : "🟢"
+          }
 
-            ${esc(risk.title)}
-          </h3>
+          ${esc(risk.title)}
+        </h3>
 
-          <p>
-            <b>البند:</b>
-            ${esc(risk.clause)}
-          </p>
+        <p>
+          <b>البند:</b>
+          ${esc(risk.clause)}
+        </p>
 
-          <p>
-            <b>السبب:</b>
-            ${esc(risk.why)}
-          </p>
+        <p>
+          <b>السبب:</b>
+          ${esc(risk.why)}
+        </p>
 
-          <p>
-            <b>السؤال المقترح:</b>
-            ${esc(risk.question)}
-          </p>
+        <p>
+          <b>السؤال المقترح:</b>
+          ${esc(risk.question)}
+        </p>
 
-        </div>
+      </div>
 
-      `)
-      .join("") ||
+    `)
+    .join("") ||
     "<p>لم تظهر مخاطر واضحة في التحليل الأولي.</p>";
-
 
   const information =
     data.key_information || {};
-
 
   $("result").innerHTML = `
 
     <div class="result-head">
 
       <div>
-
-        <small>
-          نوع المستند
-        </small>
+        <small>نوع المستند</small>
 
         <h2>
           ${esc(
@@ -1701,19 +2071,11 @@ function renderContract(data){
             "غير محدد"
           )}
         </h2>
-
       </div>
 
       <div class="score">
-
-        ${esc(
-          data.score ?? "—"
-        )}
-
-        <small>
-          /100
-        </small>
-
+        ${esc(data.score ?? "—")}
+        <small>/100</small>
       </div>
 
     </div>
@@ -1721,9 +2083,7 @@ function renderContract(data){
 
     <div class="summary">
 
-      <b>
-        الخلاصة
-      </b>
+      <b>الخلاصة</b>
 
       <br>
 
@@ -1738,89 +2098,64 @@ function renderContract(data){
     <div class="info-grid">
 
       <div class="info">
-
-        <b>
-          💰 المبالغ
-        </b>
-
+        <b>💰 المبالغ</b>
         <span>
           ${
             (information.amounts || [])
-              .map(esc)
-              .join(" • ") ||
+            .map(esc)
+            .join(" • ") ||
             "لا يوجد"
           }
         </span>
-
       </div>
 
-
       <div class="info">
-
-        <b>
-          📅 التواريخ
-        </b>
-
+        <b>📅 التواريخ</b>
         <span>
           ${
             (information.dates || [])
-              .map(esc)
-              .join(" • ") ||
+            .map(esc)
+            .join(" • ") ||
             "لا يوجد"
           }
         </span>
-
       </div>
 
-
       <div class="info">
-
-        <b>
-          ⏳ المدد
-        </b>
-
+        <b>⏳ المدد</b>
         <span>
           ${
             (information.durations || [])
-              .map(esc)
-              .join(" • ") ||
+            .map(esc)
+            .join(" • ") ||
             "لا يوجد"
           }
         </span>
-
       </div>
 
     </div>
 
 
-    <h2>
-      🔎 المخاطر
-    </h2>
+    <h2>🔎 المخاطر</h2>
 
     ${risks}
 
 
-    <h2>
-      ✅ نقاط جيدة
-    </h2>
+    <h2>✅ نقاط جيدة</h2>
 
     <ul>
       ${list(data.good_points)}
     </ul>
 
 
-    <h2>
-      ⚠️ غير واضح أو ناقص
-    </h2>
+    <h2>⚠️ غير واضح أو ناقص</h2>
 
     <ul>
       ${list(data.missing_or_unclear)}
     </ul>
 
 
-    <h2>
-      ⚖️ توازن الالتزامات
-    </h2>
+    <h2>⚖️ توازن الالتزامات</h2>
 
     <div class="summary">
 
@@ -1830,14 +2165,11 @@ function renderContract(data){
       )}
 
     </div>
-
   `;
-
 
   $("result")
     .classList
     .remove("hidden");
-
 }
 
 
@@ -1853,16 +2185,13 @@ function renderJudgment(data){
   const parties =
     data.parties || {};
 
-
   $("result").innerHTML = `
 
     <div class="result-head">
 
       <div>
 
-        <small>
-          نوع المستند
-        </small>
+        <small>نوع المستند</small>
 
         <h2>
           ${esc(
@@ -1882,9 +2211,7 @@ function renderJudgment(data){
 
     <div class="summary">
 
-      <b>
-        الخلاصة
-      </b>
+      <b>الخلاصة</b>
 
       <br>
 
@@ -1905,14 +2232,12 @@ function renderJudgment(data){
         </span>
       </div>
 
-
       <div class="info">
         <b>⚖️ الدائرة</b>
         <span>
           ${esc(info.chamber || "غير مذكور")}
         </span>
       </div>
-
 
       <div class="info">
         <b>🧾 رقم القضية</b>
@@ -1921,7 +2246,6 @@ function renderJudgment(data){
         </span>
       </div>
 
-
       <div class="info">
         <b>📜 رقم الحكم</b>
         <span>
@@ -1929,14 +2253,12 @@ function renderJudgment(data){
         </span>
       </div>
 
-
       <div class="info">
         <b>📅 التاريخ</b>
         <span>
           ${esc(info.judgment_date || "غير مذكور")}
         </span>
       </div>
-
 
       <div class="info">
         <b>👥 الأطراف</b>
@@ -1950,75 +2272,44 @@ function renderJudgment(data){
     </div>
 
 
-    <h2>
-      📌 الطلبات
-    </h2>
+    <h2>📌 الطلبات</h2>
 
-    <ul>
-      ${list(data.claims)}
-    </ul>
+    <ul>${list(data.claims)}</ul>
 
 
-    <h2>
-      🛡️ الدفوع
-    </h2>
+    <h2>🛡️ الدفوع</h2>
 
-    <ul>
-      ${list(data.defenses)}
-    </ul>
+    <ul>${list(data.defenses)}</ul>
 
 
-    <h2>
-      📖 الوقائع
-    </h2>
+    <h2>📖 الوقائع</h2>
 
-    <ul>
-      ${list(data.facts)}
-    </ul>
+    <ul>${list(data.facts)}</ul>
 
 
-    <h2>
-      ⚖️ الأسباب
-    </h2>
+    <h2>⚖️ الأسباب</h2>
 
-    <ul>
-      ${list(data.reasons)}
-    </ul>
+    <ul>${list(data.reasons)}</ul>
 
 
-    <h2>
-      🔨 منطوق الحكم
-    </h2>
+    <h2>🔨 منطوق الحكم</h2>
 
     <div class="summary">
-      ${esc(
-        data.judgment ||
-        "غير مذكور"
-      )}
+      ${esc(data.judgment || "غير مذكور")}
     </div>
 
 
-    <h2>
-      💰 الالتزامات المالية
-    </h2>
+    <h2>💰 الالتزامات المالية</h2>
 
-    <ul>
-      ${list(data.financial_obligations)}
-    </ul>
+    <ul>${list(data.financial_obligations)}</ul>
 
 
-    <h2>
-      📅 المدد
-    </h2>
+    <h2>📅 المدد</h2>
 
-    <ul>
-      ${list(data.deadlines)}
-    </ul>
+    <ul>${list(data.deadlines)}</ul>
 
 
-    <h2>
-      📨 الاعتراض والاستئناف
-    </h2>
+    <h2>📨 الاعتراض والاستئناف</h2>
 
     <div class="summary">
       ${esc(
@@ -2028,74 +2319,59 @@ function renderJudgment(data){
     </div>
 
 
-    <h2>
-      🔎 نقاط مهمة
-    </h2>
+    <h2>🔎 نقاط مهمة</h2>
 
-    <ul>
-      ${list(data.important_points)}
-    </ul>
+    <ul>${list(data.important_points)}</ul>
 
 
-    <h2>
-      ⚠️ غير واضح أو ناقص
-    </h2>
+    <h2>⚠️ غير واضح أو ناقص</h2>
 
-    <ul>
-      ${list(data.missing_or_unclear)}
-    </ul>
+    <ul>${list(data.missing_or_unclear)}</ul>
 
 
-    <h2>
-      🧑‍⚖️ تحتاج مراجعة قانونية
-    </h2>
+    <h2>🧑‍⚖️ تحتاج مراجعة قانونية</h2>
 
-    <ul>
-      ${list(data.legal_review_needed)}
-    </ul>
+    <ul>${list(data.legal_review_needed)}</ul>
 
   `;
-
 
   $("result")
     .classList
     .remove("hidden");
-
 }
 
 
 /* =========================
-   HOME BUTTONS
+   HOME
 ========================= */
 
 $("contractsMode").onclick =
   () => show("contractSection");
-
 
 $("judgmentsMode").onclick =
   () => show("judgmentSection");
 
 
 /* =========================
-   LOCKED FEATURES
+   LOCKED
 ========================= */
 
 document
-  .querySelectorAll("[data-soon]")
-  .forEach(button => {
+.querySelectorAll("[data-soon]")
+.forEach(button => {
 
-    button.onclick = () => {
+  button.onclick = () => {
 
-      $("modalText").textContent =
-        button.dataset.soon;
+    $("modalText").textContent =
+      button.dataset.soon;
 
-      $("modal")
-        .classList
-        .remove("hidden");
+    $("modal")
+      .classList
+      .remove("hidden");
 
-    };
+  };
 
-  });
+});
 
 
 $("closeModal").onclick =
@@ -2113,18 +2389,18 @@ $("closeModal").onclick =
 ========================= */
 
 document
-  .querySelectorAll("[data-back]")
-  .forEach(button => {
+.querySelectorAll("[data-back]")
+.forEach(button => {
 
-    button.onclick = () => {
+  button.onclick = () => {
 
-      reset();
+    reset();
 
-      show("home");
+    show("home");
 
-    };
+  };
 
-  });
+});
 
 
 $("analyzerBack").onclick =
@@ -2146,32 +2422,32 @@ $("analyzerBack").onclick =
 ========================= */
 
 document
-  .querySelectorAll("[data-category]")
-  .forEach(button => {
+.querySelectorAll("[data-category]")
+.forEach(button => {
 
-    button.onclick = () => {
+  button.onclick = () => {
 
-      mode = "contract";
+    mode = "contract";
 
-      category =
-        button.dataset.category;
+    category =
+      button.dataset.category;
 
-      $("analyzerTitle")
-        .textContent =
-        "📄 رفع العقد";
+    $("analyzerTitle")
+      .textContent =
+      "📄 رفع العقد";
 
-      $("analyzerSub")
-        .textContent =
-        "القسم المختار: " +
-        category;
+    $("analyzerSub")
+      .textContent =
+      "القسم المختار: " +
+      category;
 
-      reset();
+    reset();
 
-      show("analyzer");
+    show("analyzer");
 
-    };
+  };
 
-  });
+});
 
 
 /* =========================
@@ -2179,36 +2455,36 @@ document
 ========================= */
 
 document
-  .querySelectorAll("[data-judgment-type]")
-  .forEach(button => {
+.querySelectorAll("[data-judgment-type]")
+.forEach(button => {
 
-    button.onclick = () => {
+  button.onclick = () => {
 
-      mode = "judgment";
+    mode = "judgment";
 
-      category =
-        button.dataset.judgmentType;
+    category =
+      button.dataset.judgmentType;
 
-      $("analyzerTitle")
-        .textContent =
-        "⚖️ رفع الوثيقة القضائية";
+    $("analyzerTitle")
+      .textContent =
+      "⚖️ رفع الوثيقة القضائية";
 
-      $("analyzerSub")
-        .textContent =
-        "نوع التحليل: " +
-        category;
+    $("analyzerSub")
+      .textContent =
+      "نوع التحليل: " +
+      category;
 
-      reset();
+    reset();
 
-      show("analyzer");
+    show("analyzer");
 
-    };
+  };
 
-  });
+});
 
 
 /* =========================
-   FILE SELECT
+   FILE
 ========================= */
 
 $("file").onchange = () => {
@@ -2218,7 +2494,6 @@ $("file").onchange = () => {
 
   if(!file)
     return;
-
 
   if(validate(file)){
 
@@ -2255,60 +2530,46 @@ $("go").onclick =
     const file =
       $("file").files[0];
 
-
     if(!validate(file))
       return;
 
-
-    $("go").disabled =
-      true;
-
+    $("go").disabled = true;
 
     $("progressWrap")
       .classList
       .remove("hidden");
 
-
     $("result")
       .classList
       .add("hidden");
 
-
     startETA(file.size);
-
 
     $("progressText")
       .textContent =
       "جاري رفع المستند...";
 
-
     $("progressNumber")
       .textContent =
       "0%";
 
-
     $("bar").style.width =
       "0%";
-
 
     $("bar")
       .classList
       .remove("indeterminate");
 
-
     const formData =
       new FormData();
-
 
     formData.append(
       "document",
       file
     );
 
-
     let url =
       "/api/analyze";
-
 
     if(mode === "contract"){
 
@@ -2323,7 +2584,6 @@ $("go").onclick =
         "/api/analyze-judgment";
 
     }
-
 
     try{
 
@@ -2340,13 +2600,11 @@ $("go").onclick =
               .textContent =
               percent + "%";
 
-
             $("progressText")
               .textContent =
               "جاري رفع المستند... " +
               percent +
               "%";
-
 
             if(percent === 100){
 
@@ -2366,30 +2624,24 @@ $("go").onclick =
 
       stopETA();
 
-
       $("bar")
         .classList
         .remove("indeterminate");
 
-
       $("bar").style.width =
         "100%";
-
 
       $("progressNumber")
         .textContent =
         "100%";
 
-
       $("progressText")
         .textContent =
         "اكتمل التحليل ✓";
 
-
       $("status")
         .textContent =
         "تم التحليل بنجاح.";
-
 
       if(mode === "contract"){
 
@@ -2401,22 +2653,18 @@ $("go").onclick =
 
       }
 
-
       $("result")
         .scrollIntoView({
           behavior:"smooth"
         });
 
-
     }catch(error){
 
       stopETA();
 
-
       $("status")
         .textContent =
         error.message;
-
 
       $("progressText")
         .textContent =
