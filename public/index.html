@@ -3,13 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>ContractCheck</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 :root{
   --bg:#0b0d10;
@@ -24,9 +21,7 @@
   --red:#ef6464;
 }
 
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
@@ -36,31 +31,16 @@ body{
     radial-gradient(circle at 10% 70%,rgba(65,105,150,.10),transparent 30%),
     var(--bg);
   color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "SF Pro Text",
-    Tahoma,
-    Arial,
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Tahoma,Arial,sans-serif;
 }
 
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,input{font:inherit}
+button{cursor:pointer}
 
 .container{
   width:min(1080px,calc(100% - 32px));
   margin:auto;
 }
-
-/* Header */
 
 .topbar{
   display:flex;
@@ -74,7 +54,6 @@ button{
   align-items:center;
   gap:12px;
   font-weight:800;
-  letter-spacing:-.5px;
 }
 
 .brand-mark{
@@ -86,12 +65,9 @@ button{
   border-radius:13px;
   background:linear-gradient(145deg,#1d2229,#0f1216);
   color:var(--gold2);
-  box-shadow:0 10px 35px rgba(0,0,0,.25);
 }
 
-.brand-name{
-  font-size:19px;
-}
+.brand-name{font-size:19px}
 
 .badge{
   color:var(--muted);
@@ -101,8 +77,6 @@ button{
   border-radius:999px;
 }
 
-/* Hero */
-
 .hero{
   text-align:center;
   padding:65px 0 45px;
@@ -110,8 +84,6 @@ button{
 
 .hero-kicker{
   display:inline-flex;
-  align-items:center;
-  gap:8px;
   color:var(--gold2);
   font-size:13px;
   font-weight:700;
@@ -143,8 +115,6 @@ button{
   font-size:16px;
 }
 
-/* Choice */
-
 .choice{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -159,26 +129,10 @@ button{
   padding:28px;
   border:1px solid var(--line);
   border-radius:24px;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015)),
-    var(--panel);
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015)),var(--panel);
+  transition:.25s;
   text-align:right;
-}
-
-.choice-card:before{
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:rgba(214,179,106,.08);
-  filter:blur(10px);
-  top:-90px;
-  left:-70px;
+  color:var(--text);
 }
 
 .choice-card:hover{
@@ -188,7 +142,6 @@ button{
 }
 
 .choice-icon{
-  position:relative;
   width:58px;
   height:58px;
   display:grid;
@@ -209,7 +162,6 @@ button{
   margin:0;
   color:var(--muted);
   line-height:1.8;
-  max-width:420px;
 }
 
 .choice-arrow{
@@ -220,16 +172,12 @@ button{
   font-size:21px;
 }
 
-/* Workspace */
-
 .workspace{
   display:none;
   margin-bottom:50px;
 }
 
-.workspace.active{
-  display:block;
-}
+.workspace.active{display:block}
 
 .workspace-head{
   display:flex;
@@ -245,9 +193,7 @@ button{
   gap:13px;
 }
 
-.workspace-title .icon{
-  font-size:26px;
-}
+.workspace-title .icon{font-size:26px}
 
 .workspace-title h2{
   margin:0;
@@ -268,12 +214,6 @@ button{
   border-radius:10px;
 }
 
-.back:hover{
-  color:var(--text);
-}
-
-/* Upload */
-
 .upload-card{
   border:1px solid var(--line);
   border-radius:24px;
@@ -291,12 +231,6 @@ button{
   justify-content:center;
   padding:30px;
   text-align:center;
-  transition:.2s;
-}
-
-.dropzone:hover{
-  border-color:var(--gold);
-  background:rgba(214,179,106,.025);
 }
 
 .drop-icon{
@@ -321,9 +255,7 @@ button{
   margin:10px 0 20px;
 }
 
-.file-input{
-  display:none;
-}
+.file-input{display:none}
 
 .choose{
   background:linear-gradient(135deg,var(--gold2),var(--gold));
@@ -350,17 +282,11 @@ button{
   background:#f3f4f6;
   color:#0c0e11;
   font-weight:850;
-  transition:.2s;
-}
-
-.analyze:hover{
-  transform:translateY(-1px);
 }
 
 .analyze:disabled{
   opacity:.45;
   cursor:not-allowed;
-  transform:none;
 }
 
 .status{
@@ -369,6 +295,64 @@ button{
   color:var(--muted);
   padding:13px 5px 3px;
   font-size:14px;
+}
+
+/* Progress */
+
+.progress-box{
+  display:none;
+  margin-top:18px;
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--panel2);
+}
+
+.progress-box.show{display:block}
+
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:13px;
+}
+
+.progress-title{
+  font-weight:800;
+}
+
+.progress-percent{
+  color:var(--gold2);
+  font-weight:900;
+  font-size:20px;
+}
+
+.progress-track{
+  width:100%;
+  height:9px;
+  background:#252b32;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transition:width .7s ease;
+}
+
+.progress-step{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.progress-note{
+  margin-top:7px;
+  color:#69737e;
+  font-size:11px;
 }
 
 /* Results */
@@ -382,9 +366,7 @@ button{
   padding:25px;
 }
 
-.result.show{
-  display:block;
-}
+.result.show{display:block}
 
 .result-head{
   display:flex;
@@ -395,9 +377,7 @@ button{
   border-bottom:1px solid var(--line);
 }
 
-.result-head h2{
-  margin:0;
-}
+.result-head h2{margin:0}
 
 .score-box{
   text-align:center;
@@ -407,13 +387,11 @@ button{
 .score{
   font-size:42px;
   font-weight:900;
-  line-height:1;
 }
 
 .score-label{
   color:var(--muted);
   font-size:11px;
-  margin-top:6px;
 }
 
 .summary{
@@ -433,21 +411,11 @@ button{
   background:var(--panel2);
 }
 
-.risk.high{
-  border-right:4px solid var(--red);
-}
+.risk.high{border-right:4px solid var(--red)}
+.risk.medium{border-right:4px solid #e0a63a}
+.risk.low{border-right:4px solid var(--green)}
 
-.risk.medium{
-  border-right:4px solid #e0a63a;
-}
-
-.risk.low{
-  border-right:4px solid var(--green);
-}
-
-.risk h3{
-  margin:0 0 12px;
-}
+.risk h3{margin:0 0 12px}
 
 .risk p{
   color:#c6cbd1;
@@ -455,13 +423,7 @@ button{
   margin:8px 0;
 }
 
-.result-section{
-  margin-top:25px;
-}
-
-.result-section h3{
-  margin-bottom:12px;
-}
+.result-section{margin-top:25px}
 
 .result-section ul{
   margin:0;
@@ -469,8 +431,6 @@ button{
   color:#c6cbd1;
   line-height:2;
 }
-
-/* Footer */
 
 .footer{
   padding:30px 0 45px;
@@ -485,13 +445,7 @@ button{
     width:min(100% - 22px,1080px);
   }
 
-  .topbar{
-    padding:17px 0;
-  }
-
-  .badge{
-    display:none;
-  }
+  .badge{display:none}
 
   .hero{
     padding:48px 0 32px;
@@ -512,10 +466,6 @@ button{
 
   .workspace-head{
     align-items:flex-start;
-  }
-
-  .workspace-title h2{
-    font-size:21px;
   }
 
   .result-head{
@@ -567,7 +517,7 @@ button{
 
     <p>
       فحص عقود المقاولات، الإيجار، البيع، الخدمات،
-      العمل، التوريد وغيرها، واكتشاف البنود التي تستحق الانتباه.
+      العمل، التوريد وغيرها.
     </p>
 
     <div class="choice-arrow">←</div>
@@ -581,8 +531,8 @@ button{
     <h2>تحليل الأحكام</h2>
 
     <p>
-      قراءة صك الحكم واستخراج أهم المعلومات،
-      والوقائع، والطلبات، والأسباب، والمنطوق والنقاط التي تستحق المراجعة.
+      تحليل صك الحكم واستخراج الوقائع والطلبات والأسباب
+      والمنطوق والنقاط التي تستحق المراجعة.
     </p>
 
     <div class="choice-arrow">←</div>
@@ -596,12 +546,14 @@ button{
   <div class="workspace-head">
 
     <div class="workspace-title">
+
       <div class="icon">📄</div>
 
       <div>
         <h2>تحليل العقود</h2>
         <p>ارفع العقد ودع ContractCheck يفحصه.</p>
       </div>
+
     </div>
 
     <button class="back" id="contractBack">
@@ -638,6 +590,34 @@ button{
       تحليل العقد
     </button>
 
+    <div id="progressBox" class="progress-box">
+
+      <div class="progress-top">
+
+        <div class="progress-title">
+          جاري تحليل العقد
+        </div>
+
+        <div id="progressPercent" class="progress-percent">
+          0%
+        </div>
+
+      </div>
+
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div id="progressStep" class="progress-step">
+        تجهيز الملف...
+      </div>
+
+      <div class="progress-note">
+        النسبة تقديرية حتى تكتمل معالجة المستند فعليًا.
+      </div>
+
+    </div>
+
     <div id="status" class="status"></div>
 
   </div>
@@ -651,12 +631,14 @@ button{
   <div class="workspace-head">
 
     <div class="workspace-title">
+
       <div class="icon">⚖️</div>
 
       <div>
         <h2>تحليل الأحكام</h2>
         <p>ارفع صك الحكم لتحليل محتواه.</p>
       </div>
+
     </div>
 
     <button class="back" id="judgmentBack">
@@ -702,68 +684,43 @@ button{
 </section>
 
 <footer class="footer">
-
   ContractCheck أداة مساعدة للفحص الأولي للمستندات القانونية،
   وليست بديلًا عن المحامي أو المستشار القانوني.
-
 </footer>
 
 </div>
 
 <script>
-const choice = document.getElementById("choice");
+const choice=document.getElementById("choice");
 
-const contractChoice =
-  document.getElementById("contractChoice");
+const contractChoice=document.getElementById("contractChoice");
+const judgmentChoice=document.getElementById("judgmentChoice");
 
-const judgmentChoice =
-  document.getElementById("judgmentChoice");
+const contractWorkspace=document.getElementById("contractWorkspace");
+const judgmentWorkspace=document.getElementById("judgmentWorkspace");
 
-const contractWorkspace =
-  document.getElementById("contractWorkspace");
+const contractBack=document.getElementById("contractBack");
+const judgmentBack=document.getElementById("judgmentBack");
 
-const judgmentWorkspace =
-  document.getElementById("judgmentWorkspace");
+const fileEl=document.getElementById("file");
+const fileName=document.getElementById("fileName");
 
-const contractBack =
-  document.getElementById("contractBack");
+const go=document.getElementById("go");
+const status=document.getElementById("status");
+const result=document.getElementById("result");
 
-const judgmentBack =
-  document.getElementById("judgmentBack");
+const progressBox=document.getElementById("progressBox");
+const progressBar=document.getElementById("progressBar");
+const progressPercent=document.getElementById("progressPercent");
+const progressStep=document.getElementById("progressStep");
 
-const fileEl =
-  document.getElementById("file");
-
-const fileName =
-  document.getElementById("fileName");
-
-const go =
-  document.getElementById("go");
-
-const status =
-  document.getElementById("status");
-
-const result =
-  document.getElementById("result");
-
-const judgmentFile =
-  document.getElementById("judgmentFile");
-
-const judgmentFileName =
-  document.getElementById("judgmentFileName");
-
-const judgmentGo =
-  document.getElementById("judgmentGo");
-
-const judgmentStatus =
-  document.getElementById("judgmentStatus");
-
-const judgmentResult =
-  document.getElementById("judgmentResult");
-
+const judgmentFile=document.getElementById("judgmentFile");
+const judgmentFileName=document.getElementById("judgmentFileName");
+const judgmentGo=document.getElementById("judgmentGo");
+const judgmentStatus=document.getElementById("judgmentStatus");
 
 function esc(v){
-  return String(v ?? "").replace(/[&<>"']/g,c=>({
+  return String(v??"").replace(/[&<>"']/g,c=>({
     "&":"&amp;",
     "<":"&lt;",
     ">":"&gt;",
@@ -771,7 +728,6 @@ function esc(v){
     "'":"&#039;"
   }[c]));
 }
-
 
 function openWorkspace(type){
 
@@ -793,7 +749,6 @@ function openWorkspace(type){
   });
 }
 
-
 function closeWorkspaces(){
 
   contractWorkspace.classList.remove("active");
@@ -807,36 +762,98 @@ function closeWorkspaces(){
   });
 }
 
-
 contractChoice.onclick=()=>{
   openWorkspace("contract");
 };
-
 
 judgmentChoice.onclick=()=>{
   openWorkspace("judgment");
 };
 
-
 contractBack.onclick=closeWorkspaces;
 judgmentBack.onclick=closeWorkspaces;
 
-
 fileEl.onchange=()=>{
-  fileName.textContent =
+  fileName.textContent=
     fileEl.files[0]
       ? fileEl.files[0].name
       : "";
 };
 
-
 judgmentFile.onchange=()=>{
-  judgmentFileName.textContent =
+  judgmentFileName.textContent=
     judgmentFile.files[0]
       ? judgmentFile.files[0].name
       : "";
 };
 
+
+/* Progress */
+
+let progressTimer=null;
+
+function resetProgress(){
+
+  if(progressTimer){
+    clearInterval(progressTimer);
+    progressTimer=null;
+  }
+
+  progressBar.style.width="0%";
+  progressPercent.textContent="0%";
+  progressStep.textContent="تجهيز الملف...";
+}
+
+function startProgress(){
+
+  resetProgress();
+
+  progressBox.classList.add("show");
+
+  const stages=[
+    {p:8,t:"رفع الملف وتجهيزه..."},
+    {p:20,t:"قراءة المستند..."},
+    {p:36,t:"استخراج محتوى العقد..."},
+    {p:52,t:"فحص البنود الرئيسية..."},
+    {p:67,t:"تحليل الالتزامات والمخاطر..."},
+    {p:78,t:"مراجعة المسؤوليات والجزاءات..."},
+    {p:88,t:"تقييم مستوى المخاطر..."},
+    {p:94,t:"تجهيز التقرير النهائي..."}
+  ];
+
+  let index=0;
+
+  const move=()=>{
+    if(index>=stages.length)return;
+
+    const stage=stages[index];
+
+    progressBar.style.width=stage.p+"%";
+    progressPercent.textContent=stage.p+"%";
+    progressStep.textContent=stage.t;
+
+    index++;
+  };
+
+  move();
+
+  progressTimer=setInterval(move,1100);
+}
+
+function finishProgress(){
+
+  if(progressTimer){
+    clearInterval(progressTimer);
+    progressTimer=null;
+  }
+
+  progressBar.style.width="100%";
+  progressPercent.textContent="100%";
+  progressStep.textContent="اكتمل التحليل ✓";
+}
+
+
+/* Contract analysis */
 
 go.onclick=async()=>{
 
@@ -847,10 +864,10 @@ go.onclick=async()=>{
 
   go.disabled=true;
 
-  status.textContent=
-    "جاري قراءة العقد وتحليله... قد يستغرق قليلًا.";
-
+  status.textContent="";
   result.classList.remove("show");
+
+  startProgress();
 
   const fd=new FormData();
 
@@ -870,7 +887,7 @@ go.onclick=async()=>{
 
     if(!r.ok){
       throw new Error(
-        d.error || "حدث خطأ أثناء التحليل."
+        d.error||"حدث خطأ أثناء التحليل."
       );
     }
 
@@ -970,6 +987,8 @@ go.onclick=async()=>{
       </div>
     `;
 
+    finishProgress();
+
     result.classList.add("show");
 
     result.scrollIntoView({
@@ -980,6 +999,12 @@ go.onclick=async()=>{
 
   }catch(e){
 
+    if(progressTimer){
+      clearInterval(progressTimer);
+      progressTimer=null;
+    }
+
+    progressStep.textContent="تعذر إكمال التحليل.";
     status.textContent=e.message;
 
   }finally{
@@ -990,23 +1015,17 @@ go.onclick=async()=>{
 };
 
 
-/*
-  تحليل الأحكام سيتم ربطه بالـAPI
-  في الخطوة التالية.
-*/
+/* Judgment placeholder */
 
 judgmentGo.onclick=()=>{
 
   if(!judgmentFile.files[0]){
-
-    judgmentStatus.textContent=
-      "اختر صك الحكم أولًا.";
-
+    judgmentStatus.textContent="اختر صك الحكم أولًا.";
     return;
   }
 
   judgmentStatus.textContent=
-    "ميزة تحليل الأحكام جاهزة للربط بالمحلل.";
+    "تحليل الأحكام سيتم تفعيله في الخطوة التالية.";
 
 };
 </script>
