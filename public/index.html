@@ -20,97 +20,36 @@
   --green:#3e8b62;
 }
 
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Tahoma,
-    Arial,
-    sans-serif;
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif
 }
 
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   شاشة البداية
-========================= */
-
-.splash{
-  position:fixed;
-  inset:0;
-  background:#101827;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  animation:splashOut .7s ease 2.4s forwards;
-}
-
-.splash img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-}
-
-@keyframes splashOut{
-  0%{
-    opacity:1;
-  }
-
-  100%{
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-  }
-}
-
-/* =========================
-   Layout
-========================= */
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
 .wrap{
   max-width:1060px;
   margin:auto;
-  padding:20px 18px 50px;
+  padding:20px 18px 50px
 }
 
 .topbar{
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  justify-content:space-between
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
-  font-weight:900;
+  font-weight:900
 }
 
 .brand-mark{
@@ -121,36 +60,35 @@ button{
   color:var(--gold);
   display:grid;
   place-items:center;
-  font-size:23px;
+  font-size:23px
 }
 
 .brand-name{
   font-family:Georgia,serif;
-  font-size:26px;
+  font-size:26px
 }
 
-.badge,
-.soon{
+.badge,.soon{
   font-size:12px;
   color:#766b58;
   background:#ece6d9;
   padding:7px 10px;
-  border-radius:999px;
+  border-radius:999px
 }
 
 .hero{
   text-align:center;
-  padding:48px 10px 34px;
+  padding:48px 10px 34px
 }
 
 .hero-mark{
-  font-size:46px;
+  font-size:46px
 }
 
 .hero h1{
   font-family:Georgia,serif;
   font-size:clamp(48px,8vw,76px);
-  margin:7px 0;
+  margin:7px 0
 }
 
 .hero p{
@@ -158,33 +96,29 @@ button{
   margin:auto;
   color:var(--muted);
   font-size:18px;
-  line-height:1.9;
+  line-height:1.9
 }
 
 .section-title{
   text-align:center;
-  margin:10px 0 20px;
+  margin:10px 0 20px
 }
 
 .section-title h2{
   margin:0;
-  font-size:26px;
+  font-size:26px
 }
 
 .section-title p{
   color:var(--muted);
-  margin:7px 0;
+  margin:7px 0
 }
-
-/* =========================
-   Cards
-========================= */
 
 .mode-grid,
 .category-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:16px;
+  gap:16px
 }
 
 .mode,
@@ -195,27 +129,27 @@ button{
   padding:25px;
   text-align:right;
   transition:.2s;
-  box-shadow:0 12px 35px rgba(20,25,35,.04);
+  box-shadow:0 12px 35px rgba(20,25,35,.04)
 }
 
 .mode:hover:not(.locked),
 .category:hover{
-  transform:translateY(-2px);
+  transform:translateY(-2px)
 }
 
 .mode-icon{
-  font-size:42px;
+  font-size:42px
 }
 
 .mode h3{
   font-size:23px;
-  margin:12px 0 7px;
+  margin:12px 0 7px
 }
 
 .mode p{
   color:var(--muted);
   line-height:1.8;
-  margin:0 0 17px;
+  margin:0 0 17px
 }
 
 .primary{
@@ -224,23 +158,23 @@ button{
   border:0;
   border-radius:12px;
   padding:12px 18px;
-  font-weight:800;
+  font-weight:800
 }
 
 .locked{
   cursor:pointer;
   opacity:.78;
-  background:#f8f6f1;
+  background:#f8f6f1
 }
 
 .locked .primary{
   background:#e9e5dc;
-  color:#777;
+  color:#777
 }
 
 .soon{
   display:inline-block;
-  font-weight:800;
+  font-weight:800
 }
 
 .panel{
@@ -248,7 +182,7 @@ button{
   border:1px solid var(--line);
   border-radius:24px;
   padding:24px;
-  margin-top:20px;
+  margin-top:20px
 }
 
 .back{
@@ -256,12 +190,8 @@ button{
   border:0;
   color:var(--muted);
   padding:8px 0;
-  font-weight:700;
+  font-weight:700
 }
-
-/* =========================
-   Quote
-========================= */
 
 .quote,
 .summary{
@@ -270,31 +200,27 @@ button{
   border-radius:18px;
   padding:18px;
   margin:18px 0;
-  line-height:1.9;
+  line-height:1.9
 }
 
 .quote{
-  text-align:center;
+  text-align:center
 }
 
 .quote .arabic{
   font-family:Georgia,serif;
-  font-size:21px;
+  font-size:21px
 }
 
 .quote small{
-  color:#796d57;
+  color:#796d57
 }
-
-/* =========================
-   Categories
-========================= */
 
 .category{
   display:flex;
   align-items:center;
   gap:14px;
-  padding:17px;
+  padding:17px
 }
 
 .category .ico{
@@ -305,34 +231,30 @@ button{
   display:grid;
   place-items:center;
   font-size:24px;
-  flex:0 0 auto;
+  flex:0 0 auto
 }
 
 .category strong{
-  display:block;
+  display:block
 }
 
 .category small{
   color:var(--muted);
   display:block;
-  margin-top:4px;
+  margin-top:4px
 }
-
-/* =========================
-   Upload
-========================= */
 
 .upload{
   border:2px dashed #cfc7b7;
   border-radius:20px;
   padding:28px;
   text-align:center;
-  background:#fcfbf8;
+  background:#fcfbf8
 }
 
 .file{
   width:100%;
-  margin:15px 0;
+  margin:15px 0
 }
 
 .selected{
@@ -345,28 +267,24 @@ button{
   max-width:100%;
   overflow:hidden;
   white-space:nowrap;
-  text-overflow:ellipsis;
+  text-overflow:ellipsis
 }
 
 .status{
   color:var(--muted);
   margin-top:12px;
-  min-height:24px;
+  min-height:24px
 }
 
-/* =========================
-   Progress
-========================= */
-
 .progress-wrap{
-  margin-top:20px;
+  margin-top:20px
 }
 
 .progress-head{
   display:flex;
   justify-content:space-between;
   color:var(--muted);
-  font-size:14px;
+  font-size:14px
 }
 
 .progress{
@@ -374,45 +292,37 @@ button{
   background:#ebe7df;
   border-radius:99px;
   overflow:hidden;
-  margin-top:8px;
+  margin-top:8px
 }
 
 .bar{
   height:100%;
   width:0;
-  background:linear-gradient(
-    90deg,
-    var(--navy),
-    var(--gold)
-  );
+  background:linear-gradient(90deg,var(--navy),var(--gold));
   border-radius:99px;
-  transition:width .2s;
+  transition:width .2s
 }
 
 .bar.indeterminate{
   width:35%;
-  animation:moveBar 1.2s infinite ease-in-out;
+  animation:moveBar 1.2s infinite ease-in-out
 }
 
 @keyframes moveBar{
   0%{
-    transform:translateX(180%);
+    transform:translateX(180%)
   }
 
   100%{
-    transform:translateX(-330%);
+    transform:translateX(-330%)
   }
 }
 
 .elapsed{
   margin-top:7px;
   font-size:13px;
-  color:#8a8172;
+  color:#8a8172
 }
-
-/* =========================
-   Waiting
-========================= */
 
 .wait{
   margin-top:18px;
@@ -420,7 +330,7 @@ button{
   border-radius:17px;
   background:#f7f1e2;
   border:1px solid #e8dcc0;
-  overflow:hidden;
+  overflow:hidden
 }
 
 .wait-text{
@@ -428,78 +338,72 @@ button{
   font-size:18px;
   line-height:1.9;
   white-space:nowrap;
-  overflow:hidden;
-  transition:opacity .15s;
+  overflow:hidden
 }
 
 .scrolling{
   display:inline-block;
   padding-left:100%;
-  animation:scroll 16s linear infinite;
+  animation:scroll 16s linear infinite
 }
 
 @keyframes scroll{
   from{
-    transform:translateX(-5%);
+    transform:translateX(-5%)
   }
 
   to{
-    transform:translateX(105%);
+    transform:translateX(105%)
   }
 }
 
 .wait small{
   display:block;
   margin-top:6px;
-  color:#796d57;
+  color:#796d57
 }
 
-/* =========================
-   Results
-========================= */
-
 .result{
-  margin-top:24px;
+  margin-top:24px
 }
 
 .result-head{
   display:flex;
   justify-content:space-between;
-  gap:18px;
-  align-items:center;
+  gap:18px
 }
 
 .score{
   font-size:48px;
-  font-weight:950;
+  font-weight:950
 }
 
 .score small{
   font-size:17px;
-  color:var(--muted);
+  color:var(--muted)
 }
 
 .info-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  gap:10px
 }
 
 .info{
   border:1px solid var(--line);
   border-radius:15px;
   padding:13px;
-  background:#fcfbf8;
+  background:#fcfbf8
 }
 
 .info b{
   display:block;
-  margin-bottom:6px;
+  margin-bottom:6px
 }
 
 .info span{
   color:var(--muted);
-  font-size:14px;
+  font-size:14px
 }
 
 .risk{
@@ -507,23 +411,23 @@ button{
   border-radius:17px;
   padding:17px;
   margin:12px 0;
-  line-height:1.8;
+  line-height:1.8
 }
 
 .high{
-  border-right:6px solid var(--red);
+  border-right:6px solid var(--red)
 }
 
 .medium{
-  border-right:6px solid var(--orange);
+  border-right:6px solid var(--orange)
 }
 
 .low{
-  border-right:6px solid var(--green);
+  border-right:6px solid var(--green)
 }
 
 ul{
-  line-height:2;
+  line-height:2
 }
 
 .note{
@@ -531,21 +435,17 @@ ul{
   color:var(--muted);
   font-size:13px;
   line-height:1.8;
-  margin-top:28px;
+  margin-top:28px
 }
-
-/* =========================
-   Modal
-========================= */
 
 .modal{
   position:fixed;
   inset:0;
   background:#0008;
-  z-index:999;
+  z-index:60;
   display:grid;
   place-items:center;
-  padding:20px;
+  padding:20px
 }
 
 .modal-card{
@@ -554,11 +454,11 @@ ul{
   padding:28px;
   max-width:420px;
   width:100%;
-  text-align:center;
+  text-align:center
 }
 
 .modal-icon{
-  font-size:44px;
+  font-size:44px
 }
 
 .close{
@@ -567,35 +467,23 @@ ul{
   border:0;
   border-radius:12px;
   padding:11px 18px;
-  font-weight:800;
+  font-weight:800
 }
-
-/* =========================
-   Mobile
-========================= */
 
 @media(max-width:720px){
 
   .mode-grid,
   .category-grid,
   .info-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:1fr
   }
 
   .panel{
-    padding:18px;
+    padding:18px
   }
 
   .hero{
-    padding-top:30px;
-  }
-
-  .result-head{
-    align-items:flex-start;
-  }
-
-  .score{
-    font-size:40px;
+    padding-top:30px
   }
 }
 </style>
@@ -603,15 +491,6 @@ ul{
 
 <body>
 
-<!-- شاشة البداية -->
-<div class="splash" id="splash">
-  <img
-    src="/splash.PNG"
-    alt="إحاطة"
-  >
-</div>
-
-<!-- نافذة الميزات القادمة -->
 <div id="modal" class="modal hidden">
 
   <div class="modal-card">
@@ -639,11 +518,8 @@ ul{
 
 </div>
 
-<main class="wrap">
 
-<!-- =========================
-     Topbar
-========================= -->
+<main class="wrap">
 
 <div class="topbar">
 
@@ -666,668 +542,647 @@ ul{
 </div>
 
 
-<!-- =========================
-     Home
-========================= -->
-
 <section id="home">
 
-  <div class="hero">
+<div class="hero">
 
-    <div class="hero-mark">
-      ⚖️
-    </div>
-
-    <h1>
-      إحاطة
-    </h1>
-
-    <p>
-      تحليل ذكي للمستندات القانونية يساعدك على فهم البنود والنقاط المهمة قبل اتخاذ القرار.
-    </p>
-
+  <div class="hero-mark">
+    ⚖️
   </div>
 
+  <h1>
+    إحاطة
+  </h1>
 
-  <div class="section-title">
+  <p>
+    تحليل ذكي للمستندات القانونية يساعدك على فهم البنود والنقاط المهمة قبل اتخاذ القرار.
+  </p>
 
-    <h2>
-      ماذا تريد أن تحلل؟
-    </h2>
+</div>
 
-    <p>
-      اختر نوع المستند للبدء
-    </p>
 
+<div class="section-title">
+
+  <h2>
+    ماذا تريد أن تحلل؟
+  </h2>
+
+  <p>
+    اختر نوع المستند للبدء
+  </p>
+
+</div>
+
+
+<div class="mode-grid">
+
+<button
+  class="mode"
+  id="contractsMode"
+>
+
+  <div class="mode-icon">
+    📄
   </div>
 
+  <h3>
+    العقود
+  </h3>
 
-  <div class="mode-grid">
+  <p>
+    فحص البنود والمخاطر والالتزامات والمبالغ والتواريخ المهمة.
+  </p>
 
-    <button
-      class="mode"
-      id="contractsMode"
-    >
+  <span class="primary">
+    ابدأ تحليل عقد
+  </span>
 
-      <div class="mode-icon">
-        📄
-      </div>
-
-      <h3>
-        العقود
-      </h3>
-
-      <p>
-        فحص البنود والمخاطر والالتزامات والمبالغ والتواريخ المهمة.
-      </p>
-
-      <span class="primary">
-        ابدأ تحليل عقد
-      </span>
-
-    </button>
+</button>
 
 
-    <button
-      class="mode"
-      id="judgmentsMode"
-    >
+<button
+  class="mode"
+  id="judgmentsMode"
+>
 
-      <div class="mode-icon">
-        ⚖️
-      </div>
-
-      <h3>
-        الأحكام والوثائق القضائية
-      </h3>
-
-      <p>
-        استخراج الوقائع والطلبات والأسباب والمنطوق والبيانات المهمة.
-      </p>
-
-      <span class="primary">
-        ابدأ تحليل حكم
-      </span>
-
-    </button>
-
-
-    <button
-      class="mode locked"
-      data-soon="مقارنة المستندين غير متاحة حاليًا، لكنها جاهزة من جهة البرمجة وسيتم فتحها في تحديث لاحق."
-    >
-
-      <div class="mode-icon">
-        🔍
-      </div>
-
-      <span class="soon">
-        🔒 قريبًا
-      </span>
-
-      <h3>
-        مقارنة مستندين
-      </h3>
-
-      <p>
-        اكتشف البنود المضافة والمحذوفة والتغييرات المهمة بين مستندين.
-      </p>
-
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
-
-    </button>
-
-
-    <button
-      class="mode locked"
-      data-soon="الاستشارات القانونية غير متاحة حاليًا، وستتوفر في تحديث مستقبلي."
-    >
-
-      <div class="mode-icon">
-        💬
-      </div>
-
-      <span class="soon">
-        🔒 قريبًا
-      </span>
-
-      <h3>
-        الاستشارات القانونية
-      </h3>
-
-      <p>
-        خدمة مستقبلية للمساعدة القانونية الموجهة.
-      </p>
-
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
-
-    </button>
-
-
-    <button
-      class="mode locked"
-      data-soon="قسم الأنظمة واللوائح غير متاح حاليًا، وسيتم إطلاقه في تحديث مستقبلي."
-    >
-
-      <div class="mode-icon">
-        📚
-      </div>
-
-      <span class="soon">
-        🔒 قريبًا
-      </span>
-
-      <h3>
-        الأنظمة واللوائح
-      </h3>
-
-      <p>
-        قراءة الأنظمة واللوائح وشرحها بشكل مبسط في مرحلة لاحقة.
-      </p>
-
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
-
-    </button>
-
+  <div class="mode-icon">
+    ⚖️
   </div>
+
+  <h3>
+    الأحكام والوثائق القضائية
+  </h3>
+
+  <p>
+    استخراج الوقائع والطلبات والأسباب والمنطوق والبيانات المهمة.
+  </p>
+
+  <span class="primary">
+    ابدأ تحليل حكم
+  </span>
+
+</button>
+
+
+<button
+  class="mode locked"
+  data-soon="مقارنة المستندين غير متاحة حاليًا، لكنها جاهزة من جهة البرمجة وسيتم فتحها في تحديث لاحق."
+>
+
+  <div class="mode-icon">
+    🔍
+  </div>
+
+  <span class="soon">
+    🔒 قريبًا
+  </span>
+
+  <h3>
+    مقارنة مستندين
+  </h3>
+
+  <p>
+    اكتشف البنود المضافة والمحذوفة والتغييرات المهمة بين مستندين.
+  </p>
+
+  <span class="primary">
+    غير متاحة حاليًا
+  </span>
+
+</button>
+
+
+<button
+  class="mode locked"
+  data-soon="الاستشارات القانونية غير متاحة حاليًا، وستتوفر في تحديث مستقبلي."
+>
+
+  <div class="mode-icon">
+    💬
+  </div>
+
+  <span class="soon">
+    🔒 قريبًا
+  </span>
+
+  <h3>
+    الاستشارات القانونية
+  </h3>
+
+  <p>
+    خدمة مستقبلية للمساعدة القانونية الموجهة.
+  </p>
+
+  <span class="primary">
+    غير متاحة حاليًا
+  </span>
+
+</button>
+
+
+<button
+  class="mode locked"
+  data-soon="قسم الأنظمة واللوائح غير متاح حاليًا، وسيتم إطلاقه في تحديث مستقبلي."
+>
+
+  <div class="mode-icon">
+    📚
+  </div>
+
+  <span class="soon">
+    🔒 قريبًا
+  </span>
+
+  <h3>
+    الأنظمة واللوائح
+  </h3>
+
+  <p>
+    قراءة الأنظمة واللوائح وشرحها بشكل مبسط في مرحلة لاحقة.
+  </p>
+
+  <span class="primary">
+    غير متاحة حاليًا
+  </span>
+
+</button>
+
+</div>
 
 </section>
 
-
-<!-- =========================
-     Contracts
-========================= -->
 
 <section
   id="contractSection"
   class="hidden"
 >
 
-  <button
-    class="back"
-    data-back
-  >
-    ← العودة للرئيسية
-  </button>
+<button
+  class="back"
+  data-back
+>
+  ← العودة للرئيسية
+</button>
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2>
+  📄 العقود
+</h2>
+
+<p>
+  اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
+</p>
+
+</div>
 
 
-  <div class="panel">
+<div class="quote">
 
-    <div class="section-title">
+<div class="arabic">
+﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
+</div>
 
-      <h2>
-        📄 العقود
-      </h2>
+<small>
+سورة المائدة: 1
+</small>
 
-      <p>
-        اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
-      </p>
-
-    </div>
+</div>
 
 
-    <div class="quote">
+<div class="category-grid">
 
-      <div class="arabic">
-        ﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا أَوْفُوا بِالْعُقُودِ ﴾
-      </div>
+<button
+  class="category"
+  data-category="مقاولات وأعمال"
+>
 
-      <small>
-        سورة المائدة: 1
-      </small>
+<span class="ico">
+🏗️
+</span>
 
-    </div>
+<span>
+<strong>
+المقاولات والأعمال
+</strong>
 
+<small>
+تنفيذ، إنشاء، تشييد وصيانة
+</small>
+</span>
 
-    <div class="category-grid">
-
-      <button
-        class="category"
-        data-category="مقاولات وأعمال"
-      >
-
-        <span class="ico">
-          🏗️
-        </span>
-
-        <span>
-          <strong>
-            المقاولات والأعمال
-          </strong>
-
-          <small>
-            تنفيذ، إنشاء، تشييد وصيانة
-          </small>
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-category="عقود تجارية"
-      >
+<button
+  class="category"
+  data-category="عقود تجارية"
+>
 
-        <span class="ico">
-          🏢
-        </span>
+<span class="ico">
+🏢
+</span>
 
-        <span>
-          <strong>
-            العقود التجارية
-          </strong>
+<span>
+<strong>
+العقود التجارية
+</strong>
 
-          <small>
-            بيع، شراء، تشغيل وخدمات
-          </small>
-        </span>
+<small>
+بيع، شراء، تشغيل وخدمات
+</small>
+</span>
 
-      </button>
-
-
-      <button
-        class="category"
-        data-category="إيجار"
-      >
-
-        <span class="ico">
-          🏠
-        </span>
-
-        <span>
-          <strong>
-            الإيجار
-          </strong>
-
-          <small>
-            عقود الإيجار والتأجير
-          </small>
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-category="عمل"
-      >
+<button
+  class="category"
+  data-category="إيجار"
+>
 
-        <span class="ico">
-          💼
-        </span>
+<span class="ico">
+🏠
+</span>
 
-        <span>
-          <strong>
-            العمل
-          </strong>
+<span>
+<strong>
+الإيجار
+</strong>
 
-          <small>
-            عقود الموظفين والعمل
-          </small>
-        </span>
+<small>
+عقود الإيجار والتأجير
+</small>
+</span>
 
-      </button>
-
-
-      <button
-        class="category"
-        data-category="توريد"
-      >
-
-        <span class="ico">
-          📦
-        </span>
-
-        <span>
-          <strong>
-            التوريد
-          </strong>
-
-          <small>
-            التوريد والشراء
-          </small>
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-category="شراكات واستثمار"
-      >
+<button
+  class="category"
+  data-category="عمل"
+>
 
-        <span class="ico">
-          🤝
-        </span>
+<span class="ico">
+💼
+</span>
 
-        <span>
-          <strong>
-            الشراكات والاستثمار
-          </strong>
+<span>
+<strong>
+العمل
+</strong>
 
-          <small>
-            شراكات واستثمار واتفاقيات
-          </small>
-        </span>
+<small>
+عقود الموظفين والعمل
+</small>
+</span>
 
-      </button>
-
-
-      <button
-        class="category"
-        data-category="تقنية وخدمات"
-      >
-
-        <span class="ico">
-          💻
-        </span>
-
-        <span>
-          <strong>
-            التقنية والخدمات
-          </strong>
-
-          <small>
-            برمجيات واستشارات وخدمات
-          </small>
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-category="عقد آخر"
-      >
+<button
+  class="category"
+  data-category="توريد"
+>
 
-        <span class="ico">
-          📄
-        </span>
+<span class="ico">
+📦
+</span>
 
-        <span>
-          <strong>
-            عقد آخر
-          </strong>
+<span>
+<strong>
+التوريد
+</strong>
 
-          <small>
-            أي عقد غير مصنف
-          </small>
-        </span>
+<small>
+التوريد والشراء
+</small>
+</span>
 
-      </button>
+</button>
 
-    </div>
 
-  </div>
+<button
+  class="category"
+  data-category="شراكات واستثمار"
+>
+
+<span class="ico">
+🤝
+</span>
+
+<span>
+<strong>
+الشراكات والاستثمار
+</strong>
+
+<small>
+شراكات واستثمار واتفاقيات
+</small>
+</span>
+
+</button>
+
+
+<button
+  class="category"
+  data-category="تقنية وخدمات"
+>
+
+<span class="ico">
+💻
+</span>
+
+<span>
+<strong>
+التقنية والخدمات
+</strong>
+
+<small>
+برمجيات واستشارات وخدمات
+</small>
+</span>
+
+</button>
+
+
+<button
+  class="category"
+  data-category="عقد آخر"
+>
+
+<span class="ico">
+📄
+</span>
+
+<span>
+<strong>
+عقد آخر
+</strong>
+
+<small>
+أي عقد غير مصنف
+</small>
+</span>
+
+</button>
+
+</div>
+
+</div>
 
 </section>
 
-
-<!-- =========================
-     Judgments
-========================= -->
 
 <section
   id="judgmentSection"
   class="hidden"
 >
 
-  <button
-    class="back"
-    data-back
-  >
-    ← العودة للرئيسية
-  </button>
+<button
+  class="back"
+  data-back
+>
+  ← العودة للرئيسية
+</button>
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2>
+  ⚖️ الأحكام والوثائق القضائية
+</h2>
+
+<p>
+  تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
+</p>
+
+</div>
 
 
-  <div class="panel">
+<div class="quote">
 
-    <div class="section-title">
+<div class="arabic">
+﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
+</div>
 
-      <h2>
-        ⚖️ الأحكام والوثائق القضائية
-      </h2>
+<small>
+سورة النساء: 58
+</small>
 
-      <p>
-        تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
-      </p>
-
-    </div>
+</div>
 
 
-    <div class="quote">
+<div class="category-grid">
 
-      <div class="arabic">
-        ﴿ وَإِذَا حَكَمْتُم بَيْنَ النَّاسِ أَن تَحْكُمُوا بِالْعَدْلِ ﴾
-      </div>
+<button
+  class="category"
+  data-judgment-type="حكم قضائي"
+>
 
-      <small>
-        سورة النساء: 58
-      </small>
+<span class="ico">
+🔨
+</span>
 
-    </div>
+<span>
+<strong>
+أحكام قضائية
+</strong>
 
+<small>
+صكوك الأحكام وما يتصل بها
+</small>
+</span>
 
-    <div class="category-grid">
-
-      <button
-        class="category"
-        data-judgment-type="حكم قضائي"
-      >
-
-        <span class="ico">
-          🔨
-        </span>
-
-        <span>
-          <strong>
-            أحكام قضائية
-          </strong>
-
-          <small>
-            صكوك الأحكام وما يتصل بها
-          </small>
-        </span>
-
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-judgment-type="قرار"
-      >
+<button
+  class="category"
+  data-judgment-type="قرار"
+>
 
-        <span class="ico">
-          📑
-        </span>
+<span class="ico">
+📑
+</span>
 
-        <span>
-          <strong>
-            قرارات
-          </strong>
+<span>
+<strong>
+قرارات
+</strong>
 
-          <small>
-            قرارات ووثائق قضائية
-          </small>
-        </span>
+<small>
+قرارات ووثائق قضائية
+</small>
+</span>
 
-      </button>
+</button>
 
 
-      <button
-        class="category"
-        data-judgment-type="وثيقة قضائية أخرى"
-      >
+<button
+  class="category"
+  data-judgment-type="وثيقة قضائية أخرى"
+>
 
-        <span class="ico">
-          📜
-        </span>
+<span class="ico">
+📜
+</span>
 
-        <span>
-          <strong>
-            وثائق قضائية أخرى
-          </strong>
+<span>
+<strong>
+وثائق قضائية أخرى
+</strong>
 
-          <small>
-            أي وثيقة قضائية قابلة للتحليل
-          </small>
-        </span>
+<small>
+أي وثيقة قضائية قابلة للتحليل
+</small>
+</span>
 
-      </button>
+</button>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
 </section>
 
-
-<!-- =========================
-     Analyzer
-========================= -->
 
 <section
   id="analyzer"
   class="hidden"
 >
 
-  <button
-    class="back"
-    id="analyzerBack"
-  >
-    ← العودة للاختيارات
-  </button>
+<button
+  class="back"
+  id="analyzerBack"
+>
+  ← العودة للاختيارات
+</button>
+
+<div class="panel">
+
+<div class="section-title">
+
+<h2 id="analyzerTitle">
+  رفع المستند
+</h2>
+
+<p id="analyzerSub"></p>
+
+</div>
 
 
-  <div class="panel">
+<div class="upload">
 
-    <div class="section-title">
-
-      <h2 id="analyzerTitle">
-        رفع المستند
-      </h2>
-
-      <p id="analyzerSub"></p>
-
-    </div>
+<div
+  id="selected"
+  class="selected hidden"
+></div>
 
 
-    <div class="upload">
-
-      <div
-        id="selected"
-        class="selected hidden"
-      ></div>
-
-
-      <input
-        id="file"
-        class="file"
-        type="file"
-        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      >
+<input
+  id="file"
+  class="file"
+  type="file"
+  accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+>
 
 
-      <button
-        id="go"
-        class="primary"
-      >
-        ابدأ التحليل
-      </button>
+<button
+  id="go"
+  class="primary"
+>
+  ابدأ التحليل
+</button>
 
 
-      <div
-        id="progressWrap"
-        class="progress-wrap hidden"
-      >
+<div
+  id="progressWrap"
+  class="progress-wrap hidden"
+>
 
-        <div class="progress-head">
+<div class="progress-head">
 
-          <span id="progressText">
-            جاهز
-          </span>
+<span id="progressText">
+  جاهز
+</span>
 
-          <strong id="progressNumber">
-            0%
-          </strong>
+<strong id="progressNumber">
+  0%
+</strong>
 
-        </div>
-
-
-        <div class="progress">
-
-          <div
-            id="bar"
-            class="bar"
-          ></div>
-
-        </div>
+</div>
 
 
-        <div
-          id="elapsed"
-          class="elapsed"
-        >
-          الوقت المتوقع المتبقي: --
-        </div>
+<div class="progress">
+
+<div
+  id="bar"
+  class="bar"
+></div>
+
+</div>
 
 
-        <div class="wait">
-
-          <div
-            id="waitText"
-            class="wait-text"
-          >
-            جاري تجهيز التحليل...
-          </div>
-
-          <small id="waitSource">
-            إحاطة
-          </small>
-
-        </div>
-
-      </div>
+<div
+  id="elapsed"
+  class="elapsed"
+>
+  الوقت المتوقع المتبقي: --
+</div>
 
 
-      <div
-        id="status"
-        class="status"
-      >
-        PDF أو DOCX • الحد الأقصى 25MB
-      </div>
+<div class="wait">
 
-    </div>
+<div
+  id="waitText"
+  class="wait-text"
+>
+  كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن.
+</div>
+
+<small id="waitSource">
+  قال رسول الله ﷺ • رواه البخاري ومسلم
+</small>
+
+</div>
+
+</div>
 
 
-    <div
-      id="result"
-      class="result hidden"
-    ></div>
+<div
+  id="status"
+  class="status"
+>
+  PDF أو DOCX • الحد الأقصى 25MB
+</div>
 
-  </div>
+</div>
+
+
+<div
+  id="result"
+  class="result hidden"
+></div>
+
+</div>
 
 </section>
 
 
 <div class="note">
-  إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
+
+إحاطة أداة مساعدة للفحص الأولي وليست بديلًا عن المحامي أو المستشار القانوني.
+
 </div>
 
 </main>
 
 
 <script>
-
-/* =========================
-   Helpers
-========================= */
 
 const $ = id =>
   document.getElementById(id);
@@ -1337,71 +1192,64 @@ let category = null;
 
 let waitTimer = null;
 let etaTimer = null;
+
 let etaSeconds = 0;
 
-
-/* =========================
-   رسائل الانتظار
-========================= */
 
 const hadiths = [
 
 [
-  "كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن.",
-  "قال رسول الله ﷺ • رواه البخاري ومسلم"
+"كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن: سبحان الله وبحمده، سبحان الله العظيم.",
+"قال رسول الله ﷺ • رواه البخاري ومسلم"
 ],
 
 [
-  "لا حول ولا قوة إلا بالله.",
-  "ذكر"
+"لا حول ولا قوة إلا بالله.",
+"ذكر"
 ],
 
 [
-  "سبحان الله وبحمده.",
-  "ذكر"
+"سبحان الله وبحمده.",
+"ذكر"
 ],
 
 [
-  "سبحان الله العظيم.",
-  "ذكر"
+"سبحان الله العظيم.",
+"ذكر"
 ],
 
 [
-  "الحمد لله.",
-  "ذكر"
+"الحمد لله.",
+"ذكر"
 ],
 
 [
-  "اللهم صل وسلم على نبينا محمد.",
-  "صلاة على النبي ﷺ"
+"اللهم صل وسلم على نبينا محمد.",
+"صلاة على النبي ﷺ"
 ],
 
 [
-  "أستغفر الله وأتوب إليه.",
-  "استغفار"
+"أستغفر الله وأتوب إليه.",
+"استغفار"
 ],
 
 [
-  "رب اغفر لي وتب علي إنك أنت التواب الرحيم.",
-  "دعاء"
+"رب اغفر لي وتب علي إنك أنت التواب الرحيم.",
+"دعاء"
 ],
 
 [
-  "سبحان الله، والحمد لله، والله أكبر.",
-  "ذكر"
+"سبحان الله، والحمد لله، والله أكبر.",
+"ذكر"
 ],
 
 [
-  "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
-  "ذكر"
+"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.",
+"ذكر"
 ]
 
 ];
 
-
-/* =========================
-   Navigation
-========================= */
 
 function show(id){
 
@@ -1416,40 +1264,40 @@ function show(id){
 
   $(id).classList.remove("hidden");
 
-  window.scrollTo({
+  scrollTo({
     top:0,
     behavior:"smooth"
   });
+
 }
 
-
-/* =========================
-   Reset
-========================= */
 
 function reset(){
 
   $("file").value = "";
 
-  $("selected").classList.add("hidden");
+  $("selected")
+    .classList
+    .add("hidden");
 
-  $("result").classList.add("hidden");
+  $("result")
+    .classList
+    .add("hidden");
 
   $("result").innerHTML = "";
 
-  $("progressWrap").classList.add("hidden");
+  $("progressWrap")
+    .classList
+    .add("hidden");
 
   $("status").textContent =
     "PDF أو DOCX • الحد الأقصى 25MB";
 
   clearInterval(waitTimer);
   clearInterval(etaTimer);
+
 }
 
-
-/* =========================
-   Time
-========================= */
 
 function fmtSeconds(seconds){
 
@@ -1460,7 +1308,9 @@ function fmtSeconds(seconds){
     );
 
   if(seconds < 60){
+
     return seconds + " ثانية";
+
   }
 
   return (
@@ -1469,12 +1319,9 @@ function fmtSeconds(seconds){
     (seconds % 60) +
     " ثانية"
   );
+
 }
 
-
-/* =========================
-   Waiting messages
-========================= */
 
 function startWait(){
 
@@ -1482,7 +1329,8 @@ function startWait(){
 
   let i =
     Math.floor(
-      Math.random() * hadiths.length
+      Math.random() *
+      hadiths.length
     );
 
 
@@ -1491,7 +1339,13 @@ function startWait(){
     const quote =
       hadiths[i];
 
-    $("waitText").style.opacity = "0";
+    $("waitText")
+      .classList
+      .remove("scrolling");
+
+    $("waitText").style.opacity =
+      "0";
+
 
     setTimeout(() => {
 
@@ -1504,9 +1358,6 @@ function startWait(){
       $("waitText").style.opacity =
         "1";
 
-      $("waitText")
-        .classList
-        .remove("scrolling");
 
       requestAnimationFrame(() => {
 
@@ -1524,6 +1375,7 @@ function startWait(){
       });
 
     },150);
+
   }
 
 
@@ -1540,18 +1392,16 @@ function startWait(){
       setQuote();
 
     },6000);
+
 }
 
-
-/* =========================
-   ETA
-========================= */
 
 function startETA(fileSize){
 
   const mb =
     fileSize /
     (1024 * 1024);
+
 
   etaSeconds =
     Math.max(
@@ -1563,6 +1413,7 @@ function startETA(fileSize){
         )
       )
     );
+
 
   clearInterval(etaTimer);
 
@@ -1583,16 +1434,19 @@ function startETA(fileSize){
         "جاري إنهاء التحليل...";
 
     }
+
   };
 
 
   tick();
+
 
   etaTimer =
     setInterval(
       tick,
       1000
     );
+
 }
 
 
@@ -1604,12 +1458,9 @@ function stopWait(){
 
   $("elapsed").textContent =
     "اكتمل التحليل ✓";
+
 }
 
-
-/* =========================
-   Security
-========================= */
 
 function esc(value){
 
@@ -1625,18 +1476,15 @@ function esc(value){
       "'":"&#039;"
     }[c])
   );
+
 }
 
 
-/* =========================
-   Validation
-========================= */
-
 function validate(file){
 
-  if(!file){
+  if(!file)
     return false;
-  }
+
 
   if(
     file.size >
@@ -1647,6 +1495,7 @@ function validate(file){
       "حجم الملف أكبر من 25MB.";
 
     return false;
+
   }
 
 
@@ -1663,16 +1512,14 @@ function validate(file){
       "الصيغة المدعومة PDF أو DOCX فقط.";
 
     return false;
+
   }
 
 
   return true;
+
 }
 
-
-/* =========================
-   Navigation Events
-========================= */
 
 $("contractsMode").onclick =
   () => show("contractSection");
@@ -1694,7 +1541,9 @@ document
       $("modal")
         .classList
         .remove("hidden");
+
     };
+
   });
 
 
@@ -1714,13 +1563,11 @@ document
       reset();
 
       show("home");
+
     };
+
   });
 
-
-/* =========================
-   Contract Categories
-========================= */
 
 document
   .querySelectorAll("[data-category]")
@@ -1745,13 +1592,11 @@ document
       reset();
 
       show("analyzer");
+
     };
+
   });
 
-
-/* =========================
-   Judgment Categories
-========================= */
 
 document
   .querySelectorAll("[data-judgment-type]")
@@ -1776,7 +1621,9 @@ document
       reset();
 
       show("analyzer");
+
     };
+
   });
 
 
@@ -1790,21 +1637,17 @@ $("analyzerBack").onclick =
         ? "contractSection"
         : "judgmentSection"
     );
+
   };
 
-
-/* =========================
-   File Selection
-========================= */
 
 $("file").onchange = () => {
 
   const file =
     $("file").files[0];
 
-  if(!file){
+  if(!file)
     return;
-  }
 
 
   if(validate(file)){
@@ -1826,13 +1669,11 @@ $("file").onchange = () => {
 
     $("status").textContent =
       "الملف جاهز للتحليل.";
+
   }
+
 };
 
-
-/* =========================
-   API Request
-========================= */
 
 function send(
   url,
@@ -1876,7 +1717,9 @@ function send(
                 100
               )
             );
+
           }
+
         };
 
 
@@ -1899,7 +1742,9 @@ function send(
               "حدث خطأ أثناء التحليل."
             )
           );
+
         }
+
       };
 
 
@@ -1920,14 +1765,12 @@ function send(
 
 
       xhr.send(formData);
+
     }
   );
+
 }
 
-
-/* =========================
-   Lists
-========================= */
 
 function list(array){
 
@@ -1942,12 +1785,9 @@ function list(array){
     )
     .join("") ||
     "<li>لا يوجد.</li>";
+
 }
 
-
-/* =========================
-   Contract Result
-========================= */
 
 function renderContract(data){
 
@@ -1993,7 +1833,8 @@ ${esc(risk.question)}
 
 
   const information =
-    data.key_information || {};
+    data.key_information ||
+    {};
 
 
   $("result").innerHTML = `
@@ -2039,8 +1880,7 @@ ${esc(
 <br>
 
 ${esc(
-  data.summary ||
-  "لم يتم إنشاء خلاصة."
+  data.summary
 )}
 
 </div>
@@ -2144,23 +1984,23 @@ ${esc(
 
 `;
 
+
   $("result")
     .classList
     .remove("hidden");
+
 }
 
-
-/* =========================
-   Judgment Result
-========================= */
 
 function renderJudgment(data){
 
   const info =
-    data.case_information || {};
+    data.case_information ||
+    {};
 
   const parties =
-    data.parties || {};
+    data.parties ||
+    {};
 
 
   $("result").innerHTML = `
@@ -2198,8 +2038,7 @@ ${esc(
 <br>
 
 ${esc(
-  data.summary ||
-  "لم يتم إنشاء خلاصة."
+  data.summary
 )}
 
 </div>
@@ -2365,7 +2204,9 @@ ${esc(
 </h2>
 
 <ul>
-${list(data.financial_obligations)}
+${list(
+  data.financial_obligations
+)}
 </ul>
 
 
@@ -2420,15 +2261,13 @@ ${list(data.legal_review_needed)}
 
 `;
 
+
   $("result")
     .classList
     .remove("hidden");
+
 }
 
-
-/* =========================
-   Analyze
-========================= */
 
 $("go").onclick =
   async () => {
@@ -2437,9 +2276,8 @@ $("go").onclick =
       $("file").files[0];
 
 
-    if(!validate(file)){
+    if(!validate(file))
       return;
-    }
 
 
     $("go").disabled =
@@ -2458,7 +2296,9 @@ $("go").onclick =
 
     startWait();
 
-    startETA(file.size);
+    startETA(
+      file.size
+    );
 
 
     $("progressText")
@@ -2507,6 +2347,7 @@ $("go").onclick =
 
       url =
         "/api/analyze-judgment";
+
     }
 
 
@@ -2547,6 +2388,7 @@ $("go").onclick =
               $("progressText")
                 .textContent =
                 "تم الرفع ✓ • جاري التحليل...";
+
             }
 
           }
@@ -2558,7 +2400,9 @@ $("go").onclick =
 
       $("bar")
         .classList
-        .remove("indeterminate");
+        .remove(
+          "indeterminate"
+        );
 
 
       $("bar").style.width =
@@ -2589,6 +2433,7 @@ $("go").onclick =
       }else{
 
         renderJudgment(data);
+
       }
 
 
@@ -2616,37 +2461,10 @@ $("go").onclick =
 
       $("go").disabled =
         false;
+
     }
 
   };
-
-
-/* =========================
-   إزالة شاشة البداية
-   احتياطياً بعد 4 ثوانٍ
-========================= */
-
-setTimeout(() => {
-
-  const splash =
-    $("splash");
-
-  if(splash){
-
-    splash.style.opacity =
-      "0";
-
-    splash.style.pointerEvents =
-      "none";
-
-    setTimeout(() => {
-
-      splash.remove();
-
-    },700);
-  }
-
-},4500);
 
 </script>
 
