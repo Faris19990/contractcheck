@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101827">
+
 <title>إحاطة | للذكاء القانوني</title>
 
 <style>
 :root{
   --bg:#f5f2ea;
-  --card:#ffffff;
+  --card:#fff;
   --navy:#101827;
   --navy2:#172234;
   --gold:#c7a45b;
@@ -17,30 +18,10 @@
   --ink:#151b26;
   --muted:#69707c;
   --line:#e5dfd2;
-  --blue:#397fe8;
-  --red:#c93d45;
-  --orange:#d99625;
-  --green:#3e8b62;
-  --soft:#f7f1e2;
+  --soft:#eee8da;
 }
 
-body.dark{
-  --bg:#0d131d;
-  --card:#151e2b;
-  --navy:#e9dfc6;
-  --navy2:#202c3e;
-  --gold:#d6b66e;
-  --gold2:#ead9ad;
-  --ink:#f4f1e8;
-  --muted:#aab2bf;
-  --line:#293547;
-  --blue:#72a8ff;
-  --soft:#1b2533;
-}
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html{
   scroll-behavior:smooth;
@@ -49,12 +30,26 @@ html{
 body{
   margin:0;
   background:
-    radial-gradient(circle at 90% 5%,rgba(199,164,91,.12),transparent 260px),
-    radial-gradient(circle at 5% 35%,rgba(16,24,39,.06),transparent 300px),
+    radial-gradient(circle at 50% -5%,rgba(199,164,91,.16),transparent 360px),
+    radial-gradient(circle at 100% 45%,rgba(16,24,39,.045),transparent 320px),
+    radial-gradient(circle at 0 80%,rgba(199,164,91,.07),transparent 300px),
     var(--bg);
   color:var(--ink);
   font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
   transition:.25s;
+}
+
+body.dark{
+  --bg:#0d121b;
+  --card:#141b26;
+  --navy:#f2e5c4;
+  --navy2:#1b2636;
+  --gold:#c7a45b;
+  --gold2:#f1dfb4;
+  --ink:#f4f5f7;
+  --muted:#aab2bf;
+  --line:#293241;
+  --soft:#202936;
 }
 
 button,input{
@@ -70,9 +65,79 @@ button{
 }
 
 .wrap{
-  width:min(1100px,100%);
+  width:min(1120px,100%);
   margin:auto;
-  padding:20px 18px 70px;
+  padding:22px 18px 70px;
+}
+
+
+/* =========================
+   DECOR
+========================= */
+
+.decor{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:-1;
+}
+
+.decor::before,
+.decor::after{
+  content:"";
+  position:absolute;
+  opacity:.045;
+  color:var(--gold);
+  font-size:230px;
+  font-family:Georgia,serif;
+}
+
+.decor::before{
+  content:"⚖";
+  left:-45px;
+  top:20%;
+  transform:rotate(-8deg);
+}
+
+.decor::after{
+  content:"⚔";
+  right:-55px;
+  bottom:8%;
+  transform:rotate(10deg);
+}
+
+.decor-line{
+  position:absolute;
+  width:420px;
+  height:420px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  opacity:.07;
+  left:50%;
+  top:17%;
+  transform:translateX(-50%);
+}
+
+.decor-line::after{
+  content:"";
+  position:absolute;
+  inset:34px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+}
+
+.arch{
+  position:absolute;
+  left:50%;
+  top:0;
+  width:min(900px,92vw);
+  height:420px;
+  transform:translateX(-50%);
+  border-left:1px solid var(--gold);
+  border-right:1px solid var(--gold);
+  opacity:.055;
+  border-radius:450px 450px 0 0;
 }
 
 
@@ -98,12 +163,12 @@ button{
   width:48px;
   height:48px;
   border-radius:16px;
-  background:#101827;
-  color:#ead9ad;
+  background:var(--navy);
+  color:var(--gold2);
   display:grid;
   place-items:center;
-  font-size:24px;
-  box-shadow:0 8px 25px rgba(0,0,0,.12);
+  font-size:25px;
+  box-shadow:0 8px 25px #0002;
 }
 
 .brand-name{
@@ -112,10 +177,10 @@ button{
   font-weight:900;
 }
 
-.header-actions{
+.actions{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
 }
 
 .badge{
@@ -126,16 +191,14 @@ button{
   border-radius:999px;
 }
 
-.dark-toggle{
+.icon-btn{
   width:43px;
   height:43px;
+  border-radius:14px;
   border:1px solid var(--line);
-  border-radius:50%;
   background:var(--card);
   color:var(--ink);
-  display:grid;
-  place-items:center;
-  font-size:19px;
+  box-shadow:0 7px 20px #0000000d;
 }
 
 
@@ -146,12 +209,8 @@ button{
 .hero{
   position:relative;
   text-align:center;
-  padding:35px 10px 32px;
+  padding:45px 10px 38px;
   overflow:hidden;
-}
-
-.hero::before{
-  display:none;
 }
 
 .hero-content{
@@ -160,59 +219,42 @@ button{
 }
 
 .hero-mark{
-  width:62px;
-  height:62px;
-  margin:0 auto 10px;
-  border-radius:19px;
+  width:72px;
+  height:72px;
+  margin:auto;
+  border-radius:24px;
   display:grid;
   place-items:center;
-  background:#101827;
-  color:#ead9ad;
-  font-size:30px;
-  box-shadow:0 12px 30px rgba(16,24,39,.14);
+  background:var(--navy);
+  color:var(--gold2);
+  font-size:39px;
+  box-shadow:0 18px 45px #0002;
 }
 
 .hero h1{
   font-family:Georgia,serif;
-  font-size:clamp(52px,8vw,78px);
-  margin:5px 0 8px;
+  font-size:clamp(54px,9vw,82px);
+  margin:15px 0 5px;
   letter-spacing:-2px;
 }
 
 .hero p{
-  max-width:700px;
+  max-width:720px;
   margin:auto;
   color:var(--muted);
   font-size:19px;
   line-height:1.9;
 }
 
-
-/* =========================
-   DUA
-========================= */
-
-.dua{
+.quran{
   max-width:760px;
-  margin:0 auto 30px;
-  padding:18px 22px;
-  text-align:center;
-  background:var(--soft);
-  border:1px solid var(--line);
-  border-radius:22px;
-}
-
-.dua-text{
-  font-family:Georgia,serif;
-  font-size:18px;
+  margin:22px auto 0;
+  padding:15px 18px;
+  border:1px solid #d9c79e;
+  border-radius:18px;
+  background:color-mix(in srgb,var(--card) 82%,transparent);
+  color:#796d57;
   line-height:1.9;
-}
-
-.dua-source{
-  display:block;
-  margin-top:5px;
-  color:var(--muted);
-  font-size:12px;
 }
 
 
@@ -222,12 +264,12 @@ button{
 
 .section-title{
   text-align:center;
-  margin:12px 0 24px;
+  margin:10px 0 24px;
 }
 
 .section-title h2{
   margin:0;
-  font-size:29px;
+  font-size:28px;
 }
 
 .section-title p{
@@ -249,33 +291,33 @@ button{
 .mode{
   position:relative;
   overflow:hidden;
-  background:var(--card);
-  color:var(--ink);
+  background:color-mix(in srgb,var(--card) 94%,transparent);
   border:1px solid var(--line);
   border-radius:26px;
   padding:28px;
   text-align:right;
-  transition:.2s ease;
-  box-shadow:0 15px 40px rgba(20,25,35,.055);
+  transition:.2s;
+  box-shadow:0 15px 40px #1419230b;
 }
 
 .mode::after{
   content:"";
   position:absolute;
-  width:120px;
-  height:120px;
+  width:130px;
+  height:130px;
   border-radius:50%;
   background:rgba(199,164,91,.08);
-  left:-50px;
-  bottom:-55px;
+  left:-55px;
+  bottom:-60px;
 }
 
 .mode:hover:not(.locked){
   transform:translateY(-4px);
+  box-shadow:0 20px 50px #14192316;
 }
 
 .mode-icon{
-  font-size:42px;
+  font-size:43px;
 }
 
 .mode h3{
@@ -291,7 +333,7 @@ button{
 
 .primary{
   display:inline-block;
-  background:#101827;
+  background:var(--navy);
   color:#fff;
   border:0;
   border-radius:13px;
@@ -299,9 +341,19 @@ button{
   font-weight:800;
 }
 
+body.dark .primary{
+  color:#101827;
+}
+
 .locked{
   opacity:.72;
   cursor:pointer;
+  background:var(--card);
+}
+
+.locked .primary{
+  background:#e8e3d8;
+  color:#777;
 }
 
 .soon{
@@ -316,90 +368,16 @@ button{
 
 
 /* =========================
-   ARTICLES
-========================= */
-
-.articles{
-  margin-top:55px;
-}
-
-.search-box{
-  max-width:650px;
-  margin:0 auto 22px;
-  position:relative;
-}
-
-.search-box input{
-  width:100%;
-  border:1px solid var(--line);
-  background:var(--card);
-  color:var(--ink);
-  border-radius:18px;
-  padding:15px 48px 15px 18px;
-  outline:none;
-}
-
-.search-box span{
-  position:absolute;
-  right:17px;
-  top:13px;
-  font-size:20px;
-}
-
-.article-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
-
-.article{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:20px;
-  transition:.2s;
-}
-
-.article:hover{
-  transform:translateY(-3px);
-}
-
-.article-icon{
-  font-size:28px;
-}
-
-.article h3{
-  margin:10px 0 8px;
-  font-size:19px;
-}
-
-.article p{
-  color:var(--muted);
-  line-height:1.8;
-  font-size:14px;
-}
-
-.article-source{
-  display:inline-block;
-  margin-top:8px;
-  color:var(--blue);
-  font-size:13px;
-  font-weight:800;
-  text-decoration:none;
-}
-
-
-/* =========================
    PANELS
 ========================= */
 
 .panel{
-  background:var(--card);
+  background:color-mix(in srgb,var(--card) 95%,transparent);
   border:1px solid var(--line);
   border-radius:27px;
   padding:25px;
   margin-top:18px;
-  box-shadow:0 15px 45px rgba(20,25,35,.055);
+  box-shadow:0 15px 45px #1419230b;
 }
 
 .back{
@@ -412,8 +390,8 @@ button{
 
 .quote,
 .summary{
-  background:var(--soft);
-  border:1px solid var(--line);
+  background:color-mix(in srgb,#f7f1e2 75%,var(--card));
+  border:1px solid #e8dcc0;
   border-radius:19px;
   padding:18px;
   margin:18px 0;
@@ -430,7 +408,7 @@ button{
 }
 
 .quote small{
-  color:var(--muted);
+  color:#796d57;
 }
 
 
@@ -449,7 +427,6 @@ button{
   align-items:center;
   gap:14px;
   background:var(--card);
-  color:var(--ink);
   border:1px solid var(--line);
   border-radius:19px;
   padding:17px;
@@ -459,13 +436,14 @@ button{
 
 .category:hover{
   transform:translateY(-2px);
+  border-color:#d8c69d;
 }
 
 .category .ico{
   width:48px;
   height:48px;
   border-radius:15px;
-  background:var(--soft);
+  background:#f0eadc;
   display:grid;
   place-items:center;
   font-size:24px;
@@ -484,15 +462,64 @@ button{
 
 
 /* =========================
+   ARTICLES
+========================= */
+
+.articles{
+  margin-top:34px;
+}
+
+.search{
+  width:100%;
+  padding:15px 18px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--card);
+  color:var(--ink);
+  outline:none;
+}
+
+.article-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:15px;
+}
+
+.article{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+}
+
+.article h3{
+  margin:8px 0;
+}
+
+.article p{
+  color:var(--muted);
+  line-height:1.8;
+  font-size:14px;
+}
+
+.article a{
+  color:#397fe8;
+  text-decoration:none;
+  font-weight:800;
+}
+
+
+/* =========================
    UPLOAD
 ========================= */
 
 .upload{
-  border:2px dashed var(--line);
+  border:2px dashed #cfc7b7;
   border-radius:22px;
   padding:30px;
   text-align:center;
-  background:var(--soft);
+  background:color-mix(in srgb,#fcfbf8 75%,var(--card));
 }
 
 .file{
@@ -502,11 +529,10 @@ button{
 
 .selected{
   display:inline-flex;
-  background:var(--card);
-  border:1px solid var(--line);
+  background:#eef1f5;
   padding:9px 13px;
   border-radius:999px;
-  color:var(--muted);
+  color:#4e5662;
   font-size:13px;
   max-width:100%;
   overflow:hidden;
@@ -538,7 +564,7 @@ button{
 
 .progress{
   height:10px;
-  background:var(--line);
+  background:#ebe7df;
   border-radius:99px;
   overflow:hidden;
   margin-top:8px;
@@ -547,7 +573,7 @@ button{
 .bar{
   height:100%;
   width:0;
-  background:linear-gradient(90deg,#101827,var(--gold));
+  background:linear-gradient(90deg,var(--navy),var(--gold));
   border-radius:99px;
   transition:width .2s;
 }
@@ -558,22 +584,27 @@ button{
 }
 
 @keyframes moveBar{
-  0%{transform:translateX(180%)}
-  100%{transform:translateX(-330%)}
+  0%{
+    transform:translateX(180%);
+  }
+
+  100%{
+    transform:translateX(-330%);
+  }
 }
 
 .elapsed{
   margin-top:7px;
   font-size:13px;
-  color:var(--muted);
+  color:#8a8172;
 }
 
 .wait{
   margin-top:18px;
   padding:17px;
   border-radius:18px;
-  background:var(--soft);
-  border:1px solid var(--line);
+  background:#f7f1e2;
+  border:1px solid #e8dcc0;
 }
 
 .wait-text{
@@ -585,7 +616,7 @@ button{
 .wait small{
   display:block;
   margin-top:6px;
-  color:var(--muted);
+  color:#796d57;
 }
 
 
@@ -624,7 +655,7 @@ button{
   border:1px solid var(--line);
   border-radius:16px;
   padding:14px;
-  background:var(--soft);
+  background:var(--card);
 }
 
 .info b{
@@ -645,9 +676,17 @@ button{
   line-height:1.85;
 }
 
-.high{border-right:6px solid var(--red)}
-.medium{border-right:6px solid var(--orange)}
-.low{border-right:6px solid var(--green)}
+.high{
+  border-right:6px solid #c93d45;
+}
+
+.medium{
+  border-right:6px solid #d99625;
+}
+
+.low{
+  border-right:6px solid #3e8b62;
+}
 
 ul{
   line-height:2;
@@ -679,7 +718,6 @@ ul{
 
 .modal-card{
   background:var(--card);
-  color:var(--ink);
   border-radius:25px;
   padding:28px;
   max-width:420px;
@@ -692,12 +730,16 @@ ul{
 }
 
 .close{
-  background:#101827;
+  background:var(--navy);
   color:#fff;
   border:0;
   border-radius:12px;
   padding:11px 18px;
   font-weight:800;
+}
+
+body.dark .close{
+  color:#101827;
 }
 
 
@@ -708,55 +750,19 @@ ul{
 @media(max-width:720px){
 
   .wrap{
-    padding:16px 14px 50px;
-  }
-
-  .topbar{
-    padding-bottom:8px;
-  }
-
-  .brand-name{
-    font-size:25px;
-  }
-
-  .brand-mark{
-    width:44px;
-    height:44px;
-    border-radius:14px;
-  }
-
-  .badge{
-    font-size:12px;
-    padding:8px 10px;
+    padding:18px 14px 50px;
   }
 
   .hero{
-    padding:25px 8px 25px;
-  }
-
-  .hero-mark{
-    width:58px;
-    height:58px;
-    font-size:28px;
+    padding:32px 8px 30px;
   }
 
   .hero h1{
-    font-size:52px;
+    font-size:58px;
   }
 
   .hero p{
-    max-width:350px;
-    font-size:16px;
-    line-height:1.85;
-  }
-
-  .dua{
-    margin-bottom:25px;
-    padding:15px;
-  }
-
-  .dua-text{
-    font-size:16px;
+    font-size:17px;
   }
 
   .mode-grid,
@@ -764,14 +770,6 @@ ul{
   .info-grid,
   .article-grid{
     grid-template-columns:1fr;
-  }
-
-  .mode{
-    padding:22px;
-  }
-
-  .mode h3{
-    font-size:22px;
   }
 
   .panel{
@@ -785,41 +783,58 @@ ul{
   .result-head{
     flex-direction:column;
   }
+
+  .decor::before,
+  .decor::after{
+    font-size:150px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="decor">
+  <div class="arch"></div>
+  <div class="decor-line"></div>
+</div>
+
+
 <main class="wrap">
 
 <header class="topbar">
 
   <div class="brand">
-    <div class="brand-mark">⚖</div>
-    <div class="brand-name">إحاطة</div>
+
+    <div class="brand-mark">
+      ⚖
+    </div>
+
+    <div class="brand-name">
+      إحاطة
+    </div>
+
   </div>
 
-  <div class="header-actions">
+
+  <div class="actions">
 
     <div class="badge">
       نسخة تجريبية
     </div>
 
     <button
-      id="darkToggle"
-      class="dark-toggle"
-      aria-label="تبديل المظهر"
-    >🌙</button>
+      class="icon-btn"
+      id="themeBtn"
+      title="المظهر"
+    >
+      🌙
+    </button>
 
   </div>
 
 </header>
 
-
-<!-- =========================
-     HOME
-========================= -->
 
 <section id="home">
 
@@ -828,32 +843,23 @@ ul{
     <div class="hero-content">
 
       <div class="hero-mark">
-        ⚖
+        ⚖️
       </div>
 
-      <h1>إحاطة</h1>
+      <h1>
+        إحاطة
+      </h1>
 
       <p>
         تحليل ذكي للمستندات القانونية يساعدك على فهم
         البنود والالتزامات والنقاط المهمة قبل اتخاذ القرار.
       </p>
 
+      <div class="quran">
+        ﴿ إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالإِحْسَانِ ﴾
+      </div>
+
     </div>
-
-  </div>
-
-
-  <!-- DUA -->
-
-  <div class="dua">
-
-    <div id="duaText" class="dua-text">
-      اللهم لا سهل إلا ما جعلته سهلاً
-    </div>
-
-    <span id="duaSource" class="dua-source">
-      دعاء
-    </span>
 
   </div>
 
@@ -879,9 +885,13 @@ ul{
       id="contractsMode"
     >
 
-      <div class="mode-icon">📄</div>
+      <div class="mode-icon">
+        📄
+      </div>
 
-      <h3>العقود</h3>
+      <h3>
+        العقود
+      </h3>
 
       <p>
         فحص البنود والمخاطر والالتزامات والمبالغ
@@ -900,9 +910,13 @@ ul{
       id="judgmentsMode"
     >
 
-      <div class="mode-icon">⚖️</div>
+      <div class="mode-icon">
+        ⚖️
+      </div>
 
-      <h3>الأحكام والوثائق القضائية</h3>
+      <h3>
+        الأحكام والوثائق القضائية
+      </h3>
 
       <p>
         استخراج الوقائع والطلبات والدفوع والأسباب
@@ -921,11 +935,17 @@ ul{
       data-soon="مقارنة المستندين ستكون متاحة في تحديث لاحق."
     >
 
-      <div class="mode-icon">🔍</div>
+      <div class="mode-icon">
+        🔍
+      </div>
 
-      <span class="soon">🔒 قريبًا</span>
+      <span class="soon">
+        🔒 قريبًا
+      </span>
 
-      <h3>مقارنة مستندين</h3>
+      <h3>
+        مقارنة مستندين
+      </h3>
 
       <p>
         اكتشف البنود المضافة والمحذوفة والتغييرات
@@ -944,11 +964,17 @@ ul{
       data-soon="الاستشارات القانونية ستكون متاحة في تحديث لاحق."
     >
 
-      <div class="mode-icon">💬</div>
+      <div class="mode-icon">
+        💬
+      </div>
 
-      <span class="soon">🔒 قريبًا</span>
+      <span class="soon">
+        🔒 قريبًا
+      </span>
 
-      <h3>الاستشارات القانونية</h3>
+      <h3>
+        الاستشارات القانونية
+      </h3>
 
       <p>
         خدمة مستقبلية للمساعدة القانونية الموجهة.
@@ -960,61 +986,31 @@ ul{
 
     </button>
 
-
-    <button
-      class="mode locked"
-      data-soon="قسم الأنظمة واللوائح سيكون متاحًا في تحديث لاحق."
-    >
-
-      <div class="mode-icon">📚</div>
-
-      <span class="soon">🔒 قريبًا</span>
-
-      <h3>الأنظمة واللوائح</h3>
-
-      <p>
-        قراءة الأنظمة واللوائح وشرحها بطريقة مبسطة.
-      </p>
-
-      <span class="primary">
-        غير متاحة حاليًا
-      </span>
-
-    </button>
-
   </div>
 
 
-  <!-- =========================
-       ARTICLES
-  ========================= -->
+  <!-- ARTICLES -->
 
   <section class="articles">
 
     <div class="section-title">
 
       <h2>
-        📰 مقالات قانونية
+        📚 مقالات قانونية
       </h2>
 
       <p>
-        معلومات مختصرة مع روابط للمصادر الرسمية.
+        ابحث داخل المقالات والمعلومات المختارة
       </p>
 
     </div>
 
 
-    <div class="search-box">
-
-      <span>🔎</span>
-
-      <input
-        id="articleSearch"
-        type="search"
-        placeholder="ابحث في المقالات..."
-      >
-
-    </div>
+    <input
+      id="articleSearch"
+      class="search"
+      placeholder="ابحث عن موضوع قانوني..."
+    >
 
 
     <div
@@ -1022,190 +1018,91 @@ ul{
       class="article-grid"
     >
 
-      <article
-        class="article"
-        data-search="الأنظمة السعودية هيئة الخبراء الأنظمة اللوائح"
-      >
+      <article class="article">
 
-        <div class="article-icon">📚</div>
+        <div>
+          ⚖️
+        </div>
 
         <h3>
-          أين تجد الأنظمة السعودية الرسمية؟
+          فهم بنود العقد
         </h3>
 
         <p>
-          توفر بوابة هيئة الخبراء بمجلس الوزراء إمكانية
-          الاطلاع على الأنظمة السعودية والبحث فيها.
+          نظرة مبسطة على أهم البنود التي تستحق
+          الانتباه قبل التوقيع.
         </p>
 
         <a
-          class="article-source"
-          href="https://boe.gov.sa/ar/Pages/default.aspx"
+          href="https://laws.boe.gov.sa/"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
         >
-          المصدر الرسمي ↗
+          المصدر: هيئة الخبراء
         </a>
 
       </article>
 
 
-      <article
-        class="article"
-        data-search="الأنظمة العدلية وزارة العدل اللوائح"
-      >
+      <article class="article">
 
-        <div class="article-icon">⚖️</div>
+        <div>
+          📜
+        </div>
 
         <h3>
-          الأنظمة واللوائح العدلية
+          الأنظمة واللوائح
         </h3>
 
         <p>
-          تقدم وزارة العدل بوابة للأنظمة واللوائح التنفيذية
-          والتصنيفات المتعلقة بالأنظمة العدلية.
+          الوصول إلى الأنظمة السعودية المنشورة
+          والبحث فيها.
         </p>
 
         <a
-          class="article-source"
-          href="https://www.moj.gov.sa/ar/LawsAndRegulations/Pages/default.aspx"
+          href="https://laws.boe.gov.sa/"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
         >
-          المصدر الرسمي ↗
+          المصدر الرسمي
         </a>
 
       </article>
 
 
-      <article
-        class="article"
-        data-search="البوابة القانونية وزارة العدل التشريعات"
-      >
+      <article class="article">
 
-        <div class="article-icon">🔎</div>
+        <div>
+          🏛️
+        </div>
 
         <h3>
-          البوابة القانونية لوزارة العدل
+          الخدمات العدلية
         </h3>
 
         <p>
-          يمكن البحث في التشريعات والأنظمة والاطلاع على
-          عدد من الخدمات والمراجع القانونية الرسمية.
+          معلومات عامة عن الخدمات والأنظمة
+          العدلية في المملكة.
         </p>
 
         <a
-          class="article-source"
-          href="https://laws.moj.gov.sa/"
+          href="https://www.moj.gov.sa/"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noopener"
         >
-          المصدر الرسمي ↗
-        </a>
-
-      </article>
-
-
-      <article
-        class="article"
-        data-search="الأنظمة تحديث التعديلات هيئة الخبراء"
-      >
-
-        <div class="article-icon">🔄</div>
-
-        <h3>
-          متابعة تحديثات الأنظمة
-        </h3>
-
-        <p>
-          تتيح بوابة هيئة الخبراء متابعة تحديثات الأنظمة
-          والاطلاع على النسخ المنشورة وفق آخر التعديلات.
-        </p>
-
-        <a
-          class="article-source"
-          href="https://boe.gov.sa/ar/Pages/default.aspx"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          المصدر الرسمي ↗
-        </a>
-
-      </article>
-
-
-      <article
-        class="article"
-        data-search="وزارة العدل كتابات العدل العقود التوثيق"
-      >
-
-        <div class="article-icon">📝</div>
-
-        <h3>
-          التوثيق وكتابات العدل
-        </h3>
-
-        <p>
-          تختص كتابات العدل بعدد من أعمال التوثيق
-          والعقود والإقرارات وفق الأنظمة المرعية.
-        </p>
-
-        <a
-          class="article-source"
-          href="https://www.moj.gov.sa/ar/Ministry/Notary/Pages/default.aspx"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          المصدر الرسمي ↗
-        </a>
-
-      </article>
-
-
-      <article
-        class="article"
-        data-search="الاستشارات القانونية وزارة العدل استطلاع"
-      >
-
-        <div class="article-icon">💡</div>
-
-        <h3>
-          الاستشارات القانونية الحكومية
-        </h3>
-
-        <p>
-          توضح وزارة العدل قنوات المشاركة والاستشارات
-          القانونية المتعلقة بالأنظمة واللوائح والسياسات.
-        </p>
-
-        <a
-          class="article-source"
-          href="https://www.moj.gov.sa/ar/ministry/eparticipation/pages/consulting.aspx"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          المصدر الرسمي ↗
+          المصدر: وزارة العدل
         </a>
 
       </article>
 
     </div>
 
-    <p
-      id="noArticles"
-      class="note hidden"
-    >
-      لا توجد مقالات مطابقة للبحث.
-    </p>
-
   </section>
 
 </section>
 
 
-<!-- =========================
-     CONTRACT SECTION
-========================= -->
+<!-- CONTRACTS -->
 
 <section
   id="contractSection"
@@ -1219,11 +1116,14 @@ ul{
   ← العودة للرئيسية
 </button>
 
+
 <div class="panel">
 
   <div class="section-title">
 
-    <h2>📄 العقود</h2>
+    <h2>
+      📄 العقود
+    </h2>
 
     <p>
       اختر أقرب نوع للعقد، وسيتحقق النظام من النوع الحقيقي داخل المستند.
@@ -1247,68 +1147,115 @@ ul{
 
   <div class="category-grid">
 
-    <button class="category" data-category="مقاولات وأعمال">
+    <button
+      class="category"
+      data-category="مقاولات وأعمال"
+    >
       <span class="ico">🏗️</span>
+
       <span>
         <strong>المقاولات والأعمال</strong>
         <small>تنفيذ، إنشاء، تشييد وصيانة</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="عقود تجارية">
+
+    <button
+      class="category"
+      data-category="عقود تجارية"
+    >
       <span class="ico">🏢</span>
+
       <span>
         <strong>العقود التجارية</strong>
         <small>بيع، شراء، تشغيل وخدمات</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="إيجار">
+
+    <button
+      class="category"
+      data-category="إيجار"
+    >
       <span class="ico">🏠</span>
+
       <span>
         <strong>الإيجار</strong>
         <small>عقود الإيجار والتأجير</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="عمل">
+
+    <button
+      class="category"
+      data-category="عمل"
+    >
       <span class="ico">💼</span>
+
       <span>
         <strong>العمل</strong>
         <small>عقود الموظفين والعمل</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="توريد">
+
+    <button
+      class="category"
+      data-category="توريد"
+    >
       <span class="ico">📦</span>
+
       <span>
         <strong>التوريد</strong>
         <small>التوريد والشراء</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="شراكات واستثمار">
+
+    <button
+      class="category"
+      data-category="شراكات واستثمار"
+    >
       <span class="ico">🤝</span>
+
       <span>
         <strong>الشراكات والاستثمار</strong>
         <small>شراكات واستثمار واتفاقيات</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="تقنية وخدمات">
+
+    <button
+      class="category"
+      data-category="تقنية وخدمات"
+    >
       <span class="ico">💻</span>
+
       <span>
         <strong>التقنية والخدمات</strong>
         <small>برمجيات واستشارات وخدمات</small>
       </span>
+
     </button>
 
-    <button class="category" data-category="عقد آخر">
+
+    <button
+      class="category"
+      data-category="عقد آخر"
+    >
       <span class="ico">📄</span>
+
       <span>
         <strong>عقد آخر</strong>
         <small>أي عقد غير مصنف</small>
       </span>
+
     </button>
 
   </div>
@@ -1318,24 +1265,28 @@ ul{
 </section>
 
 
-<!-- =========================
-     JUDGMENTS
-========================= -->
+<!-- JUDGMENTS -->
 
 <section
   id="judgmentSection"
   class="hidden"
 >
 
-<button class="back" data-back>
+<button
+  class="back"
+  data-back
+>
   ← العودة للرئيسية
 </button>
+
 
 <div class="panel">
 
   <div class="section-title">
 
-    <h2>⚖️ الأحكام والوثائق القضائية</h2>
+    <h2>
+      ⚖️ الأحكام والوثائق القضائية
+    </h2>
 
     <p>
       تحليل أولي للمحتوى الوارد في الوثيقة دون إصدار حكم قانوني جديد.
@@ -1359,28 +1310,54 @@ ul{
 
   <div class="category-grid">
 
-    <button class="category" data-judgment-type="حكم قضائي">
-      <span class="ico">🔨</span>
+    <button
+      class="category"
+      data-judgment-type="حكم قضائي"
+    >
+
+      <span class="ico">
+        🔨
+      </span>
+
       <span>
         <strong>أحكام قضائية</strong>
         <small>صكوك الأحكام وما يتصل بها</small>
       </span>
+
     </button>
 
-    <button class="category" data-judgment-type="قرار">
-      <span class="ico">📑</span>
+
+    <button
+      class="category"
+      data-judgment-type="قرار"
+    >
+
+      <span class="ico">
+        📑
+      </span>
+
       <span>
         <strong>قرارات</strong>
         <small>قرارات ووثائق قضائية</small>
       </span>
+
     </button>
 
-    <button class="category" data-judgment-type="وثيقة قضائية أخرى">
-      <span class="ico">📜</span>
+
+    <button
+      class="category"
+      data-judgment-type="وثيقة قضائية أخرى"
+    >
+
+      <span class="ico">
+        📜
+      </span>
+
       <span>
         <strong>وثائق قضائية أخرى</strong>
         <small>أي وثيقة قضائية قابلة للتحليل</small>
       </span>
+
     </button>
 
   </div>
@@ -1390,9 +1367,7 @@ ul{
 </section>
 
 
-<!-- =========================
-     ANALYZER
-========================= -->
+<!-- ANALYZER -->
 
 <section
   id="analyzer"
@@ -1531,171 +1506,42 @@ ul{
   class="modal hidden"
 >
 
-<div class="modal-card">
+  <div class="modal-card">
 
-  <div class="modal-icon">🔒</div>
+    <div class="modal-icon">
+      🔒
+    </div>
 
-  <h3>
-    الميزة غير متاحة حاليًا
-  </h3>
+    <h3>
+      الميزة غير متاحة حاليًا
+    </h3>
 
-  <p id="modalText">
-    ستتوفر هذه الخدمة في تحديث مستقبلي.
-  </p>
+    <p id="modalText">
+      ستتوفر هذه الخدمة في تحديث مستقبلي.
+    </p>
 
-  <button
-    class="close"
-    id="closeModal"
-  >
-    حسنًا
-  </button>
+    <button
+      class="close"
+      id="closeModal"
+    >
+      حسنًا
+    </button>
 
-</div>
+  </div>
 
 </div>
 
 
 <script>
 
-/* =========================
-   HELPERS
-========================= */
-
-const $ = id => document.getElementById(id);
+const $ =
+  id =>
+    document.getElementById(id);
 
 let mode = null;
 let category = null;
-
 let etaTimer = null;
 let etaSeconds = 0;
-
-
-/* =========================
-   DARK MODE
-========================= */
-
-const savedTheme =
-  localStorage.getItem("ihata-theme");
-
-if(savedTheme === "dark"){
-  document.body.classList.add("dark");
-  $("darkToggle").textContent = "☀️";
-}
-
-$("darkToggle").onclick = () => {
-
-  document.body.classList.toggle("dark");
-
-  const dark =
-    document.body.classList.contains("dark");
-
-  localStorage.setItem(
-    "ihata-theme",
-    dark ? "dark" : "light"
-  );
-
-  $("darkToggle").textContent =
-    dark ? "☀️" : "🌙";
-};
-
-
-/* =========================
-   DUA
-========================= */
-
-const duas = [
-
-  {
-    text:"اللهم لا سهل إلا ما جعلته سهلاً",
-    source:"دعاء"
-  },
-
-  {
-    text:"رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي",
-    source:"سورة طه: 25–26"
-  },
-
-  {
-    text:"حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
-    source:"سورة آل عمران: 173"
-  },
-
-  {
-    text:"رَبِّ زِدْنِي عِلْمًا",
-    source:"سورة طه: 114"
-  }
-
-];
-
-let duaIndex = 0;
-
-function rotateDua(){
-
-  $("duaText").textContent =
-    duas[duaIndex].text;
-
-  $("duaSource").textContent =
-    duas[duaIndex].source;
-
-  duaIndex =
-    (duaIndex + 1) %
-    duas.length;
-}
-
-rotateDua();
-
-setInterval(
-  rotateDua,
-  8000
-);
-
-
-/* =========================
-   ARTICLE SEARCH
-========================= */
-
-$("articleSearch").addEventListener(
-  "input",
-  event => {
-
-    const query =
-      event.target.value
-        .trim()
-        .toLowerCase();
-
-    let visible = 0;
-
-    document
-      .querySelectorAll(".article")
-      .forEach(article => {
-
-        const text =
-          (
-            article.textContent +
-            " " +
-            article.dataset.search
-          ).toLowerCase();
-
-        const match =
-          !query ||
-          text.includes(query);
-
-        article.style.display =
-          match ? "" : "none";
-
-        if(match)
-          visible++;
-
-      });
-
-    $("noArticles")
-      .classList.toggle(
-        "hidden",
-        visible !== 0
-      );
-
-  }
-);
 
 
 /* =========================
@@ -1709,17 +1555,11 @@ function show(id){
     "contractSection",
     "judgmentSection",
     "analyzer"
-  ].forEach(section => {
+  ].forEach(x =>
+    $(x).classList.add("hidden")
+  );
 
-    $(section)
-      .classList
-      .add("hidden");
-
-  });
-
-  $(id)
-    .classList
-    .remove("hidden");
+  $(id).classList.remove("hidden");
 
   window.scrollTo({
     top:0,
@@ -1733,19 +1573,13 @@ function reset(){
 
   $("file").value = "";
 
-  $("selected")
-    .classList
-    .add("hidden");
+  $("selected").classList.add("hidden");
 
-  $("result")
-    .classList
-    .add("hidden");
+  $("result").classList.add("hidden");
 
   $("result").innerHTML = "";
 
-  $("progressWrap")
-    .classList
-    .add("hidden");
+  $("progressWrap").classList.add("hidden");
 
   $("status").textContent =
     "PDF أو DOCX • الحد الأقصى 25MB";
@@ -1767,8 +1601,11 @@ function fmtSeconds(seconds){
       Math.round(seconds)
     );
 
-  if(seconds < 60)
+  if(seconds < 60){
+
     return seconds + " ثانية";
+
+  }
 
   return (
     Math.floor(seconds / 60) +
@@ -1783,7 +1620,9 @@ function fmtSeconds(seconds){
 function startETA(size){
 
   const mb =
-    size / 1024 / 1024;
+    size /
+    1024 /
+    1024;
 
   etaSeconds =
     Math.max(
@@ -1796,24 +1635,17 @@ function startETA(size){
 
   clearInterval(etaTimer);
 
-  function tick(){
+  const tick = () => {
 
-    if(etaSeconds > 0){
+    $("elapsed").textContent =
+      etaSeconds > 0
+        ? "الوقت المتوقع المتبقي: حوالي " +
+          fmtSeconds(etaSeconds)
+        : "جاري إنهاء التحليل...";
 
-      $("elapsed").textContent =
-        "الوقت المتوقع المتبقي: حوالي " +
-        fmtSeconds(etaSeconds);
+    etaSeconds--;
 
-      etaSeconds--;
-
-    }else{
-
-      $("elapsed").textContent =
-        "جاري إنهاء التحليل...";
-
-    }
-
-  }
+  };
 
   tick();
 
@@ -1848,7 +1680,9 @@ function validate(file){
       "اختر ملفًا أولًا.";
 
     return false;
+
   }
+
 
   if(
     file.size >
@@ -1859,31 +1693,41 @@ function validate(file){
       "حجم الملف أكبر من 25MB.";
 
     return false;
+
   }
 
-  const name =
+
+  const n =
     file.name.toLowerCase();
 
+
   if(
-    !name.endsWith(".pdf") &&
-    !name.endsWith(".docx")
+    !n.endsWith(".pdf") &&
+    !n.endsWith(".docx")
   ){
 
     $("status").textContent =
       "الصيغة المدعومة PDF أو DOCX فقط.";
 
     return false;
+
   }
 
+
   return true;
+
 }
 
 
 /* =========================
-   XHR
+   SEND
 ========================= */
 
-function send(url,formData,progress){
+function send(
+  url,
+  fd,
+  progress
+){
 
   return new Promise(
     (resolve,reject) => {
@@ -1901,17 +1745,20 @@ function send(url,formData,progress){
         "json";
 
       xhr.timeout =
-        10 * 60 * 1000;
+        600000;
+
 
       xhr.upload.onprogress =
-        event => {
+        e => {
 
-          if(event.lengthComputable){
+          if(
+            e.lengthComputable
+          ){
 
             progress(
               Math.round(
-                event.loaded /
-                event.total *
+                e.loaded /
+                e.total *
                 100
               )
             );
@@ -1919,6 +1766,7 @@ function send(url,formData,progress){
           }
 
         };
+
 
       xhr.onload = () => {
 
@@ -1944,6 +1792,7 @@ function send(url,formData,progress){
 
       };
 
+
       xhr.onerror = () => {
 
         reject(
@@ -1953,6 +1802,7 @@ function send(url,formData,progress){
         );
 
       };
+
 
       xhr.ontimeout = () => {
 
@@ -1964,10 +1814,12 @@ function send(url,formData,progress){
 
       };
 
-      xhr.send(formData);
+
+      xhr.send(fd);
 
     }
   );
+
 }
 
 
@@ -1975,10 +1827,10 @@ function send(url,formData,progress){
    ESCAPE
 ========================= */
 
-function esc(value){
+function esc(v){
 
   return String(
-    value ?? ""
+    v ?? ""
   ).replace(
     /[&<>"']/g,
     c => ({
@@ -1993,15 +1845,15 @@ function esc(value){
 }
 
 
-function list(array){
+function list(a){
 
   return (
-    array || []
+    a || []
   )
   .map(
-    item =>
+    x =>
       "<li>" +
-      esc(item) +
+      esc(x) +
       "</li>"
   )
   .join("") ||
@@ -2014,68 +1866,86 @@ function list(array){
    CONTRACT RESULT
 ========================= */
 
-function renderContract(data){
+function renderContract(d){
 
   const risks =
-    (data.risks || [])
-    .map(risk => `
+    (d.risks || [])
+      .map(
+        r => `
 
-      <div class="risk ${esc(risk.level)}">
+          <div class="risk ${esc(r.level)}">
 
-        <h3>
-          ${
-            risk.level === "high"
-              ? "🔴"
-              : risk.level === "medium"
-              ? "🟠"
-              : "🟢"
-          }
+            <h3>
 
-          ${esc(risk.title)}
-        </h3>
+              ${
+                r.level === "high"
+                  ? "🔴"
+                  : r.level === "medium"
+                  ? "🟠"
+                  : "🟢"
+              }
 
-        <p>
-          <b>البند:</b>
-          ${esc(risk.clause)}
-        </p>
+              ${esc(r.title)}
 
-        <p>
-          <b>السبب:</b>
-          ${esc(risk.why)}
-        </p>
+            </h3>
 
-        <p>
-          <b>السؤال المقترح:</b>
-          ${esc(risk.question)}
-        </p>
+            <p>
+              <b>البند:</b>
+              ${esc(r.clause)}
+            </p>
 
-      </div>
+            <p>
+              <b>السبب:</b>
+              ${esc(r.why)}
+            </p>
 
-    `)
-    .join("") ||
+            <p>
+              <b>السؤال المقترح:</b>
+              ${esc(r.question)}
+            </p>
+
+          </div>
+
+        `
+      )
+      .join("") ||
     "<p>لم تظهر مخاطر واضحة في التحليل الأولي.</p>";
 
-  const information =
-    data.key_information || {};
+
+  const i =
+    d.key_information || {};
+
 
   $("result").innerHTML = `
 
     <div class="result-head">
 
       <div>
-        <small>نوع المستند</small>
+
+        <small>
+          نوع المستند
+        </small>
 
         <h2>
           ${esc(
-            data.document_type ||
+            d.document_type ||
             "غير محدد"
           )}
         </h2>
+
       </div>
 
+
       <div class="score">
-        ${esc(data.score ?? "—")}
-        <small>/100</small>
+
+        ${esc(
+          d.score ?? "—"
+        )}
+
+        <small>
+          /100
+        </small>
+
       </div>
 
     </div>
@@ -2083,12 +1953,14 @@ function renderContract(data){
 
     <div class="summary">
 
-      <b>الخلاصة</b>
+      <b>
+        الخلاصة
+      </b>
 
       <br>
 
       ${esc(
-        data.summary ||
+        d.summary ||
         "لا توجد خلاصة متاحة."
       )}
 
@@ -2098,78 +1970,106 @@ function renderContract(data){
     <div class="info-grid">
 
       <div class="info">
-        <b>💰 المبالغ</b>
+
+        <b>
+          💰 المبالغ
+        </b>
+
         <span>
           ${
-            (information.amounts || [])
-            .map(esc)
-            .join(" • ") ||
+            (i.amounts || [])
+              .map(esc)
+              .join(" • ") ||
             "لا يوجد"
           }
         </span>
+
       </div>
 
-      <div class="info">
-        <b>📅 التواريخ</b>
-        <span>
-          ${
-            (information.dates || [])
-            .map(esc)
-            .join(" • ") ||
-            "لا يوجد"
-          }
-        </span>
-      </div>
 
       <div class="info">
-        <b>⏳ المدد</b>
+
+        <b>
+          📅 التواريخ
+        </b>
+
         <span>
           ${
-            (information.durations || [])
-            .map(esc)
-            .join(" • ") ||
+            (i.dates || [])
+              .map(esc)
+              .join(" • ") ||
             "لا يوجد"
           }
         </span>
+
+      </div>
+
+
+      <div class="info">
+
+        <b>
+          ⏳ المدد
+        </b>
+
+        <span>
+          ${
+            (i.durations || [])
+              .map(esc)
+              .join(" • ") ||
+            "لا يوجد"
+          }
+        </span>
+
       </div>
 
     </div>
 
 
-    <h2>🔎 المخاطر</h2>
+    <h2>
+      🔎 المخاطر
+    </h2>
 
     ${risks}
 
 
-    <h2>✅ نقاط جيدة</h2>
+    <h2>
+      ✅ نقاط جيدة
+    </h2>
 
     <ul>
-      ${list(data.good_points)}
+      ${list(d.good_points)}
     </ul>
 
 
-    <h2>⚠️ غير واضح أو ناقص</h2>
+    <h2>
+      ⚠️ غير واضح أو ناقص
+    </h2>
 
     <ul>
-      ${list(data.missing_or_unclear)}
+      ${list(d.missing_or_unclear)}
     </ul>
 
 
-    <h2>⚖️ توازن الالتزامات</h2>
+    <h2>
+      ⚖️ توازن الالتزامات
+    </h2>
 
     <div class="summary">
 
       ${esc(
-        data.balance_check?.assessment ||
+        d.balance_check?.assessment ||
         "غير محدد"
       )}
 
     </div>
+
   `;
+
 
   $("result")
     .classList
     .remove("hidden");
+
 }
 
 
@@ -2177,13 +2077,14 @@ function renderContract(data){
    JUDGMENT RESULT
 ========================= */
 
-function renderJudgment(data){
+function renderJudgment(d){
 
-  const info =
-    data.case_information || {};
+  const i =
+    d.case_information || {};
 
-  const parties =
-    data.parties || {};
+  const p =
+    d.parties || {};
+
 
   $("result").innerHTML = `
 
@@ -2191,11 +2092,13 @@ function renderJudgment(data){
 
       <div>
 
-        <small>نوع المستند</small>
+        <small>
+          نوع المستند
+        </small>
 
         <h2>
           ${esc(
-            data.document_type ||
+            d.document_type ||
             "وثيقة قضائية"
           )}
         </h2>
@@ -2211,12 +2114,14 @@ function renderJudgment(data){
 
     <div class="summary">
 
-      <b>الخلاصة</b>
+      <b>
+        الخلاصة
+      </b>
 
       <br>
 
       ${esc(
-        data.summary ||
+        d.summary ||
         "لا توجد خلاصة متاحة."
       )}
 
@@ -2228,125 +2133,176 @@ function renderJudgment(data){
       <div class="info">
         <b>🏛️ المحكمة</b>
         <span>
-          ${esc(info.court || "غير مذكور")}
+          ${esc(i.court || "غير مذكور")}
         </span>
       </div>
+
 
       <div class="info">
         <b>⚖️ الدائرة</b>
         <span>
-          ${esc(info.chamber || "غير مذكور")}
+          ${esc(i.chamber || "غير مذكور")}
         </span>
       </div>
+
 
       <div class="info">
         <b>🧾 رقم القضية</b>
         <span>
-          ${esc(info.case_number || "غير مذكور")}
+          ${esc(i.case_number || "غير مذكور")}
         </span>
       </div>
+
 
       <div class="info">
         <b>📜 رقم الحكم</b>
         <span>
-          ${esc(info.judgment_number || "غير مذكور")}
+          ${esc(i.judgment_number || "غير مذكور")}
         </span>
       </div>
+
 
       <div class="info">
         <b>📅 التاريخ</b>
         <span>
-          ${esc(info.judgment_date || "غير مذكور")}
+          ${esc(i.judgment_date || "غير مذكور")}
         </span>
       </div>
+
 
       <div class="info">
         <b>👥 الأطراف</b>
         <span>
-          ${esc(parties.claimant || "غير مذكور")}
+          ${esc(p.claimant || "غير مذكور")}
           /
-          ${esc(parties.defendant || "غير مذكور")}
+          ${esc(p.defendant || "غير مذكور")}
         </span>
       </div>
 
     </div>
 
 
-    <h2>📌 الطلبات</h2>
+    <h2>
+      📌 الطلبات
+    </h2>
 
-    <ul>${list(data.claims)}</ul>
-
-
-    <h2>🛡️ الدفوع</h2>
-
-    <ul>${list(data.defenses)}</ul>
-
-
-    <h2>📖 الوقائع</h2>
-
-    <ul>${list(data.facts)}</ul>
+    <ul>
+      ${list(d.claims)}
+    </ul>
 
 
-    <h2>⚖️ الأسباب</h2>
+    <h2>
+      🛡️ الدفوع
+    </h2>
 
-    <ul>${list(data.reasons)}</ul>
-
-
-    <h2>🔨 منطوق الحكم</h2>
-
-    <div class="summary">
-      ${esc(data.judgment || "غير مذكور")}
-    </div>
+    <ul>
+      ${list(d.defenses)}
+    </ul>
 
 
-    <h2>💰 الالتزامات المالية</h2>
+    <h2>
+      📖 الوقائع
+    </h2>
 
-    <ul>${list(data.financial_obligations)}</ul>
+    <ul>
+      ${list(d.facts)}
+    </ul>
 
 
-    <h2>📅 المدد</h2>
+    <h2>
+      ⚖️ الأسباب
+    </h2>
 
-    <ul>${list(data.deadlines)}</ul>
+    <ul>
+      ${list(d.reasons)}
+    </ul>
 
 
-    <h2>📨 الاعتراض والاستئناف</h2>
+    <h2>
+      🔨 منطوق الحكم
+    </h2>
 
     <div class="summary">
       ${esc(
-        data.appeal_information ||
+        d.judgment ||
         "غير مذكور"
       )}
     </div>
 
 
-    <h2>🔎 نقاط مهمة</h2>
+    <h2>
+      💰 الالتزامات المالية
+    </h2>
 
-    <ul>${list(data.important_points)}</ul>
+    <ul>
+      ${list(d.financial_obligations)}
+    </ul>
 
 
-    <h2>⚠️ غير واضح أو ناقص</h2>
+    <h2>
+      📅 المدد
+    </h2>
 
-    <ul>${list(data.missing_or_unclear)}</ul>
+    <ul>
+      ${list(d.deadlines)}
+    </ul>
 
 
-    <h2>🧑‍⚖️ تحتاج مراجعة قانونية</h2>
+    <h2>
+      📨 الاعتراض والاستئناف
+    </h2>
 
-    <ul>${list(data.legal_review_needed)}</ul>
+    <div class="summary">
+      ${esc(
+        d.appeal_information ||
+        "غير مذكور"
+      )}
+    </div>
+
+
+    <h2>
+      🔎 نقاط مهمة
+    </h2>
+
+    <ul>
+      ${list(d.important_points)}
+    </ul>
+
+
+    <h2>
+      ⚠️ غير واضح أو ناقص
+    </h2>
+
+    <ul>
+      ${list(d.missing_or_unclear)}
+    </ul>
+
+
+    <h2>
+      🧑‍⚖️ تحتاج مراجعة قانونية
+    </h2>
+
+    <ul>
+      ${list(d.legal_review_needed)}
+    </ul>
 
   `;
+
 
   $("result")
     .classList
     .remove("hidden");
+
 }
 
 
 /* =========================
-   HOME
+   BUTTONS
 ========================= */
 
 $("contractsMode").onclick =
   () => show("contractSection");
+
 
 $("judgmentsMode").onclick =
   () => show("judgmentSection");
@@ -2357,21 +2313,21 @@ $("judgmentsMode").onclick =
 ========================= */
 
 document
-.querySelectorAll("[data-soon]")
-.forEach(button => {
+  .querySelectorAll("[data-soon]")
+  .forEach(b => {
 
-  button.onclick = () => {
+    b.onclick = () => {
 
-    $("modalText").textContent =
-      button.dataset.soon;
+      $("modalText").textContent =
+        b.dataset.soon;
 
-    $("modal")
-      .classList
-      .remove("hidden");
+      $("modal")
+        .classList
+        .remove("hidden");
 
-  };
+    };
 
-});
+  });
 
 
 $("closeModal").onclick =
@@ -2389,18 +2345,18 @@ $("closeModal").onclick =
 ========================= */
 
 document
-.querySelectorAll("[data-back]")
-.forEach(button => {
+  .querySelectorAll("[data-back]")
+  .forEach(b => {
 
-  button.onclick = () => {
+    b.onclick = () => {
 
-    reset();
+      reset();
 
-    show("home");
+      show("home");
 
-  };
+    };
 
-});
+  });
 
 
 $("analyzerBack").onclick =
@@ -2418,106 +2374,116 @@ $("analyzerBack").onclick =
 
 
 /* =========================
-   CONTRACT CATEGORIES
+   CONTRACT
 ========================= */
 
 document
-.querySelectorAll("[data-category]")
-.forEach(button => {
+  .querySelectorAll("[data-category]")
+  .forEach(b => {
 
-  button.onclick = () => {
+    b.onclick = () => {
 
-    mode = "contract";
+      mode =
+        "contract";
 
-    category =
-      button.dataset.category;
+      category =
+        b.dataset.category;
 
-    $("analyzerTitle")
-      .textContent =
-      "📄 رفع العقد";
+      $("analyzerTitle")
+        .textContent =
+        "📄 رفع العقد";
 
-    $("analyzerSub")
-      .textContent =
-      "القسم المختار: " +
-      category;
+      $("analyzerSub")
+        .textContent =
+        "القسم المختار: " +
+        category;
 
-    reset();
+      reset();
 
-    show("analyzer");
+      show("analyzer");
 
-  };
+    };
 
-});
+  });
 
 
 /* =========================
-   JUDGMENT CATEGORIES
+   JUDGMENT
 ========================= */
 
 document
-.querySelectorAll("[data-judgment-type]")
-.forEach(button => {
+  .querySelectorAll("[data-judgment-type]")
+  .forEach(b => {
 
-  button.onclick = () => {
+    b.onclick = () => {
 
-    mode = "judgment";
+      mode =
+        "judgment";
 
-    category =
-      button.dataset.judgmentType;
+      category =
+        b.dataset.judgmentType;
 
-    $("analyzerTitle")
-      .textContent =
-      "⚖️ رفع الوثيقة القضائية";
+      $("analyzerTitle")
+        .textContent =
+        "⚖️ رفع الوثيقة القضائية";
 
-    $("analyzerSub")
-      .textContent =
-      "نوع التحليل: " +
-      category;
+      $("analyzerSub")
+        .textContent =
+        "نوع التحليل: " +
+        category;
 
-    reset();
+      reset();
 
-    show("analyzer");
+      show("analyzer");
 
-  };
+    };
 
-});
+  });
 
 
 /* =========================
    FILE
 ========================= */
 
-$("file").onchange = () => {
+$("file").onchange =
+  () => {
 
-  const file =
-    $("file").files[0];
+    const f =
+      $("file").files[0];
 
-  if(!file)
-    return;
+    if(!f)
+      return;
 
-  if(validate(file)){
 
-    $("selected").textContent =
-      "📎 " +
-      file.name +
-      " • " +
-      (
-        file.size /
-        1024 /
-        1024
-      ).toFixed(2) +
-      "MB";
+    if(
+      validate(f)
+    ){
 
-    $("selected")
-      .classList
-      .remove("hidden");
+      $("selected")
+        .textContent =
+        "📎 " +
+        f.name +
+        " • " +
+        (
+          f.size /
+          1024 /
+          1024
+        ).toFixed(2) +
+        "MB";
 
-    $("status").textContent =
-      "الملف جاهز للتحليل.";
 
-  }
+      $("selected")
+        .classList
+        .remove("hidden");
 
-};
+
+      $("status")
+        .textContent =
+        "الملف جاهز للتحليل.";
+
+    }
+
+  };
 
 
 /* =========================
@@ -2527,53 +2493,73 @@ $("file").onchange = () => {
 $("go").onclick =
   async () => {
 
-    const file =
+    const f =
       $("file").files[0];
 
-    if(!validate(file))
+
+    if(
+      !validate(f)
+    )
       return;
 
-    $("go").disabled = true;
+
+    $("go").disabled =
+      true;
+
 
     $("progressWrap")
       .classList
       .remove("hidden");
 
+
     $("result")
       .classList
       .add("hidden");
 
-    startETA(file.size);
+
+    startETA(
+      f.size
+    );
+
 
     $("progressText")
       .textContent =
       "جاري رفع المستند...";
 
+
     $("progressNumber")
       .textContent =
       "0%";
 
+
     $("bar").style.width =
       "0%";
+
 
     $("bar")
       .classList
       .remove("indeterminate");
 
-    const formData =
+
+    const fd =
       new FormData();
 
-    formData.append(
+
+    fd.append(
       "document",
-      file
+      f
     );
+
 
     let url =
       "/api/analyze";
 
-    if(mode === "contract"){
 
-      formData.append(
+    if(
+      mode === "contract"
+    ){
+
+      fd.append(
         "category",
         category
       );
@@ -2585,36 +2571,42 @@ $("go").onclick =
 
     }
 
+
     try{
 
       const data =
         await send(
           url,
-          formData,
-          percent => {
+          fd,
+          p => {
 
-            $("bar").style.width =
-              percent + "%";
+            $("bar")
+              .style
+              .width =
+              p + "%";
+
 
             $("progressNumber")
               .textContent =
-              percent + "%";
+              p + "%";
+
 
             $("progressText")
               .textContent =
-              "جاري رفع المستند... " +
-              percent +
-              "%";
+              p === 100
+                ? "تم الرفع ✓ • جاري التحليل..."
+                : "جاري رفع المستند... " +
+                  p +
+                  "%";
 
-            if(percent === 100){
+
+            if(
+              p === 100
+            ){
 
               $("bar")
                 .classList
                 .add("indeterminate");
-
-              $("progressText")
-                .textContent =
-                "تم الرفع ✓ • جاري التحليل...";
 
             }
 
@@ -2624,26 +2616,36 @@ $("go").onclick =
 
       stopETA();
 
+
       $("bar")
         .classList
         .remove("indeterminate");
 
-      $("bar").style.width =
+
+      $("bar")
+        .style
+        .width =
         "100%";
+
 
       $("progressNumber")
         .textContent =
         "100%";
 
+
       $("progressText")
         .textContent =
         "اكتمل التحليل ✓";
+
 
       $("status")
         .textContent =
         "تم التحليل بنجاح.";
 
-      if(mode === "contract"){
+
+      if(
+        mode === "contract"
+      ){
 
         renderContract(data);
 
@@ -2653,18 +2655,22 @@ $("go").onclick =
 
       }
 
+
       $("result")
         .scrollIntoView({
           behavior:"smooth"
         });
 
-    }catch(error){
+
+    }catch(e){
 
       stopETA();
 
+
       $("status")
         .textContent =
-        error.message;
+        e.message;
+
 
       $("progressText")
         .textContent =
@@ -2676,6 +2682,96 @@ $("go").onclick =
         false;
 
     }
+
+  };
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+const saved =
+  localStorage.getItem(
+    "ehata-theme"
+  );
+
+
+if(
+  saved === "dark"
+){
+
+  document.body
+    .classList
+    .add("dark");
+
+}
+
+
+$("themeBtn").onclick =
+  () => {
+
+    document.body
+      .classList
+      .toggle("dark");
+
+
+    localStorage.setItem(
+      "ehata-theme",
+      document.body
+        .classList
+        .contains("dark")
+        ? "dark"
+        : "light"
+    );
+
+
+    $("themeBtn")
+      .textContent =
+      document.body
+        .classList
+        .contains("dark")
+        ? "☀️"
+        : "🌙";
+
+  };
+
+
+$("themeBtn")
+  .textContent =
+  document.body
+    .classList
+    .contains("dark")
+    ? "☀️"
+    : "🌙";
+
+
+/* =========================
+   ARTICLE SEARCH
+========================= */
+
+$("articleSearch").oninput =
+  () => {
+
+    const q =
+      $("articleSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    document
+      .querySelectorAll(".article")
+      .forEach(a => {
+
+        a.classList.toggle(
+          "hidden",
+          q &&
+          !a.textContent
+            .toLowerCase()
+            .includes(q)
+        );
+
+      });
 
   };
 
